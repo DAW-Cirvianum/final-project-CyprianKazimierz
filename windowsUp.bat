@@ -1,12 +1,30 @@
 @echo off
-:: Acces to Server folder and start up
-cd ./server
-npm install
-npm run dev &
-./vendor/bin/sail up -d
+echo ==============================
+echo STARTING PROJECT
+echo ==============================
 
-:: Acces to Client folder and start up
-cd ../client
-npm install
-npm run dev &
+:: --- SERVER ---
+cd /d "%~dp0server"
 
+:: Install all dependences if is needed
+call npm install
+
+:: Vite server 
+start /B npm run dev
+
+:: Laravel Sail
+call vendor\bin\sail up -d
+
+:: --- CLIENT ---
+cd /d "%~dp0client"
+
+call npm install
+
+:: Vite client 
+start /B npm run dev
+
+echo ==============================
+echo ALL SERVICES STARTED
+echo ==============================
+echo Press CTRL+C to stop everything
+pause

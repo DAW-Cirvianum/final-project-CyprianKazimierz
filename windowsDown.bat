@@ -1,10 +1,16 @@
 @echo off
-:: Acces to Server folder and start up
-cd ./server
-pkill -f vite || echo "No Vite process"
-./vendor/bin/sail down
+echo ==============================
+echo STOPPING PROJECT
+echo ==============================
 
-:: Acces to Client folder and start up
-cd ../client
-pkill -f vite || echo "No Vite process"
+:: Kill processes Node (Vite)
+taskkill /IM node.exe /F >nul 2>&1
 
+:: Stop Sail
+cd /d "%~dp0server"
+call vendor\bin\sail down
+
+echo ==============================
+echo ALL SERVICES STOPPED
+echo ==============================
+pause
