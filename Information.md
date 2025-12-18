@@ -1,27 +1,37 @@
 # MyApp
 
+## Requeriments
+1. Have docker installed, if you don't have it you can follow this [guide for ubuntu](https://docs.docker.com/engine/install/ubuntu/) and do the post-installation steps, and for windows go to the web site and download it.
+2. Windows:
+    - For Windows users you might have the wsl in docker, if you don't have following this [guide](https://learn.microsoft.com/es-es/windows/wsl/install), you can only do the step 1. 
+        - Next to integrate to windwos docker you will follow this [guide](https://learn.microsoft.com/es-es/windows/wsl/tutorials/wsl-containers).
+        - When you are in wsl "ubntu in windows" terminal, you will first update the system:
+        ```bash
+        sudo apt update
+        ```
+        - Next, you will install npm/node inside the wsl, to doesn't use the nmp/nodem of windows, to check this execute the command:
+        ```bash
+        which npm
+        ```
+            If you get something like this is ok:
+        ```text
+        /user/bin/node
+        /user/bin/npm
+        ```
+            But, if you get something like that you will have to install the node/npm inside the wsl:
+        ```text
+        /mnt/cProgram Files/nodejs/npm.cmd
+        ```
+            
+
 ## Instructions for start up
 1. Clone the repository.
 2. Open the terminal in the main folder.
 3. To start the project you will run:
-    - Ubuntu:
     ```sh
     npm run ubuntuUp
     ```
-    - Windows:
-    ```dos
-    npm run windowsUp
-    ```
 4. To turn off you will run:
-    - Ubuntu:
     ```sh
     npm run ubuntuDown
     ```
-    - Windows:
-    ```dos
-    npm run windowsDown
-    ```
-   
-## Requeriments
-1. Have npm installed. 
-If you don't have installed you can follow this [guide](https://nodejs.org/en/download).
