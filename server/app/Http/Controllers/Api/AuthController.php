@@ -18,7 +18,8 @@ class AuthController extends Controller
             'username'=>['required','string','max:25','unique:users'],
             'email'=> ['required','string','email','max:255','unique:users,email'],
             'password'=>['required','string','min:6','confirmed'],
-            'born_date'=>['required','string','max:10']
+            'born_date'=>['required','string','max:10'],
+            'role'=>['required','string','in:admin,user']
         ]);
 
         //if validation fails we return an error
@@ -105,5 +106,15 @@ class AuthController extends Controller
             ]
         ],200);
 
+    }
+
+    public function logout(Request $request){
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
+
+        return response()->json([
+            'status'=>true,
+            'message'=>"Logged out successfully"
+        ]);
     }
 }

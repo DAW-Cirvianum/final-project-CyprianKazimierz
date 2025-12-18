@@ -13,25 +13,26 @@
         ```bash
         which npm
         ```
-            If you get something like this is ok:
+        - If you get something like this is ok:
         ```text
         /user/bin/node
         /user/bin/npm
         ```
-            But, if you get something like that you will have to install the node/npm inside the wsl:
+        - But, if you get something like that you will have to install the node/npm inside the wsl using this [guide](https://nodejs.org/en/download) for "linux" using "nvm" with "npm":
         ```text
-        /mnt/cProgram Files/nodejs/npm.cmd
+        /mnt/c/Program Files/nodejs/npm.cmd or /mnt/c/Program Files/nodejs//npm
         ```
             
 
 ## Instructions for start up
 1. Clone the repository.
-2. Open the terminal in the main folder.
-3. To start the project you will run:
+2. Open the terminal in the main folder or move to the cloned folder.
+3. Open or run Docker.
+4. To start the project you will run:
     ```sh
     npm run ubuntuUp
     ```
-4. To turn off you will run:
+5. To turn off you will run:
     ```sh
     npm run ubuntuDown
     ```

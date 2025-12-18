@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "ubuntuUp": "./ubuntuUp.sh",
-    "ubuntuDown": "./ubuntuDown.sh"
+    "appUp": "./appUp.sh",
+    "appDown": "./appDown.sh"
   },
   "repository": {
     "type": "git",
