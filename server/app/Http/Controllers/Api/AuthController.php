@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,7 +14,7 @@ class AuthController extends Controller
     public function register(Request $request){
         //Check passed data
         $validate = Validator::make($request->all(),[
-             'name'=> ['required','string','max:25'],
+            'name'=> ['required','string','max:25'],
             'surname'=> ['required','string','max:25'],
             'username'=>['required','string','max:25','unique:users'],
             'email'=> ['required','string','email','max:255','unique:users,email'],
@@ -89,7 +90,7 @@ class AuthController extends Controller
             return response()->json([
                 'status'=>false,
                 'message'=> "The password does not match"
-            ],401);
+            ],400);
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
@@ -107,14 +108,23 @@ class AuthController extends Controller
         ],200);
 
     }
+public function logout(Request $request)
+{
+    $user = $request->user();
 
-    public function logout(Request $request){
-        $user = $request->user();
-        $user->currentAccessToken()->delete();
-
+    if (!$user) {
         return response()->json([
-            'status'=>true,
-            'message'=>"Logged out successfully"
-        ]);
+            'status' => false,
+            'message' => 'Unauthenticated'
+        ], 401);
     }
+
+    $user->tokens()->delete();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Logged out successfully'
+    ]);
+}
+
 }
