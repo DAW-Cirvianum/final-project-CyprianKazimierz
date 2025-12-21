@@ -58,6 +58,19 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* User Form login i Register*/
+.userForm{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.userForm h2{
+  font-size: 32px;
+}
+
+/**/
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

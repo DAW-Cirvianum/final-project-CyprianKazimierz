@@ -55,3 +55,87 @@
     ```sh
     npm run appDown
     ```
+
+## Libraries
+
+### FrontEnd (React)
+
+- **React**  
+  https://react.dev  
+  JavaScript library for building user interfaces based on components.
+
+- **React DOM**  
+  https://react.dev/reference/react-dom  
+  Allows React components to be rendered into the browser DOM.
+
+- **React Router DOM**  
+  https://reactrouter.com  
+  Library for handling routing and navigation in React single-page applications (SPAs).
+
+---
+
+#### Development and build tools
+
+- **Vite**  
+  https://vitejs.dev  
+  Fast development and build tool for modern web projects.
+
+- **@vitejs/plugin-react**  
+  https://vitejs.dev/plugins/#vitejs-plugin-react  
+  Official Vite plugin that provides full support for React and JSX.
+
+---
+
+#### Styling
+
+- **Tailwind CSS**  
+  https://tailwindcss.com  
+  Utility-first CSS framework for building modern and responsive user interfaces.
+
+- **PostCSS**  
+  https://postcss.org  
+  Tool for transforming CSS using JavaScript-based plugins.
+
+- **Autoprefixer**  
+  https://github.com/postcss/autoprefixer  
+  PostCSS plugin that automatically adds vendor prefixes for better browser compatibility.
+
+---
+
+#### Linting and code quality
+
+- **ESLint**  
+  https://eslint.org  
+  Static code analysis tool for identifying problems and enforcing coding standards.
+
+- **@eslint/js**  
+  https://eslint.org/docs/latest/use/configure/language-options  
+  Core ESLint rules for modern JavaScript.
+
+- **eslint-plugin-react-hooks**  
+  https://www.npmjs.com/package/eslint-plugin-react-hooks  
+  Ensures correct usage of React Hooks.
+
+- **eslint-plugin-react-refresh**  
+  https://www.npmjs.com/package/eslint-plugin-react-refresh  
+  Provides support for React Fast Refresh during development.
+
+- **globals**  
+  https://www.npmjs.com/package/globals  
+  Defines global variables for different JavaScript environments.
+
+---
+
+#### Typing support
+
+- **@types/react**  
+  https://www.npmjs.com/package/@types/react  
+  Type definitions for React.
+
+- **@types/react-dom**  
+  https://www.npmjs.com/package/@types/react-dom  
+  Type definitions for React DOM.
+
+---
+
+### BackEnd (Laravel + PHP)

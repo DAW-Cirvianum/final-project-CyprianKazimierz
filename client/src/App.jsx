@@ -27,6 +27,7 @@ function App() {
       <Route element={<PrivateRoute />}>
         <Route element={<UserLayout />}>
           <Route path="/" element={<Posts />} />
+          <Route path="logout"/>
         </Route>
       </Route>
 

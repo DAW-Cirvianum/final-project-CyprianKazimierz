@@ -28,8 +28,8 @@ export default function Login() {
   };
 
   return (
-    <div>
-		<form onSubmit={handleSubmit}>
+    <div className="container mx-auto ">
+		<form className="userForm" onSubmit={handleSubmit}>
         	<h2>Login</h2>
 		  	{error && <div style={{color: "red"}}>{error}</div>}
 		  	<input type="text" placeholder="User name" value={username}

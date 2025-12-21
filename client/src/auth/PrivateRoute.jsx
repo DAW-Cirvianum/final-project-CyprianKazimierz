@@ -9,5 +9,5 @@ export default function PrivateRoute() {
     return <Navigate to="/home" replace />;
   }
 
-  return <div className="md:container md:mx-auto"><Outlet /></div>;
+  return <Outlet />;
 }

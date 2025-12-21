@@ -47,18 +47,36 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
 	/*
 	 En aquest exemple senzillament esborrem del localStorage
 	 En un entorn real s'hauria de fer la crida al servidor 
 	 */
     setUser(null);
     localStorage.removeItem("user");
-    try{
-      let response
-    }catch(error){  
-      console.log(error);
+    try {
+
+    let token = localStorage.getItem("token");
+    let response = await fetch(`${url}/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        console.log("a");
+      }
     }
+
+    let data = await response.json();
+    localStorage.removeItem("token");
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
   };
 
   return (
