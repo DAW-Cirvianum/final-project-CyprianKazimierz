@@ -10,6 +10,7 @@ until ./vendor/bin/sail shell -c "mysqladmin ping -h mysql -u root --silent"; do
 done
 ./vendor/bin/sail artisan migrate #migrate all tables
 ./vendor/bin/sail artisan db:seed --class=DatabaseSeeder #introduce the user into the table
+./vendor/bin/sail artisan storage:link
 npm run dev & # execute the bootstrap or tailwind
 
 #Access to client folder to set up the client view#

@@ -11,120 +11,128 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         //Check passed data
-        $validate = Validator::make($request->all(),[
-            'name'=> ['required','string','max:25'],
-            'surname'=> ['required','string','max:25'],
-            'username'=>['required','string','max:25','unique:users'],
-            'email'=> ['required','string','email','max:255','unique:users,email'],
-            'password'=>['required','string','min:6','confirmed'],
-            'born_date'=>['required','string','max:10'],
-            'role'=>['required','string','in:admin,user']
+        $validate = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:25'],
+            'surname' => ['required', 'string', 'max:25'],
+            'username' => ['required', 'string', 'max:25', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'born_date' => ['required', 'string', 'max:10'],
+            'avatar' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'role' => ['required', 'string', 'in:admin,user']
         ]);
 
         //if validation fails we return an error
-        if($validate->fails()){
+        if ($validate->fails()) {
             return response()->json([
-                'status'=>false,
-                'message'=>'Validation error',
-                'error'=>$validate->errors()
-            ],422);
+                'status' => false,
+                'message' => 'Validation error',
+                'error' => $validate->errors()
+            ], 422);
         }
 
         //if pass the validation we sotre it
         $data = $validate->validated();
+        $path = null;
 
-        $user = User::create([
-            'name'=>$data['name'],
-            'surname'=>$data['surname'],
-            'username'=>$data['username'],
-            'email'=>$data['email'],
-            'password'=>Hash::make($data['password']),
-            'born_date'=>$data['born_date']
-        ]);
-
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        return response()->json([
-            'status'=>true,
-            'message'=>"New user has been created",
-            'token'=>$token,
-            'user'=>$user
-        ],200);
-    }
-
-    public function login(Request $request){
-
-        $validate = Validator::make($request->all(),[
-            'login'=>['required','string'],
-            'password'=>['required','string','min:6'],
-           
-        ]);
-        $loginWith='';
-        $user=null;
-        if(filter_var($request->login,FILTER_VALIDATE_EMAIL)){
-            $loginWith='email';
-              $user = User::where('email',$request->login)->first();
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
         }else{
-            $loginWith='username';
-              $user = User::where('username',$request->login)->first();
+            $path = "avatars/default.png";
         }
 
-        if($validate->fails()){
+        $user = null;
+        $user = User::create([
+            'name' => $data['name'],
+            'surname' => $data['surname'],
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'born_date' => $data['born_date'],
+            'avatar' => $path ?? "def",
+            'role' => $data['role'] ?? "user"
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => "New user has been created",
+            'user' => $user
+        ], 201);
+    }
+
+    public function login(Request $request)
+    {
+
+        $validate = Validator::make($request->all(), [
+            'login' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:6'],
+
+        ]);
+
+        if ($validate->fails()) {
             return response()->json([
-                'status'=>false,
-                'message'=> "Error Validation login",
-                'error'=> $validate->errors()
-            ],422);
+                'status' => false,
+                'message' => "Error Validation login",
+                'error' => $validate->errors()
+            ], 422);
         }
 
-
-        if(!$user){
-            response()->json([
-                'status'=>false,
-                'message'=>"User not found"
-            ],401);
+        $loginWith = '';
+        $user = null;
+        if (filter_var($request->login, FILTER_VALIDATE_EMAIL)) {
+            $loginWith = 'email';
+            $user = User::where('email', $request->login)->first();
+        } else {
+            $loginWith = 'username';
+            $user = User::where('username', $request->login)->first();
         }
-        if(!Hash::check($request->password,$user->password)){
+
+        if (!$user) {
             return response()->json([
-                'status'=>false,
-                'message'=> "The password does not match"
-            ],400);
+                'status' => false,
+                'message' => "User not found"
+            ], 401);
+        }
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'status' => false,
+                'message' => "The password does not match"
+            ], 400);
         }
 
         $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'status'=>true,
-            'token'=>$token,
-            'user'=>[
-                'name'=>$user->name,
-                'surname'=>$user->surname,
-                'username'=>$user->username,
-                'email'=>$user->email,
-                'born_date'=>$user->born_date,
+            'status' => true,
+            'token' => $token,
+            'user' => [
+                'name' => $user->name,
+                'surname' => $user->surname,
+                'username' => $user->username,
+                'email' => $user->email,
+                'born_date' => $user->born_date,
             ]
-        ],200);
-
+        ], 200);
     }
-public function logout(Request $request)
-{
-    $user = $request->user();
+    public function logout(Request $request)
+    {
+        $user = $request->user();
 
-    if (!$user) {
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
+
+        $user->tokens()->delete();
+
         return response()->json([
-            'status' => false,
-            'message' => 'Unauthenticated'
-        ], 401);
+            'status' => true,
+            'message' => 'Logged out successfully'
+        ]);
     }
-
-    $user->tokens()->delete();
-
-    return response()->json([
-        'status' => true,
-        'message' => 'Logged out successfully'
-    ]);
-}
-
 }

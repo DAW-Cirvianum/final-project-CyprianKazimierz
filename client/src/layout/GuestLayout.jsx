@@ -1,22 +1,27 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import "../css/index.css"
+import Footer from "../components/Footer";
+import Aside from "../components/Aside";
+import Posts from "../components/Posts"
 export default function GuestLayout() {
   const location = useLocation();
 
-  const isLogin = location.pathname === "/login";
-  const isRegister = location.pathname === "/register";
+  const isLogin = location.pathname === "/home/login";
+  const isRegister = location.pathname === "/home/register";
 
   return (
     <>
-      <header>
+    <div className="layout">
+      <header className="headerLayout header">
         <nav>
-          {!isLogin && <Link to="/home/login">Login</Link>}
-          {" | "}
-          {!isRegister && <Link to="/home/register">Register</Link>}
+          <Link to="/home/login">Login</Link>
+          <Link to="/home/register">Register</Link>
         </nav>
       </header>
-
-      <Outlet />
+        {isLogin || isRegister ? <header className="sidebar"></header> : <Aside className="sidebar"/>}
+        <Outlet className="main" element={ <Posts/>}/>
+      <Footer className="footer"/>
+      </div>
     </>
   );
 }
