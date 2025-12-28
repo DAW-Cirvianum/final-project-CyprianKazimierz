@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -40,7 +41,7 @@ class AuthController extends Controller
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
-        }else{
+        } else {
             $path = "avatars/default.png";
         }
 
@@ -52,9 +53,11 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'born_date' => $data['born_date'],
-            'avatar' => $path ?? "def",
+            'avatar' => $path,
             'role' => $data['role'] ?? "user"
         ]);
+
+        $user->sendEmailVerificationNotification();
 
         return response()->json([
             'status' => true,
@@ -103,6 +106,14 @@ class AuthController extends Controller
             ], 400);
         }
 
+        if (!$user->hasVerifiedEmail()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Account not verified'
+            ], 403);
+        }
+
+
         $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
@@ -114,6 +125,7 @@ class AuthController extends Controller
                 'username' => $user->username,
                 'email' => $user->email,
                 'born_date' => $user->born_date,
+                'avatar' => asset('storage/' . $user->avatar),
             ]
         ], 200);
     }
@@ -134,5 +146,59 @@ class AuthController extends Controller
             'status' => true,
             'message' => 'Logged out successfully'
         ]);
+    }
+
+    public function profile(Request $request)
+    {
+        $user = $request->user();
+
+        $validate = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:25'],
+            'surname' => ['required', 'string', 'max:25'],
+            'username' => ['required', 'string', 'max:25', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'password' => ['nullable', 'string', 'min:6', 'confirmed'],
+            'born_date' => ['required', 'string', 'max:10'],
+            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation error',
+                'error' => $validate->errors()
+            ], 422);
+        }
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+
+        $path = null;
+
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
+        } else {
+            $path = "avatars/default.png";
+        }
+
+        //update data
+        $user->update($request->except('avatar', 'password', 'password_confirmation'));
+
+        $token = $user->createToken('api-token')->plainTextToken;
+        return response()->json([
+            'status' => true,
+            'token' => $token,
+            'user' => [
+                'name' => $user->name,
+                'surname' => $user->surname,
+                'username' => $user->username,
+                'email' => $user->email,
+                'born_date' => $user->born_date,
+                'avatar' => asset('storage/' . $user->avatar),
+            ]
+        ], 200);
     }
 }

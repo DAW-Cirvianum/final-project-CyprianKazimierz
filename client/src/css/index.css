@@ -115,9 +115,16 @@ button:focus-visible {
 .headerLayout nav{
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap:1%;
 }
 
+/* avatars img */
+.avatar{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
 
 
 /**/

@@ -4,56 +4,37 @@ import { url } from "../general";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [errorLogin, setErrorLogin] = useState(null);
-  useEffect(() => {
-        async function fetchUser() {
-          const stored = localStorage.getItem("user");
-          if (stored) setUser(JSON.parse(stored)); 
-        }
-        fetchUser();
-    
-  }, []);
+
+  // useEffect(() => {
+  //       async function fetchUser() {
+  //         const stored = localStorage.getItem("user");
+  //         if (stored) setUser(JSON.parse(stored)); 
+  //       }
+  //       fetchUser();
+  // }, []);
+
+
   const register = async (userData) => {
     try{
     setUser(null);
-    const formData = new FormData();
-
-    formData.append("name", userData.name);
-    formData.append("surname", userData.surname);
-    formData.append("username", userData.username);
-    formData.append("email", userData.email);
-    formData.append("password", userData.password);
-    formData.append("password_confirmation", userData.password_confirmation);
-    formData.append("born_date", userData.born_date);
-    formData.append("role", userData.role);
-
-    if (userData.avatar) {
-      formData.append("avatar", userData.avatar);
-    }
     
-    // for (let pair of formData.entries()) {
-    //   console.log(pair[0], pair[1]);
-    // }
-    console.log(userData);
       let response = await fetch(`${url}/register`,{
         method:"POST",
-        body: formData,
+        body: formData(userData),
       });
 
       if(!response.ok){
-        console.log(response.status);
-        let a = await response.json();
-        console.log(a.error);
-        return
+        let errorReturn = await response.json();
+        return {
+          ok: false,
+          status: response.status,
+          error: errorReturn
+        }
       }
-
-      let data = await response.json();
-
-      return data.status
-
+      return {ok:true}
 
     }catch(error){
-      console.log(error);
+      return;
     }
   }
   const login = async (userData) => {
@@ -69,30 +50,21 @@ export function AuthProvider({ children }) {
 
         // if fails we send error information
         if(!response.ok){
-            if(response.status === 400){
-              setErrorLogin(400);
-                console.log('Password incorrect');
-                return false;
-            }else if(response.status===401){
-              setErrorLogin(401);
-                console.log("Invalid credentials no user found");
-                return false;
-            }else if(response.status === 422){
-              setErrorLogin(422);
-                console.log("NO pass the validation");
-                return false;
-            }
-            return false;
+             return {
+        ok: false,
+        status: response.status,
+      };
         }
 
         //if all is ok, we get the info, we save the user and storage the user and token
         let data = await response.json();
-        setUser(data.user);
+        
         localStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user);
         localStorage.setItem("token",data.token);
-        return true;
+        return {ok:true};
     }catch(error){
-        console.log(error);
+        return;
     }
   };
 
@@ -104,19 +76,17 @@ export function AuthProvider({ children }) {
     setUser(null);
     localStorage.removeItem("user");
     try {
-
-    let token = localStorage.getItem("token");
     let response = await fetch(`${url}/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     });
 
     if (!response.ok) {
       if (response.status === 400) {
-        console.log("a");
+        console.log(response.error);
       }
     }
 
@@ -128,8 +98,64 @@ export function AuthProvider({ children }) {
   }
   };
 
+  const profile = async (userData) => {
+    console.log(userData);
+    try{
+      let response = await fetch(`${url}/profile`,{
+        method:"PUT",
+        headers:{
+          Authorization: `Bearer ${getToken()}`
+        },
+        body: formData(userData)
+      });
+
+      if(!response.ok){
+        let errorReturn = await response.json();
+        return {
+          ok: false,
+          status: response.status,
+          error: errorReturn
+        }
+      }
+
+      let returnData = await response.json();
+      setUser(returnData.user);
+      localStorage.setItem("token", returnData.token);
+
+      return {ok:true}
+
+    }catch(error){
+      return {
+    ok: false,
+    status: response.status,
+  };
+    }
+  }
+
+
+  /* private functions */
+
+  const formData = (userData) =>{
+    const formData = new FormData();
+    formData.append("name", userData.name);
+    formData.append("surname", userData.surname);
+    formData.append("username", userData.username);
+    formData.append("email", userData.email);
+    formData.append("password", userData.password);
+    formData.append("password_confirmation", userData.password_confirmation);
+    formData.append("born_date", userData.born_date);
+    formData.append("role", userData.role);
+    if (userData.avatar) {
+      formData.append("avatar", userData.avatar);
+    }
+    return formData;
+  }
+
+  const getToken = () =>{
+    return localStorage.getItem("token");
+  }
   return (
-    <AuthContext.Provider value={{ user, login, logout,errorLogin,register }}>
+    <AuthContext.Provider value={{ user, login, logout, register, profile }}>
       {children}
     </AuthContext.Provider>
   );

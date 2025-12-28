@@ -6,7 +6,11 @@ import UserLayout from "./layout/UserLayout";
 import Posts from "./components/Posts";
 import GuestLayout from "./layout/GuestLayout";
 import Register from "./pages/Register";
+import Verify from "./pages/Verify"
+import Profile from "./pages/Profile";
 import './css/index.css'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -20,6 +24,7 @@ function App() {
    <Route index element={<Posts />} />
     <Route path="login" element={<Login />} />
     <Route path="register" element={<Register />} />
+    <Route path="verify" element={<Verify/>}/>
   </Route>
 </Route>
 
@@ -30,10 +35,12 @@ function App() {
          <Route index element={<Posts />} />
           <Route path="/" element={<Posts />} />
           <Route path="logout"/>
+          <Route path="profile" element={<Profile/>}/>
         </Route>
       </Route>
 
     </Routes>
+     <ToastContainer/>
     </>
   );
 }

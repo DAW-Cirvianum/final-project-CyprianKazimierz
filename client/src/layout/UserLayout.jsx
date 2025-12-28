@@ -1,25 +1,63 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, Outlet } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
-import "../css/index.css"
-import Footer from "../components/Footer";
+import Footer from "../components/Footer"; 
 import Aside from "../components/Aside";
-export default function UserLayout(){
+import "../css/index.css"
 
-  const { logout } = useContext(AuthContext);
-    const user = JSON.parse(localStorage.getItem("user"));
-return(
-<div className="layout">
-    <header className="headerLayout header">
-        <nav>
-           <p>{user.username}</p>
-            <Link to="/logout" onClick={logout}>Logout</Link>
+export default function UserLayout() {
+  const { logout, user } = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="layout">
+      <header className="headerLayout header">
+        <nav className="relative flex items-center gap-4">
+          
+          <img src={user.avatar} alt="Avatar of user" className="avatar" />
+          <p>{user.username}</p>
+
+          {/* Dropdown button */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="inline-flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 rounded px-4 py-2"
+          >
+            Menu
+            <svg
+              className="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 9-7 7-7-7" />
+            </svg>
+          </button>
+
+          {open && (
+            <div className="absolute right-0 top-12 z-10 w-44 bg-white border rounded shadow">
+              <ul className="text-sm">
+                <li>
+                  <Link className="block px-4 py-2 hover:bg-gray-100" to="/profile">
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-400"
+                  >
+                    Sing out
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
+
         </nav>
-    </header>
-     <Aside className="sidebar"/>
-    <Outlet className="main"/>
-    <Footer className="footer"/>
-</div>
-    )
+      </header>
+        <Aside className="sidebar"/>
+      <Outlet className="main" />
+      <Footer className="footer"/>
+    </div>
+  );
 }
-

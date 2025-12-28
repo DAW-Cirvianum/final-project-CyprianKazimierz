@@ -1,38 +1,36 @@
-import { useState } from "react";
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import "../css/index.css";
 import { AuthContext } from "../context/AuthContext";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { showError,formatDateDMY,isAdult,isFutureDate } from "../general";
+import { showError, formatDateDMY, isAdult, isFutureDate, formatDateForInput } from "../general";
 
-export default function Register() {
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmation_password, setPas] = useState("");
-  const [born_date, setBornDate] = useState("");
-  const [avatar, setAvatar] = useState(null);
-  const [error, setError] = useState("");
+export default function Profile() {
+  const { user,profile } = useContext(AuthContext);
 
   const navigate = useNavigate();
-  const { register } = useContext(AuthContext);
+  const [name, setName] = useState(user.name);
+  const [surname, setSurname] = useState(user.surname);
+  const [username, setUsername] = useState(user.username);
+  const [email, setEmail] = useState(user.email);
+  const [password, setPassword] = useState("");
+  const [confirmation_password, setPas] = useState("");
+  const [born_date, setBornDate] = useState(user.born_date);
+  const [avatar, setAvatar] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     //
-
     if (isFutureDate(born_date)) {
       showError("The date cannot be in the future");
       return;
-    } else if (!isAdult(born_date)) {
+    } else if (!isAdult(formatDateForInput(born_date))) {
       showError("You must be at least 18 years old");
       return;
     }
     //create user
-    let user = {
+    let newUser = {
       name: name,
       surname: surname,
       username: username,
@@ -44,14 +42,15 @@ export default function Register() {
       role: "user",
     };
 
-    const response = await register(user);
+    const response = await profile(newUser);
 
     if (!response.ok) {
       if (response.status == 422) {
+        console.log(response.error);
         const errors = Object.values(response.error.error);
-        errors.forEach((messages,index) => {
+        errors.forEach((messages, index) => {
           messages.forEach((msg) => {
-            showError(msg,index);
+            showError(msg, index);
           });
         });
         return;
@@ -69,11 +68,11 @@ export default function Register() {
       navigate("/home/verify");
     }, 3200);
   };
+
   return (
     <div className="container mx-auto my-10 flex justify-center">
       <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}>
-        <h2>Sing Up</h2>
-        {error && <div style={{ color: "red" }}>{error}</div>}
+        <h2>Profile</h2>
 
         <div className="mb-4 flex flex-col">
           <label htmlFor="name">Name:</label>
@@ -134,7 +133,7 @@ export default function Register() {
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Password (optional):</label>
           <input
             type="password"
             placeholder="Password"
@@ -143,13 +142,11 @@ export default function Register() {
             pattern="^[a-zA-Z0-9]{6,20}$"
             title="Please introduce a valid password, the password must contain (Maj Min Numbers and min og 6 chars and a max of 20)"
             maxLength="20"
-            value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <label htmlFor="confirmation_password">Repeat the password:</label>
+          <label htmlFor="confirmation_password">Repeat the password (optional):</label>
           <input
             type="password"
             placeholder="Repeat the password"
@@ -158,9 +155,8 @@ export default function Register() {
             pattern="^[a-zA-Z0-9]{6,20}$"
             title="Please introduce a valid password, the password must contain (Maj Min Numbers and min og 6 chars and a max of 20)"
             maxLength="20"
-            value={confirmation_password}
             onChange={(e) => setPas(e.target.value)}
-            required
+            
           />
         </div>
         <div className="mb-4 flex flex-col">
@@ -170,8 +166,9 @@ export default function Register() {
             id="born_date"
             name="born_date"
             title="Introduce you born date"
+            value={formatDateForInput(born_date)}
             onChange={(e) => {
-              setBornDate(e.target.value);
+              setBornDate(formatDateDMY(e.target.value));
             }}
             required
           />

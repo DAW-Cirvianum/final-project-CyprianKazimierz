@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@cirvianum.cat',
             'password'=>Hash::make("112233"),
             'born_date'=>"18/12/2025",
+            'avatar'=>"avatars/default.png",
             'role'=>"admin"
         ]);
         }

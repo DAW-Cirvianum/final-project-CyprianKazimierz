@@ -100,6 +100,10 @@
   https://github.com/postcss/autoprefixer  
   PostCSS plugin that automatically adds vendor prefixes for better browser compatibility.
 
+- **React-Tostify**
+  https://www.npmjs.com/package/react-toastify
+  Better notification messages
+
 ---
 
 #### Linting and code quality
