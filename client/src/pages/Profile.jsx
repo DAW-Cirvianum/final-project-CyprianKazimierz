@@ -55,9 +55,10 @@ export default function Profile() {
         });
         return;
       }
+      return;
     }
 
-    toast.success("User has been created", {
+    toast.success("Profile updated successfully", {
       position: "top-center",
       autoClose: 3000,
       closeOnClick: true,
@@ -65,7 +66,7 @@ export default function Profile() {
     });
 
     setTimeout(() => {
-      navigate("/home/verify");
+      navigate("/");
     }, 3200);
   };
 
@@ -166,9 +167,9 @@ export default function Profile() {
             id="born_date"
             name="born_date"
             title="Introduce you born date"
-            value={formatDateForInput(born_date)}
+            value={born_date}
             onChange={(e) => {
-              setBornDate(formatDateDMY(e.target.value));
+              setBornDate(e.target.value);
             }}
             required
           />

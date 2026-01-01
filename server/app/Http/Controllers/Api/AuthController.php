@@ -180,12 +180,16 @@ class AuthController extends Controller
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
             $user->avatar = $path;
-        } else {
-            $path = "avatars/default.png";
+        } else if (!$user->avatar) {
+            $user->avatar = "avatars/default.png";
         }
-
         //update data
-        $user->update($request->except('avatar', 'password', 'password_confirmation'));
+        $validated = $validate->validated();
+
+        $user->update(
+            collect($validated)->except(['avatar', 'password'])->toArray()
+        );
+
 
         $token = $user->createToken('api-token')->plainTextToken;
         return response()->json([
@@ -198,6 +202,49 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'born_date' => $user->born_date,
                 'avatar' => asset('storage/' . $user->avatar),
+            ]
+        ], 200);
+    }
+
+    public function completeProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $validate = Validator::make($request->all(), [
+            'name' => ['sometimes', 'string', 'max:25'],
+            'surname' => ['sometimes', 'string', 'max:25'],
+            'born_date' => ['sometimes', 'string', 'max:10'],
+            'avatar' => ['sometimes', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation error',
+                'error' => $validate->errors()
+            ], 422);
+        }
+
+        $validated = $validate->validated();
+
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $validated['avatar'] = $path;
+        }
+
+        $user->update($validated);
+
+        return response()->json([
+            'status' => true,
+            'user' => [
+                'name' => $user->name,
+                'surname' => $user->surname,
+                'username' => $user->username,
+                'email' => $user->email,
+                'born_date' => $user->born_date,
+                'avatar' => $user->avatar
+                    ? asset('storage/' . $user->avatar)
+                    : null,
             ]
         ], 200);
     }

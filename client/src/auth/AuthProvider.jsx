@@ -99,7 +99,6 @@ export function AuthProvider({ children }) {
   };
 
   const profile = async (userData) => {
-    console.log(userData);
     try{
       let response = await fetch(`${url}/profile`,{
         method:"PUT",
@@ -121,30 +120,105 @@ export function AuthProvider({ children }) {
       let returnData = await response.json();
       setUser(returnData.user);
       localStorage.setItem("token", returnData.token);
-
+      log({
+        status: response.status,
+        message: "user has update the profile, "
+      });
       return {ok:true}
 
     }catch(error){
       return {
     ok: false,
-    status: response.status,
   };
     }
   }
 
+  const setTokenFromGoogle = async (token) => {
+  localStorage.setItem("token", token);
+
+  const res = await fetch("http://localhost/api/user", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if(!res.ok){
+    return {
+      ok:false,
+    }
+  }
+  
+  const data = await res.json();
+  localStorage.setItem("user", JSON.stringify(data.user));
+
+  setUser(data.user);
+  return data.user;
+};
+
+const completProfile = async (userData)=>{
+  try{
+      let response = await fetch(`${url}/completProfile`,{
+        method:"PATCH",
+        headers:{
+          Authorization: `Bearer ${getToken()}`
+        },
+        body: formData(userData)
+      });
+
+      if(!response.ok){
+        let errorReturn = await response.json();
+        return {
+          ok: false,
+          status: response.status,
+          error: errorReturn
+        }
+      }
+
+      let returnData = await response.json();
+      setUser(returnData.user);
+      localStorage.setItem("token", returnData.token);
+      log({
+        status:response.status,
+        message:returnData.error??"User has update profile (google sing in)",
+      });
+      return {ok:true,
+        returnData: returnData
+      }
+
+    }catch(error){
+      return {
+    ok: false,
+  };
+    }
+}
+
+const log = async (data) => {
+  try{ 
+     await fetch(`${url}/log`,{
+        method:"POST",
+        headers:{
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`
+        },
+        body: JSON.stringify(data)
+      });
+  }catch(error){
+    console.log(error);
+  }
+}
 
   /* private functions */
 
   const formData = (userData) =>{
     const formData = new FormData();
-    formData.append("name", userData.name);
-    formData.append("surname", userData.surname);
-    formData.append("username", userData.username);
-    formData.append("email", userData.email);
-    formData.append("password", userData.password);
-    formData.append("password_confirmation", userData.password_confirmation);
-    formData.append("born_date", userData.born_date);
-    formData.append("role", userData.role);
+    if(userData.name) formData.append("name", userData.name);
+    if(userData.surname)formData.append("surname", userData.surname);
+    if(userData.username)formData.append("username", userData.username);
+    if(userData.email)formData.append("email", userData.email);
+    if(userData.password)formData.append("password", userData.password);
+    if(userData.password_confirmation)formData.append("password_confirmation", userData.password_confirmation);
+    if(userData.born_date)formData.append("born_date", userData.born_date);
+    if(userData.role)formData.append("role", userData.role);
     if (userData.avatar) {
       formData.append("avatar", userData.avatar);
     }
@@ -155,7 +229,7 @@ export function AuthProvider({ children }) {
     return localStorage.getItem("token");
   }
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, profile }}>
+    <AuthContext.Provider value={{ user, login, logout, register, profile, setTokenFromGoogle, completProfile, log}}>
       {children}
     </AuthContext.Provider>
   );

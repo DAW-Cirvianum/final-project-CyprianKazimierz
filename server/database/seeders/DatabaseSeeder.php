@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             'username'=>'admin',
             'email' => 'admin@cirvianum.cat',
             'password'=>Hash::make("112233"),
-            'born_date'=>"18/12/2025",
+            'born_date'=>"2025-12-18",
             'avatar'=>"avatars/default.png",
             'role'=>"admin"
         ]);

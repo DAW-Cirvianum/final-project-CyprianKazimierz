@@ -11,12 +11,17 @@ import Profile from "./pages/Profile";
 import './css/index.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import GoogleCallback from "./pages/GoogleCallback";
+import CompleteProfile from "./pages/CompleteProfile";
 
 function App() {
   return (
     <>
     
     <Routes>
+     {/*Google Sign in */}
+     <Route path="google-callback" element={<GoogleCallback/>}/>
+     <Route path="complete-profile" element={<CompleteProfile/>}/>
 
       {/* Rutas públicas */}
       <Route element={<PublicRoute />}>
@@ -25,6 +30,7 @@ function App() {
     <Route path="login" element={<Login />} />
     <Route path="register" element={<Register />} />
     <Route path="verify" element={<Verify/>}/>
+   
   </Route>
 </Route>
 
