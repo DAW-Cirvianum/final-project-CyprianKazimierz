@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger("status");
+            $table->unsignedSmallInteger("status");
             $table->text("message");
             $table->timestamps();
         });

@@ -118,12 +118,13 @@ export function AuthProvider({ children }) {
       }
 
       let returnData = await response.json();
+      let token = returnData.token;
       setUser(returnData.user);
-      localStorage.setItem("token", returnData.token);
       log({
         status: response.status,
-        message: "user has update the profile, "
-      });
+        message: "user has update the profile, ",
+        
+      },token);
       return {ok:true}
 
     }catch(error){
@@ -150,7 +151,10 @@ export function AuthProvider({ children }) {
   
   const data = await res.json();
   localStorage.setItem("user", JSON.stringify(data.user));
-
+  log({
+        status: res.status,
+        message:data.error??"User has update profile (google sing in)",
+      },token);
   setUser(data.user);
   return data.user;
 };
@@ -177,10 +181,6 @@ const completProfile = async (userData)=>{
       let returnData = await response.json();
       setUser(returnData.user);
       localStorage.setItem("token", returnData.token);
-      log({
-        status:response.status,
-        message:returnData.error??"User has update profile (google sing in)",
-      });
       return {ok:true,
         returnData: returnData
       }
@@ -192,16 +192,20 @@ const completProfile = async (userData)=>{
     }
 }
 
-const log = async (data) => {
+const log = async (data,token = null) => {
   try{ 
-     await fetch(`${url}/log`,{
+     let response = await fetch(`${url}/log`,{
         method:"POST",
         headers:{
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`
+          "Accept": "application/json",
+          Authorization: `Bearer ${token ?? getToken()}`
         },
         body: JSON.stringify(data)
       });
+      if(!response.ok){
+        return {ok:false, status: response.status};
+      }
   }catch(error){
     console.log(error);
   }
