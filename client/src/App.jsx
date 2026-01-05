@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import UserLayout from "./layout/UserLayout";
-import Posts from "./components/Posts";
+import Main from "./components/Main";
 import GuestLayout from "./layout/GuestLayout";
 import Register from "./pages/Register";
 import Verify from "./pages/Verify"
@@ -26,7 +26,7 @@ function App() {
       {/* Rutas públicas */}
       <Route element={<PublicRoute />}>
   <Route path="/home" element={<GuestLayout />}>
-   <Route index element={<Posts />} />
+   <Route index element={<Main />} />
     <Route path="login" element={<Login />} />
     <Route path="register" element={<Register />} />
     <Route path="verify" element={<Verify/>}/>
@@ -38,8 +38,8 @@ function App() {
       {/* Rutas privadas */}
       <Route element={<PrivateRoute />}>
         <Route element={<UserLayout />}>
-         <Route index element={<Posts />} />
-          <Route path="/" element={<Posts />} />
+         <Route index element={<Main />} />
+          <Route path="/" element={<Main />} />
           <Route path="logout"/>
           <Route path="profile" element={<Profile/>}/>
         </Route>

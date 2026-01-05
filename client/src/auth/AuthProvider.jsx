@@ -3,7 +3,14 @@ import {AuthContext} from "../context/AuthContext";
 import { url } from "../general";
 
 export function AuthProvider({ children }) {
+  //login
   const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
+const [page, setPage] = useState(1);
+const [lastPage, setLastPage] = useState(1);
+  
+  //posts
+
 
   // useEffect(() => {
   //       async function fetchUser() {
@@ -211,6 +218,30 @@ const log = async (data,token = null) => {
   }
 }
 
+const cars = async(page=1)=>{
+  try{
+      let response = await fetch(`${url}/cars?page=${page}`);
+
+      if(!response.ok){
+        return {
+          ok:false,
+          status: response.status
+        }
+      }
+      console.log("a");
+      let data = await response.json();
+
+      setPosts(data[0].data);
+      setPage(data[0].current_page);
+      setLastPage(data[0].last_page);
+  }catch(error){
+    return {
+      ok: false,
+      status: response.status
+    }
+  }
+}
+
   /* private functions */
 
   const formData = (userData) =>{
@@ -232,8 +263,13 @@ const log = async (data,token = null) => {
   const getToken = () =>{
     return localStorage.getItem("token");
   }
+
+  useEffect(() => {
+    cars(page);
+  }, [page]);
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, profile, setTokenFromGoogle, completProfile, log}}>
+    <AuthContext.Provider value={{ user, login, logout, register, profile, setTokenFromGoogle, completProfile, log, posts, page, lastPage, setPage}}>
       {children}
     </AuthContext.Provider>
   );

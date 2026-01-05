@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LogController;
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RecoveryController;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +17,8 @@ Route::get('/email/verify/{id}/{hash}',[RecoveryController::class,'verifyEmail']
 //google sing in / sing up
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect']);
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
-
+//posts all
+Route::get("/cars",[PostController::class,'index']);
 
 //Auth routes with token
 Route::middleware('auth:sanctum')->group(function (){
@@ -28,4 +31,5 @@ Route::middleware('auth:sanctum')->group(function (){
     });
     Route::patch("/completProfile",[AuthController::class,'completeProfile']);
     Route::post("/log",[LogController::class,'add']);
+    
 });

@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import "../css/index.css"
 import Footer from "../components/Footer";
 import Aside from "../components/Aside";
-import Posts from "../components/Posts"
+import Main from "../components/Main"
 export default function GuestLayout() {
   const location = useLocation();
 
@@ -19,7 +19,7 @@ export default function GuestLayout() {
         </nav>
       </header>
         {isLogin || isRegister ? <header className="sidebar"></header> : <Aside className="sidebar"/>}
-        <Outlet className="main" element={ <Posts/>}/>
+        <Outlet className="main" element={ <Main/>}/>
       <Footer className="footer"/>
       </div>
     </>

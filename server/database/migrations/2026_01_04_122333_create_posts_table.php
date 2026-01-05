@@ -13,18 +13,19 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string("image_path");
+            $table->string("image_path")->nullable();
             $table->string("title");
             $table->text("description");
-            $table->int("km");
+            $table->integer("km");
             $table->string("mark");
             $table->string("model");
-            $table->string("motor");
-            $table->int("year");
+            $table->enum("motor",['manual','automatic']);
+            $table->integer("year");
             $table->string("location");
             $table->string("color");
             $table->decimal("price",8,2);
-            //falta crear migracio relacio amb usuari
+            $table->string("bodywork");
+            $table->string("fuel");
             $table->timestamps();
         });
     }
