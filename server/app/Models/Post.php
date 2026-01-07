@@ -24,4 +24,19 @@ class Post extends Model
         'fuel',
         'user_id'
     ];
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image_path
+            ? asset('storage/' . $this->image_path)
+            : null;
+    }
+
+    public function favoritedBy()
+{
+    return $this->belongsToMany(User::class, 'favorites')
+                ->withTimestamps();
+}
+
 }

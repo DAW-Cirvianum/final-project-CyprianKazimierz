@@ -8,9 +8,17 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return response()->json([
             Post::paginate(5)
         ]);
+    }
+
+    public function details(Post $post)
+    {
+        return response()->json(
+            $post
+        );
     }
 }

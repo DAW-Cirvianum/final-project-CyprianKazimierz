@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\GoogleAuthController;
@@ -19,6 +21,7 @@ Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect']);
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 //posts all
 Route::get("/cars",[PostController::class,'index']);
+Route::get("/details/{post}", [PostController::class,'details']);
 
 //Auth routes with token
 Route::middleware('auth:sanctum')->group(function (){
@@ -31,5 +34,8 @@ Route::middleware('auth:sanctum')->group(function (){
     });
     Route::patch("/completProfile",[AuthController::class,'completeProfile']);
     Route::post("/log",[LogController::class,'add']);
-    
+    Route::get('/favorites', [FavoriteController::class, 'index']);
+    Route::post("/toggle/{post}", [FavoriteController::class, 'toggle']);
+    Route::get('/likes', [LikeController::class, 'index']);
+    Route::post("/toggleLikes/{post}", [LikeController::class, 'toggle']);
 });

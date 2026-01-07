@@ -13,8 +13,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GoogleCallback from "./pages/GoogleCallback";
 import CompleteProfile from "./pages/CompleteProfile";
+import Details from "./pages/Details";
 
 function App() {
+  
   return (
     <>
     
@@ -23,6 +25,9 @@ function App() {
      <Route path="google-callback" element={<GoogleCallback/>}/>
      <Route path="complete-profile" element={<CompleteProfile/>}/>
 
+      {/* */}
+      
+
       {/* Rutas públicas */}
       <Route element={<PublicRoute />}>
   <Route path="/home" element={<GuestLayout />}>
@@ -30,6 +35,7 @@ function App() {
     <Route path="login" element={<Login />} />
     <Route path="register" element={<Register />} />
     <Route path="verify" element={<Verify/>}/>
+    <Route path="details/:id" element={<Details/>}/>
    
   </Route>
 </Route>
@@ -42,6 +48,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="logout"/>
           <Route path="profile" element={<Profile/>}/>
+          <Route path="/details/:id" element={<Details/>}/>
         </Route>
       </Route>
 

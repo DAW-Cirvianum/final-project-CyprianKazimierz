@@ -104,6 +104,9 @@
   https://www.npmjs.com/package/react-toastify
   Better notification messages
 
+- **React-Icons**
+  https://www.npmjs.com/package/react-icons
+  Icons for react
 ---
 
 #### Linting and code quality

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {AuthContext} from "../context/AuthContext";
 import { url } from "../general";
 
@@ -69,6 +69,8 @@ const [lastPage, setLastPage] = useState(1);
         localStorage.setItem("user", JSON.stringify(data.user));
         setUser(data.user);
         localStorage.setItem("token",data.token);
+        await loadFavorites();
+        await loadLikes();
         return {ok:true};
     }catch(error){
         return;
@@ -163,6 +165,8 @@ const [lastPage, setLastPage] = useState(1);
         message:data.error??"User has update profile (google sing in)",
       },token);
   setUser(data.user);
+  await loadFavorites();
+  await loadLikes();
   return data.user;
 };
 
@@ -187,7 +191,7 @@ const completProfile = async (userData)=>{
 
       let returnData = await response.json();
       setUser(returnData.user);
-      localStorage.setItem("token", returnData.token);
+      localStorage.setItem("token", returnData.token); // no save token..
       return {ok:true,
         returnData: returnData
       }
@@ -228,12 +232,98 @@ const cars = async(page=1)=>{
           status: response.status
         }
       }
-      console.log("a");
       let data = await response.json();
 
       setPosts(data[0].data);
       setPage(data[0].current_page);
       setLastPage(data[0].last_page);
+  }catch(error){
+    return {
+      ok: false,
+      status: response.status
+    }
+  }
+}
+
+/* Favorites */
+ const [favorites, setFavorites] = useState(new Set());
+const loadFavorites = async () => {
+  const response = await fetch(`${url}/favorites`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+      Accept: "application/json",
+    },
+  });
+
+  const data = await response.json();
+  setFavorites(new Set(data));
+};
+
+
+const toggleFavorite = async (postId) => {
+  const response = await fetch(`${url}/toggle/${postId}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+      Accept: "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  setFavorites(prev => {
+    const copy = new Set(prev);
+    data.favorited ? copy.add(postId) : copy.delete(postId);
+    return copy;
+  });
+};
+
+const isFavorite = (postId) => favorites.has(postId);
+
+/* Like */
+ const [likes, setLikes] = useState(new Set());
+const loadLikes = async () => {
+  const response = await fetch(`${url}/likes`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+      Accept: "application/json",
+    },
+  });
+
+  const data = await response.json();
+  setLikes(new Set(data));
+};
+
+const toggleLikes = async (postId) => {
+  const response = await fetch(`${url}/toggleLikes/${postId}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+      Accept: "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  setLikes(prev => {
+    const copy = new Set(prev);
+    data.liked ? copy.add(postId) : copy.delete(postId);
+    return copy;
+  });
+};
+
+const isLikes = (postId) => likes.has(postId);
+
+/* */
+const postDetails= async (idPost) =>{
+  try{
+    let response = await fetch(`${url}/details/${idPost}`);
+
+    if(!response.ok) return {ok:false, status: response.status};
+
+    let data = await response.json();
+
+    return {ok: true, post: data};
   }catch(error){
     return {
       ok: false,
@@ -264,12 +354,17 @@ const cars = async(page=1)=>{
     return localStorage.getItem("token");
   }
 
+  const isLogged = () =>{
+    return JSON.parse(localStorage.getItem("user"))? true:false;
+  }
+
   useEffect(() => {
     cars(page);
   }, [page]);
 
+  //afegir funcions de like aqui al provider i al main.jsx
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, profile, setTokenFromGoogle, completProfile, log, posts, page, lastPage, setPage}}>
+    <AuthContext.Provider value={{ user, login, isLogged, logout, register, profile, setTokenFromGoogle, completProfile, log, posts, page, lastPage, setPage, getToken, toggleFavorite,isFavorite,favorites, likes, toggleLikes, isLikes, postDetails}}>
       {children}
     </AuthContext.Provider>
   );
