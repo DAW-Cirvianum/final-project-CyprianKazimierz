@@ -77,7 +77,7 @@ export default function Main() {
                
               </div>
               {isLogged() && post.user_id == user.id &&(<div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
-              <button className="bg-transparent text-black" onClick={()=>console.log("a")} >
+              <button className="bg-transparent text-black" onClick={()=> navigate(`editPost/${post.id}`)} >
                <MdModeEditOutline/>
                </button>
                <button className="bg-transparent text-black" onClick={()=>handleDelete(post.id)}><FaRegTrashCan/></button>

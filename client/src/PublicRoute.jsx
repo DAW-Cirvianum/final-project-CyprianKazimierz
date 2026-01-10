@@ -3,9 +3,8 @@ import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 
 export default function PublicRoute() {
-  const { user } = useContext(AuthContext);
-
-  if (user) {
+  const { isLogged } = useContext(AuthContext);
+  if (isLogged()) {
     return <Navigate to="/" replace />;
   }
 

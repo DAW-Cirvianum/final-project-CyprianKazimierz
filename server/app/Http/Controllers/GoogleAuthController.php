@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -46,10 +47,15 @@ class GoogleAuthController extends Controller
         );
         $user->markEmailAsVerified();
 
-        $token = $user->createToken('api-token')->plainTextToken;
+       
+        $token = $user->createToken('api-token',['*']);
+        $token->accessToken->expires_at = Carbon::now()->addMinutes(10);
+        $token->accessToken->save();
+
+        $plainTextToken = $token->plainTextToken;
 
         return redirect(
-            "http://localhost:5175/google-callback?token={$token}"
+            "http://localhost:5175/google-callback?token={$plainTextToken}"
         );
     }
 }

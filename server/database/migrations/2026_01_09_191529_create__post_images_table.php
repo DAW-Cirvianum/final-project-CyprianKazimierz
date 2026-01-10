@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('post_id')
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->string("path");
+            $table->string("path")->default("posts_images/noImage.png");
             $table->boolean("is_main")->default(false);
             $table->integer("order")->default(0);
             $table->timestamps();

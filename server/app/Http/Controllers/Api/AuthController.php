@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -114,11 +115,15 @@ class AuthController extends Controller
         }
 
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('api-token',['*']);
+        $token->accessToken->expires_at = Carbon::now()->addMinutes(10);
+        $token->accessToken->save();
+
+        $plainTextToken = $token->plainTextToken;
 
         return response()->json([
             'status' => true,
-            'token' => $token,
+            'token' => $plainTextToken,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -192,10 +197,14 @@ class AuthController extends Controller
         );
 
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('api-token',['*']);
+        $token->accessToken->expires_at = Carbon::now()->addMinutes(10);
+        $token->accessToken->save();
+
+        $plainTextToken = $token->plainTextToken;
         return response()->json([
             'status' => true,
-            'token' => $token,
+            'token' => $plainTextToken,
             'user' => [
                 'name' => $user->name,
                 'surname' => $user->surname,

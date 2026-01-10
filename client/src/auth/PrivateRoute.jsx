@@ -3,9 +3,9 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function PrivateRoute() {
-  const { user } = useContext(AuthContext);
+  const { isLogged } = useContext(AuthContext);
 
-  if (!user) {
+  if (!isLogged()) {
     return <Navigate to="/home" replace />;
   }
 

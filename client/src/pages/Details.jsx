@@ -39,7 +39,11 @@ let user = JSON.parse(localStorage.getItem("user"));
       const result = await postDetails(id);
 
       if (!result.ok) {
-        setDetails(result.post);
+        if(response.status == 401){
+        showError("Token expires");
+        setTimeout(()=>{navigate("/home");},2000);
+        return;
+      }
         if (result.status === 404) {
           showError("No exists post");
           return;
@@ -62,6 +66,11 @@ let user = JSON.parse(localStorage.getItem("user"));
       const result = await getComments(id);
 
       if (!result.ok) {
+        if(response.status == 401){
+        showError("Token expires");
+        setTimeout(()=>{navigate("/home");},2000);
+        return;
+      }
         showError(result.status);
         return;
       }
@@ -72,10 +81,10 @@ let user = JSON.parse(localStorage.getItem("user"));
   },[]);
 
   if (loading)
-    return <p className="flex justify-center items-center">Cargando...</p>;
+    return <p className="flex justify-center items-center">Loading...</p>;
   if (!details)
     return (
-      <p className="flex justify-center items-center">No existe el post</p>
+      <p className="flex justify-center items-center">Do not exists this post</p>
     );
 
   const handleSubmit = async (e) => {
@@ -89,6 +98,10 @@ let user = JSON.parse(localStorage.getItem("user"));
     let response = await saveComment(obj, id);
 
     if (!response.ok) {
+      if(response.status == 401){
+        showError("Token expires");
+        return;
+      }
       showError(response.status + "crear commentari");
       return;
     }
@@ -116,7 +129,6 @@ let user = JSON.parse(localStorage.getItem("user"));
   setComment(prev => prev.filter(c => c.id !== idComment));
 };
 
-console.log(details)
   return (
     <div className="container mx-auto my-auto flex justify-center flex-col items-center">
       <div className="flex flex-row gap-10">

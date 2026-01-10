@@ -31,6 +31,8 @@ export default function Carousel({ images }) {
       </Slider>
 
       {/* Botones */}
+    {(images.length>1) && (
+      <>
       <button
         onClick={() => sliderRef.current.slickPrev()}
         className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-700 bg-opacity-60 text-white p-2 rounded-full hover:bg-opacity-80 z-10"
@@ -42,7 +44,7 @@ export default function Carousel({ images }) {
         className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-700 bg-opacity-60 text-white p-2 rounded-full hover:bg-opacity-80 z-10"
       >
         ▶
-      </button>
+      </button></>)}
     </div>
   );
 }

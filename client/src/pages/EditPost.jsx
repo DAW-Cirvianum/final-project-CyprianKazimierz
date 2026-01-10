@@ -1,55 +1,131 @@
-import { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { showError } from "../general";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-export default function AddPost() {
-  const [doors, setDoors] = useState(2);
-  const [images, setImages] = useState([]);
-
-  const { cities, createPost, cars, setPage } = useContext(AuthContext);
+import "../css/index.css"
+export default function EditPost() {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const { postDetails,cities,editPost,cars,setPage } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState([]); 
+  const [newImages, setNewImages] = useState([]);
+const [formData, setFormData] = useState({
+  title: "",
+  price: "",
+  mark: "",
+  model: "",
+  year: "",
+  km: "",
+  motor: "manual",
+  fuel: "Diesel",
+  bodywork: "Berlina",
+  color: "Red",
+  location: "",
+  doors: 2,
+  description: "",
+});
 
-  const handleImagesChange = (e) => {
-    const files = Array.from(e.target.files);
+  //get post
+  useEffect(() => {
+    const getPost = async () => {
+      let response = await postDetails(id);
 
-    if (files.length > 4) {
-      alert("You can upload up to 4 images only");
-      e.target.value = null;
-      return;
-    }
+      if (!response.ok) {
+        if (response.status == 401) {
+          showError("Token expires");
+          return;
+        }
+        if (response.status === 404) {
+          showError("No exists post");
+          return;
+        }
+        showError("No se pudo cargar el post");
+        return;
+      }
+ let post = response.post;
+      setFormData({
+      title: post.title,
+      price: post.price,
+      mark: post.mark,
+      model: post.model,
+      year: post.year,
+      km: post.km,
+      motor: post.motor,
+      fuel: post.fuel,
+      bodywork: post.bodywork,
+      color: post.color,
+      location: post.location,
+      doors: post.doors,
+      description: post.description,
+    });
+    setImages(post.images || []);
+    setLoading(false);
+    };
+    getPost();
+  }, [id]);
 
-    setImages(files);
-  };
 
-  const handleSubmit = async (e) => {
+  //if is loading whe show it, if we dont get the post yet, we will show that is loading
+  if(loading) return <p>Loading...</p>
+
+  
+  //remove existing img
+  const handleRemoveExistingImage = (index) => {
+  setImages(images.filter((_, i) => i !== index));
+};
+
+//add new img
+const handleNewImagesChange = (e) => {
+  const files = Array.from(e.target.files);
+
+  if (files.length + images.length + newImages.length > 4) {
+   showError("you can have up to 4 images in total");
+    e.target.value = null;
+    return;
+  }
+
+  setNewImages([...newImages, ...files]);
+};
+//remove new img
+const handleRemoveNewImage = (index) => {
+  setNewImages(newImages.filter((_, i) => i !== index));
+};
+
+
+
+
+
+  //final submit
+  const handleSubmit = async (e)=>{
     e.preventDefault();
 
-    const formData = new FormData(e.target);
+      const form = new FormData();
+  
+  for (const key in formData) {
+    form.append(key, formData[key]);
+  }
 
-    let response = await createPost(formData);
+  newImages.forEach((file) => {
+    form.append("new_images[]", file);
+  });
 
-    if (!response.ok) {
-      if(response.status == 401){
-        showError("Token expires");
-        setTimeout(()=>{navigate("/home");},2000);
+  form.append("existing_images", JSON.stringify(images.map(img => img.id)));
 
+  let response = await editPost(id,form);
+
+  if(!response.ok){
+    if(response.status == 401){
+        showError("Token expired");
         return;
-      }
-      if(response.status == 422){
-        const errors = Object.values(response.error.errors);
-        errors.forEach((messages,index) => {
-          messages.forEach((msg) => {
-            showError(msg,index);
-          });
-        });
-        return;
-      }
-      showError("You will have intruduce something wrong, pleas check and try again");
-      return;
     }
+    showError(response.status);
+    return;
+  }
 
-    toast.success(response.message, {
+toast.success(response.message, {
       toastId: "success-singin",
       position: "top-center",
       autoClose: 3000,
@@ -57,12 +133,13 @@ export default function AddPost() {
       draggable: true,
     });
 
-    await cars(1);
-    setPage(1);
 
-    navigate("/");
-  };
+ await cars(1);
+ setPage(1);
 
+navigate("/");
+
+  }
   return (
     <div className="container mx-auto my-10 flex justify-center px-4">
       <form
@@ -85,6 +162,10 @@ export default function AddPost() {
               maxLength={255}
               pattern=".{3,}"
               placeholder="Enter title"
+               value={formData.title}
+  onChange={(e) =>
+    setFormData({ ...formData, title: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -102,6 +183,10 @@ export default function AddPost() {
               max="99999999"
               step="0.01"
               placeholder="Enter price"
+               value={formData.price}
+  onChange={(e) =>
+    setFormData({ ...formData, price: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -121,6 +206,10 @@ export default function AddPost() {
               maxLength={100}
               pattern="[A-Za-z0-9\s\-]{2,}"
               placeholder="Enter mark"
+               value={formData.mark}
+  onChange={(e) =>
+    setFormData({ ...formData, mark: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -137,6 +226,10 @@ export default function AddPost() {
               maxLength={100}
               pattern="[A-Za-z0-9\s\-]{1,}"
               placeholder="Enter model"
+               value={formData.model}
+  onChange={(e) =>
+    setFormData({ ...formData, model: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -156,6 +249,10 @@ export default function AddPost() {
               min="1900"
               max={new Date().getFullYear()}
               placeholder="Enter year"
+               value={formData.year}
+  onChange={(e) =>
+    setFormData({ ...formData, year: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -173,6 +270,10 @@ export default function AddPost() {
               max="999999"
               maxLength="6"
               placeholder="Enter kilometers"
+               value={formData.km}
+  onChange={(e) =>
+    setFormData({ ...formData, km: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -188,6 +289,10 @@ export default function AddPost() {
               name="motor"
               id="motor"
               required
+               value={formData.motor}
+  onChange={(e) =>
+    setFormData({ ...formData, motor: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="manual">Manual</option>
@@ -203,6 +308,10 @@ export default function AddPost() {
               name="fuel"
               id="fuel"
               required
+               value={formData.fuel}
+  onChange={(e) =>
+    setFormData({ ...formData, fuel: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="Diesel">Diesel</option>
@@ -223,6 +332,10 @@ export default function AddPost() {
               name="bodywork"
               id="bodywork"
               required
+               value={formData.bodywork}
+  onChange={(e) =>
+    setFormData({ ...formData, bodywork: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="Berlina">Berlina</option>
@@ -243,6 +356,10 @@ export default function AddPost() {
               name="color"
               id="color"
               required
+               value={formData.color}
+  onChange={(e) =>
+    setFormData({ ...formData, color: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="Red">Red</option>
@@ -269,6 +386,10 @@ export default function AddPost() {
               name="location"
               id="location"
               required
+               value={formData.location}
+  onChange={(e) =>
+    setFormData({ ...formData, location: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {cities.map((city, index) => (
@@ -289,31 +410,60 @@ export default function AddPost() {
               id="doors"
               min="1"
               max="5"
-              value={doors}
-              onChange={(e) => setDoors(e.target.value)}
+               value={formData.doors}
+  onChange={(e) =>
+    setFormData({ ...formData, doors: e.target.value })
+  }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
-        {/* Row 7: Images */}
-        <div className="flex flex-col">
-          <label className="mb-1 font-medium">Images (max 4)</label>
 
-          <input
-            type="file"
-            multiple
-            accept="image/jpeg,image/png,image/webp"
-            name="images[]"
-            onChange={handleImagesChange}
-            className="border border-gray-300 rounded-md p-2"
-          />
+       <div className="flex flex-wrap gap-2">
+  {/* Imágenes existentes */}
+  {images.map((img, index) => (
+    <div key={index} className="relative">
+      <img
+        src={"http://localhost/storage/" + img.path}
+        alt={`Existing ${index}`}
+        className="w-32 h-32 object-cover rounded"
+      />
+      <button
+        type="button"
+        onClick={() => handleRemoveExistingImage(index)}
+        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs"
+      >
+        X
+      </button>
+    </div>
+  ))}
 
-          {images.length > 0 && (
-            <p className="text-sm text-gray-600 mt-1">
-              {images.length} image(s) selected
-            </p>
-          )}
-        </div>
+  {/* Imágenes nuevas */}
+  {newImages.map((file, index) => (
+    <div key={index} className="relative">
+      <img
+        src={URL.createObjectURL(file)}
+        alt={`New ${index}`}
+        className="w-32 h-32 object-cover rounded"
+      />
+      <button
+        type="button"
+        onClick={() => handleRemoveNewImage(index)}
+        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs"
+      >
+        X
+      </button>
+    </div>
+  ))}
+</div>
+
+<input
+  type="file"
+  multiple
+  accept="image/jpeg,image/png,image/webp"
+  onChange={handleNewImagesChange}
+  className="mt-2"
+/>
         {/* Row 8: Description */}
         <div className="flex flex-col">
           <label htmlFor="description" className="mb-1 font-medium">
@@ -326,6 +476,10 @@ export default function AddPost() {
             maxLength="255"
             placeholder="Write a description..."
             required
+             value={formData.description}
+  onChange={(e) =>
+    setFormData({ ...formData, description: e.target.value })
+  }
             className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           ></textarea>
         </div>
@@ -335,7 +489,7 @@ export default function AddPost() {
           type="submit"
           className="w-full bg-blue-600 text-white font-semibold p-3 rounded-md hover:bg-blue-700 transition"
         >
-          Create Post
+          Edit Post
         </button>
       </form>
     </div>

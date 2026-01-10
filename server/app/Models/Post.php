@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -53,6 +54,24 @@ public function user()
 public function images()
 {
     return $this->hasMany(PostImage::class);
+}
+
+//delete images form storage on delete
+protected static function booted()
+{
+    static::deleting(function ($post) {
+
+        foreach ($post->images as $image) {
+
+            // No borrar la imagen por defecto
+            if ($image->path !== 'posts_images/noImage.png') {
+                Storage::disk('public')->delete($image->path);
+            }
+        }
+
+        // borrar registros de la BD
+        $post->images()->delete();
+    });
 }
 
 

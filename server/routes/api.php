@@ -15,20 +15,27 @@ use Illuminate\Support\Facades\Route;
 //Sing in and sing up
 Route::post("/register",[AuthController::class,'register']);
 Route::post("/login",[AuthController::class,'login']);
+
 //mail verification
 Route::get('/email/verify/{id}/{hash}',[RecoveryController::class,'verifyEmail'])->name('verification.verify');
+
 //google sing in / sing up
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect']);
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
+
+
 //posts all
 Route::get("/posts",[PostController::class,'index']);
 Route::get("/details/{post}", [PostController::class,'details']);
+
+
 //get all comments
 Route::get("/posts/{post}/comments",[CommentController::class,'index']);
 
 
 //Auth routes with token
 Route::middleware('auth:sanctum')->group(function (){
+    //user
     Route::post("/logout",[AuthController::class,'logout']);
     Route::put("/profile",[AuthController::class,'profile']);
     Route::get("/user",function(Request $request){
@@ -37,13 +44,19 @@ Route::middleware('auth:sanctum')->group(function (){
     ]);
     });
     Route::patch("/completProfile",[AuthController::class,'completeProfile']);
+
+    //log
     Route::post("/log",[LogController::class,'add']);
+    //post and favorite or like
     Route::get('/favorites', [FavoriteController::class, 'index']);
     Route::post("/toggle/{post}", [FavoriteController::class, 'toggle']);
     Route::get('/likes', [LikeController::class, 'index']);
     Route::post("/toggleLikes/{post}", [LikeController::class, 'toggle']);
-    Route::post("/posts/{post}/comments",[CommentController::class,'saveComment']);
-    Route::delete("/comments/{comment}",[CommentController::class,'deleteComment']);
     Route::delete("/posts/delete/{post}",[PostController::class,'delete']);
     Route::post("/posts",[PostController::class,'add']);
+    Route::patch('/editPost/{post}',[PostController::class,'editPost']);
+
+    //comments
+    Route::post("/posts/{post}/comments",[CommentController::class,'saveComment']);
+    Route::delete("/comments/{comment}",[CommentController::class,'deleteComment']);
 });

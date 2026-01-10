@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { url } from "../general";
+import { showError } from "../general";
+import { resolvePath, useNavigate } from "react-router-dom";
 
 export function AuthProvider({ children }) {
   //login
@@ -9,17 +11,9 @@ export function AuthProvider({ children }) {
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [cities, setCity] = useState([]);
+  const navigate = useNavigate();
 
-  //posts
-
-  // useEffect(() => {
-  //       async function fetchUser() {
-  //         const stored = localStorage.getItem("user");
-  //         if (stored) setUser(JSON.parse(stored));
-  //       }
-  //       fetchUser();
-  // }, []);
-
+  
   const register = async (userData) => {
     try {
       setUser(null);
@@ -55,6 +49,13 @@ export function AuthProvider({ children }) {
 
       // if fails we send error information
       if (!response.ok) {
+        log(
+        {
+          status: response.status,
+          message: "Sing in",
+        },
+        getToken()
+      );
         return {
           ok: false,
           status: response.status,
@@ -67,6 +68,13 @@ export function AuthProvider({ children }) {
       localStorage.setItem("user", JSON.stringify(data.user));
       setUser(data.user);
       localStorage.setItem("token", data.token);
+      log(
+        {
+          status: response.status,
+          message: "Sign In ",
+        },
+        data.token
+      );
       await loadFavorites();
       await loadLikes();
       return { ok: true };
@@ -86,22 +94,18 @@ export function AuthProvider({ children }) {
       let response = await fetch(`${url}/logout`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${getToken()}`,
         },
       });
 
-      if (!response.ok) {
-        if (response.status === 400) {
-          console.log(response.error);
-        }
-      }
-
       let data = await response.json();
-      localStorage.removeItem("token");
+      
       return data;
     } catch (error) {
-      console.log(error);
+    }finally{
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/home");
     }
   };
 
@@ -116,6 +120,13 @@ export function AuthProvider({ children }) {
       });
 
       if (!response.ok) {
+        log(
+        {
+          status: response.status,
+          message: "Edit profile: ",
+        },
+        getToken()
+      );
         let errorReturn = await response.json();
         return {
           ok: false,
@@ -183,6 +194,13 @@ export function AuthProvider({ children }) {
       });
 
       if (!response.ok) {
+        log(
+        {
+          status: response.status,
+          message: "Complete profile",
+        },
+        getToken()
+      );
         let errorReturn = await response.json();
         return {
           ok: false,
@@ -194,6 +212,13 @@ export function AuthProvider({ children }) {
       let returnData = await response.json();
       setUser(returnData.user);
       localStorage.setItem("token", returnData.token);
+      log(
+        {
+          status: response.status,
+          message: "Complete profile user Google Sing In ",
+        },
+        returnData.token
+      );
       return { ok: true, returnData: returnData };
     } catch (error) {
       return {
@@ -250,18 +275,35 @@ export function AuthProvider({ children }) {
         method:"POST",
         headers:{
             Authorization: `Bearer ${getToken()}`,
+            Accept: "application/json",
         },
         body: formData
       });
 
+      let data= await response.json();
       if(!response.ok){
+        log(
+        {
+          status: response.status,
+          message: "Add post",
+        },
+        getToken()
+      );
         return {
           ok:false,
-          status: response.status
+          status: response.status,
+          error: data
         }
       }
+      log(
+        {
+          status: response.status,
+          message: "Create Post",
+        },
+        getToken()
+      );      
 
-      return {ok:true, message: "Post has been created!"}
+      return {ok:true, message: "Post has been created!", post: data.post}
     }catch(error){
       return {ok:false}
     }
@@ -276,7 +318,13 @@ export function AuthProvider({ children }) {
         Accept: "application/json",
       },
     });
-
+    if(!response.ok){
+      if(response.status == 401){
+        showError("Token expired");
+        navigate("/home");
+        return;
+      }
+    }
     const data = await response.json();
     setFavorites(new Set(data));
   };
@@ -289,7 +337,13 @@ export function AuthProvider({ children }) {
         Accept: "application/json",
       },
     });
-
+    if(!response.ok){
+      if(response.status == 401){
+        showError("Token expired");
+        navigate("/home");
+        return;
+      }
+    }
     const data = await response.json();
 
     setFavorites((prev) => {
@@ -311,6 +365,13 @@ export function AuthProvider({ children }) {
       },
     });
 
+    if(!response.ok){
+      if(response.status == 401){
+        showError("Token expired");
+        navigate("/home");
+        return;
+      }
+    }
     const data = await response.json();
     setLikes(new Set(data));
   };
@@ -323,7 +384,12 @@ export function AuthProvider({ children }) {
         Accept: "application/json",
       },
     });
-
+    if(!response.ok){
+      if(response.status == 401){
+        showError("Token expired");
+        return;
+      }
+    }
     const data = await response.json();
 
     setLikes((prev) => {
@@ -363,12 +429,25 @@ export function AuthProvider({ children }) {
     });
 
     if(!response.ok){
+      log(
+        {
+          status: response.status,
+          message: "Delete post, idPost: "+idPost,
+        },
+        getToken()
+      );
       return{
         ok: false,
         status: response.status
       }
     }
-
+    log(
+        {
+          status: response.status,
+          message: "Delete post ",
+        },
+        getToken()
+      );
     return {ok: true}
   }catch(error){
     return {
@@ -377,6 +456,48 @@ export function AuthProvider({ children }) {
   }
 }
 
+const editPost = async (idPost,form) =>{
+  try{
+    let response = await fetch(`${url}/editPost/${idPost}`,{
+      method:"PATCH",
+      headers:{
+        Authorization: `Bearer ${getToken()}`,
+        Accept: "application/json"
+      },
+      body: form
+    });
+
+    if(!response.ok){
+      log(
+        {
+          status: response.status,
+          message: "edit post , idPost: "+idPost,
+        },
+        getToken()
+      );
+      return{
+        ok:false,
+        status: response.status
+      }
+    }
+
+    let data = await response.json();
+
+    log(
+        {
+          status: response.status,
+          message: "Edit Post, id: "+idPost,
+        },
+        getToken()
+      );
+    return {
+      ok:true,
+      message: data.message
+    }
+  }catch(error){
+    return {ok:false,error: error};
+  }
+}
 
   /*Comments*/
 
@@ -417,6 +538,13 @@ const saveComment = async (comment,postID)=>{
     });
 
     if(!response.ok){
+      log(
+        {
+          status: response.status,
+          message: "Create comment, idPost: "+postID,
+        },
+        getToken()
+      );
       return {
         ok: false,
         status: response.status,
@@ -424,7 +552,13 @@ const saveComment = async (comment,postID)=>{
     }
 
     let data = await response.json();
-
+    log(
+        {
+          status: response.status,
+          message: "Add comment in post, id: "+postID,
+        },
+        getToken()
+      );
     return {
       ok: true,
       message: data.message,
@@ -450,11 +584,25 @@ const deleteComment = async(idComment) =>{
     });
 
     if(!response.ok){
+      log(
+        {
+          status: response.status,
+          message: "Delete comment, idComent: "+idComment,
+        },
+        getToken()
+      );
       return{
         ok: false,
         status: response.status
       }
     }
+    log(
+        {
+          status: response.status,
+          message: "Delete comment",
+        },
+        getToken()
+      );
 
     return {ok: true}
   }catch(error){
@@ -552,7 +700,9 @@ const deleteComment = async(idComment) =>{
         deleteComment,
         deletePost,
         cities,
-        createPost
+        createPost,
+        cars,
+        editPost
       }}
     >
       {children}

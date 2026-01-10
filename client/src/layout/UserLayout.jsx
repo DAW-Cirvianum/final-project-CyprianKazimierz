@@ -7,10 +7,10 @@ import "../css/index.css"
 
 
 export default function UserLayout() {
-  const { logout, user } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
     const location = useLocation();
-
+  const user = JSON.parse(localStorage.getItem("user")) ?? {};
      const isHome = location.pathname === "/";
 
   return (

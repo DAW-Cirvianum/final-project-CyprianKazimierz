@@ -17,7 +17,8 @@ import Details from "./pages/Details";
 import AddPost from "./pages/AddPost";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-
+import NotFound from "./pages/NotFound";
+import EditPost from "./pages/EditPost";
 
 function App() {
   
@@ -54,9 +55,11 @@ function App() {
           <Route path="profile" element={<Profile/>}/>
           <Route path="/details/:id" element={<Details/>}/>
           <Route path="addPost" element={<AddPost/>} />
+          <Route path="editPost/:id" element={<EditPost/>}/>
         </Route>
       </Route>
-
+    {/*Others paths that does not exists */}
+     <Route path="*" element={<NotFound />} />
     </Routes>
      <ToastContainer/>
     </>

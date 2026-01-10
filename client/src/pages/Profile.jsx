@@ -45,6 +45,11 @@ export default function Profile() {
     const response = await profile(newUser);
 
     if (!response.ok) {
+      if(response.status == 401){
+        showError("Token expires");
+        setTimeout(()=>{navigate("/home");},2000);
+        return;
+      }
       if (response.status == 422) {
         console.log(response.error);
         const errors = Object.values(response.error.error);
