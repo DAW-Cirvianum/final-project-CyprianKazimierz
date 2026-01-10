@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string("image_path")->nullable();
             $table->string("title");
             $table->text("description");
             $table->integer("km");
@@ -26,6 +25,7 @@ return new class extends Migration
             $table->decimal("price",8,2);
             $table->string("bodywork");
             $table->string("fuel");
+            $table->tinyInteger("doors");
             $table->timestamps();
         });
     }

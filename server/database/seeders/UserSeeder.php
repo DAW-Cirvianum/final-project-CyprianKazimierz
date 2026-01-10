@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         
-        // User::factory(10)->create();
+         
         if(!User::where('email','admin@cirvianum.cat')->exists() || !User::where('username','admin')->exists()){
         User::factory()->create([
             'name' => 'admin',
@@ -27,6 +27,8 @@ class UserSeeder extends Seeder
             'avatar'=>"avatars/default.png",
             'role'=>"admin"
         ]);
+        User::factory(4)->create();
         }
+        
     }
 }

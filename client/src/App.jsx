@@ -14,6 +14,10 @@ import "react-toastify/dist/ReactToastify.css";
 import GoogleCallback from "./pages/GoogleCallback";
 import CompleteProfile from "./pages/CompleteProfile";
 import Details from "./pages/Details";
+import AddPost from "./pages/AddPost";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+
 
 function App() {
   
@@ -49,6 +53,7 @@ function App() {
           <Route path="logout"/>
           <Route path="profile" element={<Profile/>}/>
           <Route path="/details/:id" element={<Details/>}/>
+          <Route path="addPost" element={<AddPost/>} />
         </Route>
       </Route>
 

@@ -31,6 +31,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('112233'),
             'born_date'=>fake()->date('d/m/Y'),
+            'avatar'=>"avatars/default.png",
             'role'=>fake()->randomElement(['admin','user'])
         ];
     }

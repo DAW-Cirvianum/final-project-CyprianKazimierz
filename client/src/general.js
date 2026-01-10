@@ -21,11 +21,16 @@ const showError = (message,id="errors") => {
      * @param {string} dateString Date string format
      * @returns Returns a string with this format dd/mm/yyyy
      */
-    const formatDateDMY = (dateString) => {
-      console.log(dateString);
-      const [year, month, day] = dateString.split("-");
-      return `${day}/${month}/${year}`;
-    };
+   const formatDateDMY = (dateString) => {
+  const date = new Date(dateString);
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
   
     /**
      *

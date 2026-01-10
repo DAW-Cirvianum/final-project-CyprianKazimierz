@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RecoveryController;
 use App\Models\Post;
@@ -20,8 +21,11 @@ Route::get('/email/verify/{id}/{hash}',[RecoveryController::class,'verifyEmail']
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect']);
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 //posts all
-Route::get("/cars",[PostController::class,'index']);
+Route::get("/posts",[PostController::class,'index']);
 Route::get("/details/{post}", [PostController::class,'details']);
+//get all comments
+Route::get("/posts/{post}/comments",[CommentController::class,'index']);
+
 
 //Auth routes with token
 Route::middleware('auth:sanctum')->group(function (){
@@ -38,4 +42,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post("/toggle/{post}", [FavoriteController::class, 'toggle']);
     Route::get('/likes', [LikeController::class, 'index']);
     Route::post("/toggleLikes/{post}", [LikeController::class, 'toggle']);
+    Route::post("/posts/{post}/comments",[CommentController::class,'saveComment']);
+    Route::delete("/comments/{comment}",[CommentController::class,'deleteComment']);
+    Route::delete("/posts/delete/{post}",[PostController::class,'delete']);
+    Route::post("/posts",[PostController::class,'add']);
 });

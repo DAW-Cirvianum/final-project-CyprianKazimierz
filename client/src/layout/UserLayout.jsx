@@ -1,13 +1,17 @@
 import { useState, useContext } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Footer from "../components/Footer"; 
 import Aside from "../components/Aside";
 import "../css/index.css"
 
+
 export default function UserLayout() {
   const { logout, user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+    const location = useLocation();
+
+     const isHome = location.pathname === "/";
 
   return (
     <div className="layout">
@@ -55,7 +59,7 @@ export default function UserLayout() {
 
         </nav>
       </header>
-        <Aside className="sidebar"/>
+      {isHome ? (<Aside className="sidebar"/>): (<header className="sidebar"></header>)}
       <Outlet className="main" />
       <Footer className="footer"/>
     </div>

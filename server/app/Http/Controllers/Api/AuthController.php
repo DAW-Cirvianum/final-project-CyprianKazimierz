@@ -62,7 +62,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => true,
             'message' => "New user has been created",
-            'user' => $user
+            'user' => $user,
         ], 201);
     }
 
@@ -120,6 +120,7 @@ class AuthController extends Controller
             'status' => true,
             'token' => $token,
             'user' => [
+                'id' => $user->id,
                 'name' => $user->name,
                 'surname' => $user->surname,
                 'username' => $user->username,

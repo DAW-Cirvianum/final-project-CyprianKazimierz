@@ -6,25 +6,44 @@ import "react-toastify/dist/ReactToastify.css";
 import { showError } from "../general";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { BiLike,BiSolidLike } from "react-icons/bi";
+import { MdModeEditOutline } from "react-icons/md";
+import { FaRegTrashCan } from "react-icons/fa6";
+import Carousel from "./Carousel";
+import SpeedDial from "./SpeedDial";
+
 import "../css/index.css";
 export default function Main() {
-  const { posts, page, lastPage, setPage, isLogged, favorites, toggleFavorite, isFavorite, isLikes, toggleLikes, likes } = useContext(AuthContext);
+  const { posts, setPosts, page, lastPage, setPage, isLogged, favorites, toggleFavorite, isFavorite, isLikes, toggleLikes, likes, deletePost } = useContext(AuthContext);
+  let user = JSON.parse(localStorage.getItem("user"));
   let navigate = useNavigate();
+  const handleDelete = async (postID)=>{
+    let confirmation = confirm("Are you sure?");
+    if(!confirmation) return;
+
+    let response = await deletePost(postID);
+
+    if (!response.ok){
+      showError(response.status);
+      return;
+    }
+
+    setPosts(post => post.filter(n=> n.id !== postID));
+  }
+
   return (
     <div className="container mx-auto my-10">
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6">
+     <SpeedDial/>
 
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6">
         {posts.map((post) => (
           <div
             key={post.id}
             className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full" onClick={() => isLogged()? navigate(`/details/${post.id}`):navigate(`/home/details/${post.id}`)}
           >
-            <img
-              src={post.image_url}
-              alt={post.title}
-              className="w-90 h-49 object-cover"
-            />
-
+            <div onClick={(e)=>e.stopPropagation()} > 
+             <Carousel images={post.images} />
+            </div>
+        
             <div className="p-4 flex flex-col flex-grow">
               <h2 className="text-3xl font-bold text-gray-900 mb-2 line-clamp-2">
                 {post.title}
@@ -55,21 +74,28 @@ export default function Main() {
                         )}
                       </button></div>
                 </div>)}
+               
               </div>
+              {isLogged() && post.user_id == user.id &&(<div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
+              <button className="bg-transparent text-black" onClick={()=>console.log("a")} >
+               <MdModeEditOutline/>
+               </button>
+               <button className="bg-transparent text-black" onClick={()=>handleDelete(post.id)}><FaRegTrashCan/></button>
+               </div>)}
             </div>
           </div>
         ))}
       </div>
       {/*Buttons */}
       <div className="flex flex-row items-center justify-center gap-3 mt-4">
-        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-          Anterior
+        <button disabled={page === 1} onClick={() => setPage(page - 1)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+          Prev
         </button>
-        <span>
+        <p>
           Page {page} from {lastPage}
-        </span>
-        <button disabled={page === lastPage} onClick={() => setPage(page + 1)}>
-          Siguiente
+        </p>
+        <button disabled={page === lastPage} onClick={() => setPage(page + 1)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+          Next
         </button>
       </div>
     </div>

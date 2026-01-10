@@ -15,86 +15,88 @@ class PostSeed extends Seeder
     {
         $posts = [
             [
-            'image_path'=>"posts_images/audiA3.png",
             'title'=>"Selling my Audi",
             'description'=>"Selling my Audi, very low consume, few km, and new brake pads",
             'km'=>130000,
             'mark'=>"Audi",
             'model'=>"A3",
-            'motor'=>"manual",
+            'motor'=>"Manual",
             'year'=>2013,
-            'location'=>"Vic",
-            'color'=>"black",
+            'location'=>"Albacete",
+            'color'=>"Black",
             'price'=>12999.00,
             'bodywork'=>"Coupe",
             'fuel'=>"Disel",
-            'user_id'=>null
+            'doors'=>4,
+            'user_id'=>3
             ],
             [
-            'image_path'=>"posts_images/corsaOpel.png",
             'title'=>"Selling my Opel Corsa, i have one meore",
             'description'=>"Selling my Opel Corsa, very low consume, few km, and new brake pads",
             'km'=>80000,
             'mark'=>"Opel",
             'model'=>"Corsa",
-            'motor'=>"manual",
+            'motor'=>"Manual",
             'year'=>2008,
-            'location'=>"Lleida",
+            'location'=>"Ourense",
             'color'=>"Gray",
             'price'=>8999.00,
             'bodywork'=>"Berlina",
             'fuel'=>"Gasoline",
-            'user_id'=>null
+            'doors'=>2,
+            'user_id'=>2
             ],
             [
-            'image_path'=>"posts_images/seatAteca.png",
             'title'=>"Selling my Seat Ateca",
-            'description'=>"Selling my Seat Ateca, very low consume, few km, and new brake pads",
+            'description'=>"Selling my Seat Ateca, very low consume, few km, and new brake pads,
+            aaaa aaaaa aa aaaaaaaaa aaaaaaaa aaaaaa aaaaaaaa aaaaaaaaaaaa aaaaa
+            aaaaaa aaaaaaaaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaaaaa
+            aaaaa aaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaa  aaaaaa",
             'km'=>124000,
             'mark'=>"Seat",
             'model'=>"Ateca",
-            'motor'=>"manual",
+            'motor'=>"Manual",
             'year'=>2018,
             'location'=>"Barcelona",
             'color'=>"Blue",
             'price'=>8999.00,
             'bodywork'=>"Suv",
             'fuel'=>"Gasoline",
-            'user_id'=>null
+            'doors'=>4,
+            'user_id'=>2
             ],
             [
-            'image_path'=>"posts_images/seatIbiza.png",
             'title'=>"Selling my Seat Ibiza, i have one meore",
             'description'=>"Selling my Seat Ibiza, very low consume, few km, and new brake pads, ITech",
             'km'=>210000,
             'mark'=>"Seat",
             'model'=>"Ibiza",
-            'motor'=>"manual",
+            'motor'=>"Manual",
             'year'=>2015,
-            'location'=>"Castellón",
+            'location'=>"Sevilla",
             'color'=>"Red",
             'price'=>7800.00,
             'bodywork'=>"Berlina",
             'fuel'=>"Disel",
-            'user_id'=>null
+            'doors'=>4,
+            'user_id'=>5
             ],[
-            'image_path'=>"posts_images/volkswagenGolf.png",
             'title'=>"Selling my Volkswagen Gols, i have one meore",
             'description'=>"Selling my Volkswagen Golf, very low consume, few km, and new brake pads, ITech",
             'km'=>210000,
             'mark'=>"Volkswagen",
             'model'=>"Golf",
-            'motor'=>"manual",
+            'motor'=>"Manual",
             'year'=>2014,
-            'location'=>"Cantabria",
+            'location'=>"Bilbao",
             'color'=>"Withe",
             'price'=>14000.00,
             'bodywork'=>"Berlina",
             'fuel'=>"Gasoline",
-            'user_id'=>null
+            'doors'=>4,
+            'user_id'=>4
             ],
             [
-            'image_path'=>"posts_images/jeepCompass.png",
             'title'=>"Selling my Jeep Compass, i have one meore",
             'description'=>"Selling my Jeep Compass, very low consume, few km, and new brake pads, ITech",
             'km'=>97000,
@@ -102,44 +104,45 @@ class PostSeed extends Seeder
             'model'=>"Compass",
             'motor'=>"Automatic",
             'year'=>2017,
-            'location'=>"Tenerife",
+            'location'=>"Tarragona",
             'color'=>"Black",
             'price'=>14500.00,
-            'bodywork'=>"pick Up",
+            'bodywork'=>"PickUp",
             'fuel'=>"Electic",
-            'user_id'=>null
+            'doors'=>4,
+            'user_id'=>4
             ],
             [
-            'image_path'=>"posts_images/bmw1.png",
             'title'=>"Selling my BMW serie 1, i have one meore",
             'description'=>"Selling my BMW SERIE 1, very low consume, few km, and new brake pads, ITech",
             'km'=>250000,
             'mark'=>"BMW",
             'model'=>"SERIE 1",
-            'motor'=>"manual",
+            'motor'=>"Manual",
             'year'=>2015,
             'location'=>"Barcelona",
             'color'=>"Red",
             'price'=>9400.00,
             'bodywork'=>"Coupe",
             'fuel'=>"Disel",
-            'user_id'=>null
+            'doors'=>2,
+            'user_id'=>3
             ],
             [
-            'image_path'=>"posts_images/fordFocus.png",
             'title'=>"Selling my Ford Focus, i have one meore",
             'description'=>"Selling my Ford Focus, very low consume, few km, and new brake pads, ITech",
             'km'=>91515,
             'mark'=>"Ford",
             'model'=>"Focus",
-            'motor'=>"manual",
+            'motor'=>"Manual",
             'year'=>2021,
-            'location'=>"Madrid",
+            'location'=>"MADRID",
             'color'=>"White",
             'price'=>17900.00,
             'bodywork'=>"Berlina",
             'fuel'=>"Hibrid",
-            'user_id'=>null
+            'doors'=>4,
+            'user_id'=>2
         ]
         
             ];

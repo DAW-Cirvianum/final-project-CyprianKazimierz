@@ -22,6 +22,7 @@ class Post extends Model
         'price',
         'bodywork',
         'fuel',
+        'doors',
         'user_id'
     ];
     protected $appends = ['image_url'];
@@ -38,5 +39,21 @@ class Post extends Model
     return $this->belongsToMany(User::class, 'favorites')
                 ->withTimestamps();
 }
+
+ public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
+public function images()
+{
+    return $this->hasMany(PostImage::class);
+}
+
 
 }

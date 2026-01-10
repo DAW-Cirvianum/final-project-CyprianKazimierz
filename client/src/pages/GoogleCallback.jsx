@@ -14,7 +14,7 @@ export default function GoogleCallback() {
       navigate("/home/login");
       return;
     }
-
+    console.log(token);
     // Guarda token + carga usuario
     setTokenFromGoogle(token)
       .then((user) => {
