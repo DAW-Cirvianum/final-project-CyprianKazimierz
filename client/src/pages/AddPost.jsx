@@ -205,7 +205,7 @@ export default function AddPost() {
               required
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="Diesel">Diesel</option>
+              <option value="Disel">Diesel</option>
               <option value="Gasoline">Gasoline</option>
               <option value="Electric">Electric</option>
               <option value="Hybrid">Hybrid</option>

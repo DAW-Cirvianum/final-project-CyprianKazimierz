@@ -27,6 +27,7 @@ Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 //posts all
 Route::get("/posts",[PostController::class,'index']);
 Route::get("/details/{post}", [PostController::class,'details']);
+Route::get('/filterPosts',[PostController::class,'filterPost']);
 
 
 //get all comments
@@ -55,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete("/posts/delete/{post}",[PostController::class,'delete']);
     Route::post("/posts",[PostController::class,'add']);
     Route::patch('/editPost/{post}',[PostController::class,'editPost']);
+    
 
     //comments
     Route::post("/posts/{post}/comments",[CommentController::class,'saveComment']);

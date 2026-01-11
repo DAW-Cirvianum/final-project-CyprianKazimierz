@@ -125,4 +125,72 @@ class PostController extends Controller
         'post' => $post->load('images'),
     ]);
 }
+
+public function filterPost(Request $request){
+     $query = Post::query();
+
+     if ($request->filled('minPrice')) {
+        $query->where('price', '>=', $request->minPrice);
+    }
+
+    if ($request->filled('maxPrice')) {
+        $query->where('price', '<=', $request->maxPrice);
+    }
+
+    if ($request->filled('minKM')) {
+        $query->where('km', '>=', $request->minKM);
+    }
+
+    if ($request->filled('maxKM')) {
+        $query->where('km', '<=', $request->maxKM);
+    }
+
+    if ($request->filled('mark')) {
+       $query->where('mark', 'like', '%' . trim($request->mark) . '%');
+    }
+
+    if ($request->filled('model')) {
+        $query->where('model', 'like', '%' . $request->model . '%');
+    }
+
+    if ($request->filled('since')) {
+        $query->where('year', '>=', $request->since);
+    }
+
+    if ($request->filled('to')) {
+        $query->where('year', '<=', $request->to);
+    }
+
+    if ($request->filled('doors')) {
+        $query->where('doors', $request->doors);
+    }
+
+    if ($request->filled('motor')) {
+        $query->where('motor', $request->motor);
+    }
+
+    if ($request->filled('location')) {
+        $query->where('location', $request->location);
+    }
+
+    if ($request->filled('color')) {
+        $query->where('color', $request->color);
+    }
+
+    if ($request->filled('bodywork')) {
+        $query->where('bodywork', $request->bodywork);
+    }
+
+    if ($request->filled('fuel')) {
+        $query->where('fuel', $request->fuel);
+    }
+
+    return response()->json(
+        $query
+            ->with('images')
+            ->orderBy('created_at', 'desc')
+            ->paginate(5)
+    );
+
+}
 }

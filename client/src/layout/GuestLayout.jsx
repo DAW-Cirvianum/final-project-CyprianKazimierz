@@ -3,10 +3,12 @@ import "../css/index.css"
 import Footer from "../components/Footer";
 import Aside from "../components/Aside";
 import Main from "../components/Main"
+import { useTranslation } from "react-i18next";
+import LanguageSelect from "../components/LanguageSelect";
 
 export default function GuestLayout() {
   const location = useLocation();
-  
+  const { t, i18n } = useTranslation();
 
   const isLogin = location.pathname === "/home/login";
   const isRegister = location.pathname === "/home/register";
@@ -20,8 +22,9 @@ export default function GuestLayout() {
     <div className="layout">
       <header className="headerLayout header">
         <nav>
-          <Link to="/home/login">Login</Link>
-          <Link to="/home/register">Register</Link>
+          <LanguageSelect/>
+          <Link to="/home/login">{t("sing in")}</Link>
+          <Link to="/home/register">{t("sing up")}</Link>
         </nav>
       </header>
         {isLogin || isRegister || !isHome ? <header></header> : <Aside className="sidebar"/>}

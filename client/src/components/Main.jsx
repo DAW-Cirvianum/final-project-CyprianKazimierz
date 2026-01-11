@@ -29,7 +29,7 @@ export default function Main() {
 
     setPosts(post => post.filter(n=> n.id !== postID));
   }
-
+  if(posts.length == 0) return (<div className="flex justify-center mt-20">Not Posts Found</div>);
   return (
     <div className="container mx-auto my-10">
      <SpeedDial/>
@@ -49,7 +49,7 @@ export default function Main() {
                 {post.title}
               </h2>
 
-              <p className="text-red-400 text-3xl font-semibold">
+              <p className="text-red-600 text-3xl font-semibold">
                 {post.price} €
               </p>
 

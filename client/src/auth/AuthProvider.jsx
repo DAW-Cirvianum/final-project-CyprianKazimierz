@@ -499,6 +499,25 @@ const editPost = async (idPost,form) =>{
   }
 }
 
+const filterPosts = async (params)=>{
+  try{
+    let response = await fetch(`${url}/filterPosts?${params.toString()}`);
+
+    if(!response.ok){
+      return { ok:false,status: response.status}
+    }
+
+    let data = await response.json();
+
+    setPosts(data.data);
+      setPage(data.current_page);
+      setLastPage(data.last_page);
+      return {ok:true}
+  }catch(error){
+
+  }
+}
+
   /*Comments*/
 
   const getComments = async (postID) => {
@@ -702,7 +721,8 @@ const deleteComment = async(idComment) =>{
         cities,
         createPost,
         cars,
-        editPost
+        editPost,
+        filterPosts
       }}
     >
       {children}

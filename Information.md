@@ -72,6 +72,10 @@
   https://reactrouter.com  
   Library for handling routing and navigation in React single-page applications (SPAs).
 
+  - **i18n**
+  https://www.i18next.com/
+  Library for multilanguage manager.
+
 ---
 
 #### Development and build tools
