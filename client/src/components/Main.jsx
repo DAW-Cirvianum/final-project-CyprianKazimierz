@@ -10,12 +10,15 @@ import { MdModeEditOutline } from "react-icons/md";
 import { FaRegTrashCan } from "react-icons/fa6";
 import Carousel from "./Carousel";
 import SpeedDial from "./SpeedDial";
+import { useTranslation } from "react-i18next";
 
 import "../css/index.css";
 export default function Main() {
   const { posts, setPosts, page, lastPage, setPage, isLogged, favorites, toggleFavorite, isFavorite, isLikes, toggleLikes, likes, deletePost } = useContext(AuthContext);
   let user = JSON.parse(localStorage.getItem("user"));
   let navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
   const handleDelete = async (postID)=>{
     let confirmation = confirm("Are you sure?");
     if(!confirmation) return;
@@ -29,7 +32,7 @@ export default function Main() {
 
     setPosts(post => post.filter(n=> n.id !== postID));
   }
-  if(posts.length == 0) return (<div className="flex justify-center mt-20">Not Posts Found</div>);
+  if(posts.length == 0) return (<div className="flex justify-center mt-20">{t("notFoundPost")}</div>);
   return (
     <div className="container mx-auto my-10">
      <SpeedDial/>
@@ -88,14 +91,14 @@ export default function Main() {
       </div>
       {/*Buttons */}
       <div className="flex flex-row items-center justify-center gap-3 mt-4">
-        <button disabled={page === 1} onClick={() => setPage(page - 1)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-          Prev
+        <button disabled={page === 1} onClick={() => setPage(page - 1)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l text-color">
+          {t("prev")}
         </button>
-        <p>
-          Page {page} from {lastPage}
+        <p className="text-color">
+          {t("page")} {page} {t("from")} {lastPage}
         </p>
-        <button disabled={page === lastPage} onClick={() => setPage(page + 1)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-          Next
+        <button disabled={page === lastPage} onClick={() => setPage(page + 1)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l text-color">
+          {t("next")}
         </button>
       </div>
     </div>

@@ -5,11 +5,13 @@ import Aside from "../components/Aside";
 import Main from "../components/Main"
 import { useTranslation } from "react-i18next";
 import LanguageSelect from "../components/LanguageSelect";
-
+import ThemeToggle from "../components/ThemeToggle";
+import { IoChevronBack } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 export default function GuestLayout() {
   const location = useLocation();
   const { t, i18n } = useTranslation();
-
+  const navigate=useNavigate();
   const isLogin = location.pathname === "/home/login";
   const isRegister = location.pathname === "/home/register";
   const isHome = location.pathname === "/home";
@@ -20,11 +22,15 @@ export default function GuestLayout() {
   return (
     <>
     <div className="layout">
-      <header className="headerLayout header">
-        <nav>
+      <header className="headerLayout header flex items-center justify-between">
+          <button onClick={() => navigate(-1)} className="bg-white">
+                      <IoChevronBack />
+                    </button>
+        <nav className="w-full">
+          <ThemeToggle/>
           <LanguageSelect/>
-          <Link to="/home/login">{t("sing in")}</Link>
-          <Link to="/home/register">{t("sing up")}</Link>
+          <Link to="/home/login" className="text-lg text-color">{t("sing in")}</Link>
+          <Link to="/home/register" className="text-lg text-color">{t("sing up")}</Link>
         </nav>
       </header>
         {isLogin || isRegister || !isHome ? <header></header> : <Aside className="sidebar"/>}

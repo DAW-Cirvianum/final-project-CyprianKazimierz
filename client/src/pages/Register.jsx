@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { showError,formatDateDMY,isAdult,isFutureDate } from "../general";
+import { useTranslation } from "react-i18next";
+import { showError, formatDateDMY, isAdult, isFutureDate } from "../general";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -16,13 +16,13 @@ export default function Register() {
   const [born_date, setBornDate] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [error, setError] = useState("");
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const { register } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //
 
     if (isFutureDate(born_date)) {
       showError("The date cannot be in the future");
@@ -31,27 +31,27 @@ export default function Register() {
       showError("You must be at least 18 years old");
       return;
     }
-    //create user
+
     let user = {
-      name: name,
-      surname: surname,
-      username: username,
-      email: email,
-      password: password,
+      name,
+      surname,
+      username,
+      email,
+      password,
       password_confirmation: confirmation_password,
-      born_date: born_date,
-      avatar: avatar,
+      born_date,
+      avatar,
       role: "user",
     };
 
     const response = await register(user);
 
     if (!response.ok) {
-      if (response.status == 422) {
+      if (response.status === 422) {
         const errors = Object.values(response.error.error);
-        errors.forEach((messages,index) => {
+        errors.forEach((messages, index) => {
           messages.forEach((msg) => {
-            showError(msg,index);
+            showError(msg, index);
           });
         });
         return;
@@ -69,20 +69,20 @@ export default function Register() {
       navigate("/home/verify");
     }, 3200);
   };
+
   return (
     <div className="container mx-auto my-10 flex justify-center">
       <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}>
-        <h2>Sing Up</h2>
+        <h2 className="text-color">{t("sing up")}</h2>
         {error && <div style={{ color: "red" }}>{error}</div>}
 
         <div className="mb-4 flex flex-col">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name" className="text-color">{t("name")}:</label>
           <input
             type="text"
             name="name"
             value={name}
             id="name"
-            placeholder="Your name"
             pattern="^[a-zA-Z ]{3,25}$"
             maxLength="25"
             title="Only maj and min letters, min 3 chars"
@@ -90,14 +90,14 @@ export default function Register() {
             required
           />
         </div>
+
         <div className="mb-4 flex flex-col">
-          <label htmlFor="surname">Surname:</label>
+          <label htmlFor="surname" className="text-color">{t("surname")}:</label>
           <input
             type="text"
             name="surname"
             value={surname}
             id="surname"
-            placeholder="Your Surname"
             pattern="^[a-zA-Z]{3,25}$"
             maxLength="25"
             title="Only maj and min letters, min 3 chars"
@@ -105,11 +105,11 @@ export default function Register() {
             required
           />
         </div>
+
         <div className="mb-4 flex flex-col">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username" className="text-color">{t("username")}:</label>
           <input
             type="text"
-            placeholder="Username"
             value={username}
             id="username"
             name="username"
@@ -119,65 +119,65 @@ export default function Register() {
             required
           />
         </div>
+
         <div className="mb-4 flex flex-col">
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email" className="text-color">{t("email")}:</label>
           <input
             type="email"
             name="email"
             value={email}
             id="email"
-            placeholder="Your email"
             pattern="^[a-zA-Z0-9._%+]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}$"
             maxLength="50"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
+
         <div className="mb-4 flex flex-col">
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password" className="text-color">{t("password")}:</label>
           <input
             type="password"
-            placeholder="Password"
             id="password"
             name="password"
             pattern="^[a-zA-Z0-9]{6,20}$"
-            title="Please introduce a valid password, the password must contain (Maj Min Numbers and min og 6 chars and a max of 20)"
+            title="Please introduce a valid password, the password must contain (Maj Min Numbers and min 6 chars and max 20)"
             maxLength="20"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
+
         <div className="mb-4 flex flex-col">
-          <label htmlFor="confirmation_password">Repeat the password:</label>
+          <label htmlFor="confirmation_password" className="text-color">{t("repeatPassword")}:</label>
           <input
             type="password"
-            placeholder="Repeat the password"
             id="confirmation_password"
             name="confirmation_password"
             pattern="^[a-zA-Z0-9]{6,20}$"
-            title="Please introduce a valid password, the password must contain (Maj Min Numbers and min og 6 chars and a max of 20)"
+            title="Please introduce a valid password, the password must contain (Maj Min Numbers and min 6 chars and max 20)"
             maxLength="20"
             value={confirmation_password}
             onChange={(e) => setPas(e.target.value)}
             required
           />
         </div>
+
         <div className="mb-4 flex flex-col">
-          <label htmlFor="born_date">Born date:</label>
+          <label htmlFor="born_date" className="text-color">{t("borndate")}:</label>
           <input
             type="date"
             id="born_date"
             name="born_date"
-            title="Introduce you born date"
-            onChange={(e) => {
-              setBornDate(e.target.value);
-            }}
+            title="Introduce your born date"
+            onChange={(e) => setBornDate(e.target.value)}
             required
           />
         </div>
+
         <div className="mb-4 flex flex-col">
-          <label htmlFor="avatar">Avatar:</label>
+          <label htmlFor="avatar" className="text-color">{t("avatar")}:</label>
           <input
             type="file"
             id="avatar"
@@ -186,8 +186,10 @@ export default function Register() {
             onChange={(e) => setAvatar(e.target.files[0])}
           />
         </div>
-        <button type="submit">Entrar</button>
+
+        <button type="submit" className="text-color">{t("send")}</button>
       </form>
+      <ToastContainer />
     </div>
   );
 }

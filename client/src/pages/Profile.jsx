@@ -4,11 +4,12 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
 import { showError, formatDateDMY, isAdult, isFutureDate, formatDateForInput } from "../general";
 
 export default function Profile() {
-  const { user,profile } = useContext(AuthContext);
-
+  const { profile } = useContext(AuthContext);
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [name, setName] = useState(user.name);
   const [surname, setSurname] = useState(user.surname);
@@ -18,6 +19,7 @@ export default function Profile() {
   const [confirmation_password, setPas] = useState("");
   const [born_date, setBornDate] = useState(user.born_date);
   const [avatar, setAvatar] = useState(null);
+  const { t, i18n } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,16 +80,15 @@ export default function Profile() {
   return (
     <div className="container mx-auto my-10 flex justify-center">
       <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}>
-        <h2>Profile</h2>
+        <h2>{t("profile")}</h2>
 
         <div className="mb-4 flex flex-col">
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">{t("name")}:</label>
           <input
             type="text"
             name="name"
             value={name}
             id="name"
-            placeholder="Your name"
             pattern="^[a-zA-Z ]{3,25}$"
             maxLength="25"
             title="Only maj and min letters, min 3 chars"
@@ -96,13 +97,12 @@ export default function Profile() {
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <label htmlFor="surname">Surname:</label>
+          <label htmlFor="surname">{t("surname")}:</label>
           <input
             type="text"
             name="surname"
             value={surname}
             id="surname"
-            placeholder="Your Surname"
             pattern="^[a-zA-Z]{3,25}$"
             maxLength="25"
             title="Only maj and min letters, min 3 chars"
@@ -111,10 +111,9 @@ export default function Profile() {
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">{t("username")}:</label>
           <input
             type="text"
-            placeholder="Username"
             value={username}
             id="username"
             name="username"
@@ -125,13 +124,12 @@ export default function Profile() {
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">{t("email")}:</label>
           <input
             type="email"
             name="email"
             value={email}
             id="email"
-            placeholder="Your email"
             pattern="^[a-zA-Z0-9._%+]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}$"
             maxLength="50"
             onChange={(e) => setEmail(e.target.value)}
@@ -139,10 +137,9 @@ export default function Profile() {
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <label htmlFor="password">Password (optional):</label>
+          <label htmlFor="password">{t("password")} ({t("optional")}):</label>
           <input
             type="password"
-            placeholder="Password"
             id="password"
             name="password"
             pattern="^[a-zA-Z0-9]{6,20}$"
@@ -152,10 +149,9 @@ export default function Profile() {
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <label htmlFor="confirmation_password">Repeat the password (optional):</label>
+          <label htmlFor="confirmation_password">{t("repeatPassword")} ({t("optional")}):</label>
           <input
             type="password"
-            placeholder="Repeat the password"
             id="confirmation_password"
             name="confirmation_password"
             pattern="^[a-zA-Z0-9]{6,20}$"
@@ -166,7 +162,7 @@ export default function Profile() {
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <label htmlFor="born_date">Born date:</label>
+          <label htmlFor="born_date">{t("borndate")}:</label>
           <input
             type="date"
             id="born_date"
@@ -180,7 +176,7 @@ export default function Profile() {
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <label htmlFor="avatar">Avatar:</label>
+          <label htmlFor="avatar">{t("avatar")}:</label>
           <input
             type="file"
             id="avatar"
@@ -189,7 +185,7 @@ export default function Profile() {
             onChange={(e) => setAvatar(e.target.files[0])}
           />
         </div>
-        <button type="submit">Entrar</button>
+        <button type="submit">{t("send")}</button>
       </form>
     </div>
   );

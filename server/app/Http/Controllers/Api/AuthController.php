@@ -132,6 +132,7 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'born_date' => $user->born_date,
                 'avatar' => asset('storage/' . $user->avatar),
+                'role'=>$user->role
             ]
         ], 200);
     }
@@ -257,5 +258,9 @@ class AuthController extends Controller
                     : null,
             ]
         ], 200);
+    }
+    //api
+    public function getUsers(){
+        
     }
 }

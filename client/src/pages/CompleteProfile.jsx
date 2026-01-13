@@ -4,11 +4,11 @@ import { useEffect, useContext, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showError,formatDateDMY,isAdult,isFutureDate } from "../general";
-
+import { useTranslation } from "react-i18next";
 export default function CompleteProfile() {
 
 let user = JSON.parse(localStorage.getItem("user"));
-
+  const { t, i18n } = useTranslation();
    const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [username, setUsername] = useState("");
@@ -69,17 +69,17 @@ let user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="container mx-auto my-10 flex justify-center">
       <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}>
-        <h2>Complet Profile</h2>
+        <h2>{t("completeProfile")}</h2>
 
         {(!user?.name || user.name.trim() === "") && (
           <div className="mb-4 flex flex-col">
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name">{t("name")}:</label>
             <input
               type="text"
               name="name"
               value={name}
               id="name"
-              placeholder="Your name"
+              placeholder={t("pName")}
               pattern="^[a-zA-Z ]{3,25}$"
               maxLength="25"
               title="Only maj and min letters, min 3 chars"
@@ -89,13 +89,13 @@ let user = JSON.parse(localStorage.getItem("user"));
           </div>
         )}
        { (!user?.surname)&&(<div className="mb-4 flex flex-col">
-          <label htmlFor="surname">Surname:</label>
+          <label htmlFor="surname">{t("surname")}:</label>
           <input
             type="text"
             name="surname"
             value={surname}
             id="surname"
-            placeholder="Your Surname"
+            placeholder={t("pSurname")}
             pattern="^[a-zA-Z]{3,25}$"
             maxLength="25"
             title="Only maj and min letters, min 3 chars"
@@ -104,10 +104,10 @@ let user = JSON.parse(localStorage.getItem("user"));
           />
         </div>)}
        {(!user?.username) && (<div className="mb-4 flex flex-col">
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">{t("username")}:</label>
           <input
             type="text"
-            placeholder="Username"
+            placeholder={t("username")}
             value={username}
             id="username"
             name="username"
@@ -118,12 +118,12 @@ let user = JSON.parse(localStorage.getItem("user"));
           />
         </div>)}
         {(!user?.born_date)&&(<div className="mb-4 flex flex-col">
-          <label htmlFor="born_date">Born date:</label>
+          <label htmlFor="born_date">{t("borndate")}:</label>
           <input
             type="date"
             id="born_date"
             name="born_date"
-            title="Introduce you born date"
+            title={t("pBornDate")}
             onChange={(e) => {
               setBornDate(e.target.value);
             }}
@@ -131,7 +131,7 @@ let user = JSON.parse(localStorage.getItem("user"));
           />
         </div>)}
        {(!user?.avatar)&& (<div className="mb-4 flex flex-col">
-          <label htmlFor="avatar">Avatar:</label>
+          <label htmlFor="avatar">{t("avatar")}:</label>
           <input
             type="file"
             id="avatar"
@@ -140,7 +140,7 @@ let user = JSON.parse(localStorage.getItem("user"));
             onChange={(e) => setAvatar(e.target.files[0])}
           />
         </div>)}
-        <button type="submit">Entrar</button>
+        <button type="submit">{t("send")}</button>
       </form>
     </div>
   );

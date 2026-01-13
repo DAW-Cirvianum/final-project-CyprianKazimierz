@@ -62,7 +62,6 @@ class PostController extends Controller
         'bodywork' => 'required|string|max:50',
         'fuel' => 'required|string|max:50',
         'doors' => 'required|integer|min:1|max:5',
-
         'new_images' => 'nullable|array|max:4',
         'new_images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
         'existing_images' => 'nullable|string',
@@ -192,5 +191,16 @@ public function filterPost(Request $request){
             ->paginate(5)
     );
 
+}
+//laravel
+
+public function getPosts(){
+      $posts = Post::with([
+            'user:id,name,avatar',
+            'images:id,post_id,path,is_main'
+        ])
+        ->latest()
+        ->paginate(5);
+        return view('admin.posts', compact('posts'));
 }
 }

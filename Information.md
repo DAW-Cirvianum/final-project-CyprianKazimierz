@@ -1,5 +1,27 @@
 # MyApp
 
+## Description
+
+This project is about a second-hand vehicle sales platform. It is divided into two main parts: the backend and the frontend.
+
+- **Backend (Laravel – PHP):**  
+  The backend is responsible for communicating with the database through a custom Laravel API. This API allows retrieving, storing, updating, and deleting data (CRUD operations).  
+  Additionally, admin users have their own server-rendered pages built with Blade, which allow them to manage posts and users.
+
+- **Frontend (React + Vite):**  
+  The frontend represents the user interface and is divided into two views: **Guest View** and **User View**.
+
+  - **Guest View:**  
+    The header includes options for **Sign Up**, **Sign In**, language selection, and theme selection.  
+    In the main section, guests can view posts, see post details and comments, and filter the posts they want to see.
+
+  - **User View:**  
+    The header includes a theme selector, language selector, and a dropdown menu with options to edit the profile and sign out.  
+    The main content is similar to the Guest View, but users have additional features such as:
+    - Marking posts as favorites
+    - Liking posts
+    - Adding comments to publications
+
 ## Requeriments
 1. Have docker installed, if you don't have it you can follow this [guide for ubuntu](https://docs.docker.com/engine/install/ubuntu/) and do the post-installation steps, and for windows go to the web site and download it.
 2. Windows:
@@ -28,7 +50,7 @@
 1. Clone the repository.
 2. Open the terminal in the main folder or move to the cloned folder.
 3. Open or run Docker.
-4. In the repository you will modify the file .env.example to .env and change the content:
+4. In the repository you will modify the file .env.example to .env and change the content of:
     ```sh
     DB_CONNECTION=bbdd that you use  example mysql
     DB_HOST=127.0.0.1 or the service of yhe bbdd that you will use example mysql
@@ -55,6 +77,11 @@
     ```sh
     npm run appDown
     ```
+7. (Optional if Laravel fails) if Laravel fails try to access to doker machine and run:
+```bash
+  composer run dev
+```
+8. If the problem still please contact with me "cyprian.bartosik@cirvianum.cat".
 
 ## Libraries
 
@@ -72,9 +99,9 @@
   https://reactrouter.com  
   Library for handling routing and navigation in React single-page applications (SPAs).
 
-  - **i18n**
-  https://www.i18next.com/
-  Library for multilanguage manager.
+- **i18n**
+https://www.i18next.com/
+Library for multilanguage manager.
 
 ---
 

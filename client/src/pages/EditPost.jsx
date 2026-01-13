@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { showError } from "../general";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import "../css/index.css"
 export default function EditPost() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ export default function EditPost() {
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]); 
   const [newImages, setNewImages] = useState([]);
+  const { t, i18n } = useTranslation();
 const [formData, setFormData] = useState({
   title: "",
   price: "",
@@ -69,7 +71,7 @@ const [formData, setFormData] = useState({
 
 
   //if is loading whe show it, if we dont get the post yet, we will show that is loading
-  if(loading) return <p>Loading...</p>
+  if(loading) return <p>{t("loading")}...</p>
 
   
   //remove existing img
@@ -146,13 +148,13 @@ navigate("/");
         className="bg-white text-black w-full max-w-4xl p-8 rounded-xl shadow-md space-y-6"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl font-bold text-center mb-6">Create a Post</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">{t("editPost")}</h2>
 
         {/* Row 1: Title & Price */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="title" className="mb-1 font-medium">
-              Title
+              {t("title")}
             </label>
             <input
               type="text"
@@ -161,7 +163,6 @@ navigate("/");
               required
               maxLength={255}
               pattern=".{3,}"
-              placeholder="Enter title"
                value={formData.title}
   onChange={(e) =>
     setFormData({ ...formData, title: e.target.value })
@@ -172,7 +173,7 @@ navigate("/");
 
           <div className="flex flex-col">
             <label htmlFor="price" className="mb-1 font-medium">
-              Price (€)
+               {t("price")} (€)
             </label>
             <input
               type="number"
@@ -182,7 +183,6 @@ navigate("/");
               min="0"
               max="99999999"
               step="0.01"
-              placeholder="Enter price"
                value={formData.price}
   onChange={(e) =>
     setFormData({ ...formData, price: e.target.value })
@@ -196,7 +196,7 @@ navigate("/");
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="mark" className="mb-1 font-medium">
-              Mark
+               {t("mark")}
             </label>
             <input
               type="text"
@@ -205,7 +205,6 @@ navigate("/");
               required
               maxLength={100}
               pattern="[A-Za-z0-9\s\-]{2,}"
-              placeholder="Enter mark"
                value={formData.mark}
   onChange={(e) =>
     setFormData({ ...formData, mark: e.target.value })
@@ -216,7 +215,7 @@ navigate("/");
 
           <div className="flex flex-col">
             <label htmlFor="model" className="mb-1 font-medium">
-              Model
+               {t("model")}
             </label>
             <input
               type="text"
@@ -225,7 +224,6 @@ navigate("/");
               required
               maxLength={100}
               pattern="[A-Za-z0-9\s\-]{1,}"
-              placeholder="Enter model"
                value={formData.model}
   onChange={(e) =>
     setFormData({ ...formData, model: e.target.value })
@@ -239,7 +237,7 @@ navigate("/");
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="year" className="mb-1 font-medium">
-              Year
+               {t("year")}
             </label>
             <input
               type="number"
@@ -248,7 +246,6 @@ navigate("/");
               required
               min="1900"
               max={new Date().getFullYear()}
-              placeholder="Enter year"
                value={formData.year}
   onChange={(e) =>
     setFormData({ ...formData, year: e.target.value })
@@ -259,7 +256,7 @@ navigate("/");
 
           <div className="flex flex-col">
             <label htmlFor="km" className="mb-1 font-medium">
-              KM
+               {t("km")}
             </label>
             <input
               type="number"
@@ -269,7 +266,6 @@ navigate("/");
               min="0"
               max="999999"
               maxLength="6"
-              placeholder="Enter kilometers"
                value={formData.km}
   onChange={(e) =>
     setFormData({ ...formData, km: e.target.value })
@@ -283,7 +279,7 @@ navigate("/");
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="motor" className="mb-1 font-medium">
-              Transmission
+              {t("motor")}
             </label>
             <select
               name="motor"
@@ -295,14 +291,14 @@ navigate("/");
   }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="manual">Manual</option>
-              <option value="automatic">Automatic</option>
+              <option value="manual"> {t("manual")}</option>
+              <option value="automatic"> {t("automatic")}</option>
             </select>
           </div>
 
           <div className="flex flex-col">
             <label htmlFor="fuel" className="mb-1 font-medium">
-              Fuel Type
+               {t("fuel")}
             </label>
             <select
               name="fuel"
@@ -314,10 +310,10 @@ navigate("/");
   }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="Diesel">Diesel</option>
-              <option value="Gasoline">Gasoline</option>
-              <option value="Electric">Electric</option>
-              <option value="Hybrid">Hybrid</option>
+              <option value="Diesel"> {t("disel")}</option>
+              <option value="Gasoline"> {t("gasoline")}</option>
+              <option value="Electric"> {t("electric")}</option>
+              <option value="Hybrid"> {t("hybrid")}</option>
             </select>
           </div>
         </div>
@@ -326,7 +322,7 @@ navigate("/");
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="bodywork" className="mb-1 font-medium">
-              Bodywork
+               {t("bodywork")}
             </label>
             <select
               name="bodywork"
@@ -350,7 +346,7 @@ navigate("/");
 
           <div className="flex flex-col">
             <label htmlFor="color" className="mb-1 font-medium">
-              Color
+               {t("color")}
             </label>
             <select
               name="color"
@@ -362,16 +358,16 @@ navigate("/");
   }
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="Red">Red</option>
-              <option value="Blue">Blue</option>
-              <option value="White">White</option>
-              <option value="Black">Black</option>
-              <option value="Orange">Orange</option>
-              <option value="Pink">Pink</option>
-              <option value="Yellow">Yellow</option>
-              <option value="Purple">Purple</option>
-              <option value="Gray">Gray</option>
-              <option value="Brown">Brown</option>
+              <option value="Red">{t("red")}</option>
+              <option value="Blue">{t("blue")}</option>
+              <option value="White">{t("white")}</option>
+              <option value="Black">{t("black")}</option>
+              <option value="Orange">{t("orange")}</option>
+              <option value="Pink">{t("pink")}</option>
+              <option value="Yellow">{t("yellow")}</option>
+              <option value="Purple">{t("purple")}</option>
+              <option value="Gray">{t("gray")}</option>
+              <option value="Brown">{t("brown")}</option>
             </select>
           </div>
         </div>
@@ -380,7 +376,7 @@ navigate("/");
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="location" className="mb-1 font-medium">
-              City
+              {t("location")}
             </label>
             <select
               name="location"
@@ -402,7 +398,7 @@ navigate("/");
 
           <div className="flex flex-col">
             <label htmlFor="doors" className="mb-1 font-medium">
-              Number of Doors
+              {t("numDoors")}
             </label>
             <input
               type="number"
@@ -467,14 +463,13 @@ navigate("/");
         {/* Row 8: Description */}
         <div className="flex flex-col">
           <label htmlFor="description" className="mb-1 font-medium">
-            Description
+            {t("description")}
           </label>
           <textarea
             name="description"
             id="description"
             rows="6"
             maxLength="255"
-            placeholder="Write a description..."
             required
              value={formData.description}
   onChange={(e) =>
@@ -489,7 +484,7 @@ navigate("/");
           type="submit"
           className="w-full bg-blue-600 text-white font-semibold p-3 rounded-md hover:bg-blue-700 transition"
         >
-          Edit Post
+          {t("send")}
         </button>
       </form>
     </div>

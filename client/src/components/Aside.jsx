@@ -1,13 +1,15 @@
 import "../css/index.css";
-import { Disclosure } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { useContext, useState } from "react";
+import { Disclosure, Dialog, Transition } from "@headlessui/react";
+import { ChevronDownIcon, FunnelIcon } from "@heroicons/react/24/solid";
+import { Fragment, useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { showError } from "../general";
 import { useTranslation } from "react-i18next";
+
 export default function Aside() {
   const { cities, filterPosts } = useContext(AuthContext);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+
   const [filters, setFilters] = useState({
     minPrice: "",
     maxPrice: "",
@@ -25,61 +27,155 @@ export default function Aside() {
     fuel: "",
   });
 
-  const buildParams = (filters) => {
-    return Object.fromEntries(
+  const [openMobile, setOpenMobile] = useState(false);
+
+  const buildParams = (filters) =>
+    Object.fromEntries(
       Object.entries(filters).filter(
-        ([_, value]) =>
-          value !== "" &&
-          value !== null &&
-          value !== undefined &&
-          value.toString().trim() !== ""
+        ([_, value]) => value !== "" && value !== null && value !== undefined && value.toString().trim() !== ""
       )
     );
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     let params = new URLSearchParams(buildParams(filters));
-
     let response = await filterPosts(params);
+    if (!response.ok) showError(response.status);
 
-    if (!response.ok) {
-      showError(response.status);
-      return;
-    }
-
-    setFilters({
-      minPrice: "",
-      maxPrice: "",
-      minKM: "",
-      maxKM: "",
-      mark: "",
-      model: "",
-      since: "",
-      to: "",
-      doors: "",
-      motor: "",
-      location: "",
-      color: "",
-      bodywork: "",
-      fuel: "",
-    });
+    setOpenMobile(false); 
   };
 
   return (
-    <div className="sidebarContent w-full md:w-64 shadow p-0 m-0">
-      <form onSubmit={handleSubmit}>
+    <>
+      
+      <div className="md:hidden fixed top-20 mt-2 right-4 z-50">
+        <button
+          onClick={() => setOpenMobile(true)}
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 rounded-full shadow-lg"
+        >
+          <FunnelIcon className="w-5 h-5" />
+          {t("filtres")}
+        </button>
+      </div>
+
+      {/* Modal móvil */}
+      <Transition appear show={openMobile} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={() => setOpenMobile(false)}>
+          <Transition.Child
+            as={Fragment}
+            enter="transition-opacity duration-200"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-30" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4">
+              <Transition.Child
+                as={Fragment}
+                enter="transition-transform duration-200"
+                enterFrom="translate-y-4 opacity-0"
+                enterTo="translate-y-0 opacity-100"
+                leave="transition-transform duration-200"
+                leaveFrom="translate-y-0 opacity-100"
+                leaveTo="translate-y-4 opacity-0"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-card-bg dark:bg-gray-800 p-6 text-left shadow-xl transition-all">
+                  <Dialog.Title className="text-lg font-bold text-color mb-4">{t("filtres")}</Dialog.Title>
+
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    {/* Price */}
+                    <div>
+                      <label className="text-color text-sm"> {t("minPrice")} </label>
+                      <input
+                        type="number"
+                        value={filters.minPrice}
+                        onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        placeholder={t("minPrice")}
+                      />
+                      <label className="text-color text-sm mt-1"> {t("maxPrice")} </label>
+                      <input
+                        type="number"
+                        value={filters.maxPrice}
+                        onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        placeholder={t("maxPrice")}
+                      />
+                    </div>
+
+                    {/* KM */}
+                    <div>
+                      <label className="text-color text-sm">{t("minKM")}</label>
+                      <input
+                        type="number"
+                        value={filters.minKM}
+                        onChange={(e) => setFilters({ ...filters, minKM: e.target.value })}
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        placeholder={t("minKM")}
+                      />
+                      <label className="text-color text-sm mt-1">{t("maxKM")}</label>
+                      <input
+                        type="number"
+                        value={filters.maxKM}
+                        onChange={(e) => setFilters({ ...filters, maxKM: e.target.value })}
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        placeholder={t("maxKM")}
+                      />
+                    </div>
+
+                    {/* Otros filtros */}
+                    <div className="flex flex-col gap-2">
+                      <label className="text-color text-sm">{t("mark")}</label>
+                      <input
+                        type="text"
+                        value={filters.mark}
+                        onChange={(e) => setFilters({ ...filters, mark: e.target.value })}
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        placeholder={t("mark")}
+                      />
+                      <label className="text-color text-sm">{t("model")}</label>
+                      <input
+                        type="text"
+                        value={filters.model}
+                        onChange={(e) => setFilters({ ...filters, model: e.target.value })}
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        placeholder={t("model")}
+                      />
+                    </div>
+
+                    {/* Botón enviar */}
+                    <button
+                      type="submit"
+                      className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold p-2 rounded-md"
+                    >
+                      {t("sendFilter")}
+                    </button>
+                  </form>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+
+      {/* Sidebar desktop */}
+      <div className="hidden md:block w-64">
+        <form onSubmit={handleSubmit}>
         {/* PRICE */}
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           <Disclosure.Button className="flex w-full justify-center items-center font-medium focus:outline-none  hover:border-gray-800 cursor-default rounded-none">
-            <h1 className="text-xl font-bold">{t("filtres")}</h1>
+            <h1 className="text-xl font-bold text-color">{t("filtres")}</h1>
           </Disclosure.Button>
         </Disclosure>
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("price")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -133,10 +229,10 @@ export default function Aside() {
         </Disclosure>
 
         {/* KM */}
-        <Disclosure as="div" className="w-full border border-gray-800 p-0">
+        <Disclosure as="div" className="w-full border border-gray-800 p-0 ">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("km")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -191,7 +287,7 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("mark")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -226,7 +322,7 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("model")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -260,7 +356,7 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("year")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -312,7 +408,7 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("doors")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -346,7 +442,7 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("motor")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -380,7 +476,7 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("location")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -418,7 +514,7 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 Color
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -461,7 +557,7 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("bodywork")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -500,7 +596,7 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none">
+              <Disclosure.Button className="flex w-full bg-gray-700 justify-between items-center font-medium rounded-none text-color">
                 {t("fuel")}
                 <ChevronDownIcon
                   className={`w-5 h-5 transition-transform ${
@@ -537,12 +633,13 @@ export default function Aside() {
         <Disclosure as="div" className="w-full border border-gray-800 p-0">
           <Disclosure.Button
             type="submit"
-            className="w-full bg-gray-500 rounded-none"
+            className="w-full bg-gray-500 rounded-none text-color"
           >
             {t("sendFilter")}
           </Disclosure.Button>
         </Disclosure>
       </form>
-    </div>
+      </div>
+    </>
   );
 }

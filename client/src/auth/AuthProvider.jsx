@@ -56,6 +56,7 @@ export function AuthProvider({ children }) {
         },
         getToken()
       );
+      
         return {
           ok: false,
           status: response.status,
@@ -65,9 +66,15 @@ export function AuthProvider({ children }) {
       //if all is ok, we get the info, we save the user and storage the user and token
       let data = await response.json();
 
-      localStorage.setItem("user", JSON.stringify(data.user));
-      setUser(data.user);
+    
+     if (data.user.role !== "admin") {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user);
       localStorage.setItem("token", data.token);
+       await loadFavorites();
+      await loadLikes();
+}
+
       log(
         {
           status: response.status,
@@ -75,9 +82,11 @@ export function AuthProvider({ children }) {
         },
         data.token
       );
-      await loadFavorites();
-      await loadLikes();
-      return { ok: true };
+     
+      return { ok: true,
+            user: data.user,
+          token: data.token
+       };
     } catch (error) {
       return;
     }
@@ -321,7 +330,6 @@ export function AuthProvider({ children }) {
     if(!response.ok){
       if(response.status == 401){
         showError("Token expired");
-        navigate("/home");
         return;
       }
     }
@@ -340,7 +348,6 @@ export function AuthProvider({ children }) {
     if(!response.ok){
       if(response.status == 401){
         showError("Token expired");
-        navigate("/home");
         return;
       }
     }
@@ -368,7 +375,6 @@ export function AuthProvider({ children }) {
     if(!response.ok){
       if(response.status == 401){
         showError("Token expired");
-        navigate("/home");
         return;
       }
     }

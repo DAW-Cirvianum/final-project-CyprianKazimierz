@@ -8,10 +8,12 @@ import { BiLike, BiSolidLike } from "react-icons/bi";
 import { FaRegTrashCan } from "react-icons/fa6";
 import "../css/index.css";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import Carousel from "../components/Carousel";
 
 export default function Details() {
   const { id } = useParams();
+   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { postDetails } = useContext(AuthContext);
   const {
@@ -173,11 +175,11 @@ let user = JSON.parse(localStorage.getItem("user"));
 
           <div className="bg-white text-black p-4 mt-5 details">
             <p className="mb-3">
-              Post created at {formatDateDMY(details.created_at)}
+              {t("postCreatedAt")} {formatDateDMY(details.created_at)}
             </p>
             <h1 className="text-3xl font-bold">{details.title}</h1>
             <div className="detail-item">
-              <h3>Description</h3>
+              <h3>{t("description")}</h3>
               <p className="description">{details.description}</p>
             </div>
 
@@ -190,15 +192,15 @@ let user = JSON.parse(localStorage.getItem("user"));
           </div>
 
           <div className="bg-white text-black p-4 mt-5 details">
-            <h2 className="text-2xl font-bold">Details</h2>
+            <h2 className="text-2xl font-bold">{t("details")}</h2>
             <table className="table">
               <thead>
                 <tr>
-                  <th>Year</th>
-                  <th>KM</th>
-                  <th>Location</th>
-                  <th>Bodywork</th>
-                  <th>Motor</th>
+                  <th>{t("year")}</th>
+                  <th>{t("km")}</th>
+                  <th>{t("location")}</th>
+                  <th>{t("bodywork")}</th>
+                  <th>{t("motor")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -215,11 +217,11 @@ let user = JSON.parse(localStorage.getItem("user"));
             <table className="table">
               <thead>
                 <tr>
-                  <th>Mark</th>
-                  <th>Model</th>
-                  <th>Color</th>
-                  <th>Fuel</th>
-                  <th>Num Doors</th>
+                  <th>{t("mark")}</th>
+                  <th>{t("model")}</th>
+                  <th>{t("color")}</th>
+                  <th>{t("fuel")}</th>
+                  <th>{t("numDoors")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -237,11 +239,11 @@ let user = JSON.parse(localStorage.getItem("user"));
 
         {/* */}
         <div className="bg-white text-black p-5 comments">
-          <h1 className="flex justify-center font-bold-500">Comments</h1>
+          <h1 className="flex justify-center font-bold-500">{t("comments")}</h1>
           {isLogged() && (
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label htmlFor="comment">Send your comment:</label>
+                <label htmlFor="comment">{t("pComment")}:</label>
                 <textarea
                   name="comment"
                   id="comment"
@@ -257,7 +259,7 @@ let user = JSON.parse(localStorage.getItem("user"));
                   type="submit"
                   className="mt-3 text-white bg-dark box-border border border-transparent hover:bg-dark-strong focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-md text-sm px-4 py-2.5 focus:outline-none w-full"
                 >
-                  Send
+                  {t("send")}
                 </button>
               </div>
             </form>

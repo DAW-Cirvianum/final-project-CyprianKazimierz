@@ -6,7 +6,9 @@ import Aside from "../components/Aside";
 import "../css/index.css"
 import { useTranslation } from "react-i18next";
 import LanguageSelect from "../components/LanguageSelect";
-
+import ThemeToggle from "../components/ThemeToggle";
+import { IoChevronBack } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 export default function UserLayout() {
   const { logout } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
@@ -14,15 +16,18 @@ export default function UserLayout() {
     const { t, i18n } = useTranslation();
   const user = JSON.parse(localStorage.getItem("user")) ?? {};
      const isHome = location.pathname === "/";
-
+  const navigate = useNavigate();
   return (
     <div className="layout">
-      <header className="headerLayout header">
-        
-        <nav className="relative flex items-center gap-4">
+      <header className="headerLayout header flex justify-between items-center gap-4">
+        <button onClick={() => navigate(-1)} className="bg-white">
+                      <IoChevronBack />
+        </button>
+        <nav className="relative flex items-center gap-10 ">
+          <ThemeToggle/>
           <LanguageSelect/>
           <img src={user.avatar} alt="Avatar of user" className="avatar" />
-          <p>{user.username}</p>
+          <p className="text-color">{user.username}</p>
 
           {/* Dropdown button */}
           <button
@@ -51,7 +56,7 @@ export default function UserLayout() {
                 <li>
                   <button
                     onClick={logout}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-400"
+                    className="w-full text-left px-4 py-2 hover:bg-gray-400 text-color"
                   >
                     {t("sing out")}
                   </button>

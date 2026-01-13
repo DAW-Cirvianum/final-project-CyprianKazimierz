@@ -3,10 +3,11 @@ import { AuthContext } from "../context/AuthContext";
 import { showError } from "../general";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 export default function AddPost() {
   const [doors, setDoors] = useState(2);
   const [images, setImages] = useState([]);
-
+ const { t, i18n } = useTranslation();
   const { cities, createPost, cars, setPage } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -69,13 +70,13 @@ export default function AddPost() {
         className="bg-white text-black w-full max-w-4xl p-8 rounded-xl shadow-md space-y-6"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl font-bold text-center mb-6">Create a Post</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">{t("createPostTitle")}</h2>
 
         {/* Row 1: Title & Price */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="title" className="mb-1 font-medium">
-              Title
+              {t("title")}
             </label>
             <input
               type="text"
@@ -91,7 +92,7 @@ export default function AddPost() {
 
           <div className="flex flex-col">
             <label htmlFor="price" className="mb-1 font-medium">
-              Price (€)
+              {t("price")} (€)
             </label>
             <input
               type="number"
@@ -111,7 +112,7 @@ export default function AddPost() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="mark" className="mb-1 font-medium">
-              Mark
+              {t("mark")}
             </label>
             <input
               type="text"
@@ -127,7 +128,7 @@ export default function AddPost() {
 
           <div className="flex flex-col">
             <label htmlFor="model" className="mb-1 font-medium">
-              Model
+              {t("model")}
             </label>
             <input
               type="text"
@@ -146,7 +147,7 @@ export default function AddPost() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="year" className="mb-1 font-medium">
-              Year
+              {t("year")}
             </label>
             <input
               type="number"
@@ -162,7 +163,7 @@ export default function AddPost() {
 
           <div className="flex flex-col">
             <label htmlFor="km" className="mb-1 font-medium">
-              KM
+              {t("km")}
             </label>
             <input
               type="number"
@@ -182,7 +183,7 @@ export default function AddPost() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="motor" className="mb-1 font-medium">
-              Transmission
+              {t("motor")}
             </label>
             <select
               name="motor"
@@ -190,14 +191,14 @@ export default function AddPost() {
               required
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="manual">Manual</option>
-              <option value="automatic">Automatic</option>
+              <option value="manual">{t("manual")}</option>
+              <option value="automatic">{t("automatic")}</option>
             </select>
           </div>
 
           <div className="flex flex-col">
             <label htmlFor="fuel" className="mb-1 font-medium">
-              Fuel Type
+             {t("fuel")}
             </label>
             <select
               name="fuel"
@@ -205,10 +206,10 @@ export default function AddPost() {
               required
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="Disel">Diesel</option>
-              <option value="Gasoline">Gasoline</option>
-              <option value="Electric">Electric</option>
-              <option value="Hybrid">Hybrid</option>
+              <option value="Disel">{t("disel")}</option>
+              <option value="Gasoline">{t("gasoline")}</option>
+              <option value="Electric">{t("electric")}</option>
+              <option value="Hybrid">{t("hybrid")}</option>
             </select>
           </div>
         </div>
@@ -217,7 +218,7 @@ export default function AddPost() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="bodywork" className="mb-1 font-medium">
-              Bodywork
+              {t("bodywork")}
             </label>
             <select
               name="bodywork"
@@ -237,7 +238,7 @@ export default function AddPost() {
 
           <div className="flex flex-col">
             <label htmlFor="color" className="mb-1 font-medium">
-              Color
+              {t("color")}
             </label>
             <select
               name="color"
@@ -245,16 +246,16 @@ export default function AddPost() {
               required
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="Red">Red</option>
-              <option value="Blue">Blue</option>
-              <option value="White">White</option>
-              <option value="Black">Black</option>
-              <option value="Orange">Orange</option>
-              <option value="Pink">Pink</option>
-              <option value="Yellow">Yellow</option>
-              <option value="Purple">Purple</option>
-              <option value="Gray">Gray</option>
-              <option value="Brown">Brown</option>
+              <option value="Red">{t("red")}</option>
+              <option value="Blue">{t("blue")}</option>
+              <option value="White">{t("white")}</option>
+              <option value="Black">{t("black")}</option>
+              <option value="Orange">{t("orange")}</option>
+              <option value="Pink">{t("pink")}</option>
+              <option value="Yellow">{t("yellow")}</option>
+              <option value="Purple">{t("purple")}</option>
+              <option value="Gray">{t("gray")}</option>
+              <option value="Brown">{t("brown")}</option>
             </select>
           </div>
         </div>
@@ -263,7 +264,7 @@ export default function AddPost() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
             <label htmlFor="location" className="mb-1 font-medium">
-              City
+              {t("city")}
             </label>
             <select
               name="location"
@@ -281,7 +282,7 @@ export default function AddPost() {
 
           <div className="flex flex-col">
             <label htmlFor="doors" className="mb-1 font-medium">
-              Number of Doors
+             {t("numDoors")}
             </label>
             <input
               type="number"
@@ -297,7 +298,7 @@ export default function AddPost() {
         </div>
         {/* Row 7: Images */}
         <div className="flex flex-col">
-          <label className="mb-1 font-medium">Images (max 4)</label>
+          <label className="mb-1 font-medium">{t("images")} (max 4)</label>
 
           <input
             type="file"
@@ -310,14 +311,14 @@ export default function AddPost() {
 
           {images.length > 0 && (
             <p className="text-sm text-gray-600 mt-1">
-              {images.length} image(s) selected
+              {images.length} {t("imgSelected")}
             </p>
           )}
         </div>
         {/* Row 8: Description */}
         <div className="flex flex-col">
           <label htmlFor="description" className="mb-1 font-medium">
-            Description
+            {t("description")}
           </label>
           <textarea
             name="description"
@@ -335,7 +336,7 @@ export default function AddPost() {
           type="submit"
           className="w-full bg-blue-600 text-white font-semibold p-3 rounded-md hover:bg-blue-700 transition"
         >
-          Create Post
+          {t("createPost")}
         </button>
       </form>
     </div>
