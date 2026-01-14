@@ -8,7 +8,10 @@ import LanguageSelect from "../components/LanguageSelect";
 import ThemeToggle from "../components/ThemeToggle";
 import { IoChevronBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+
+
 export default function GuestLayout() {
+  //Variables
   const location = useLocation();
   const { t, i18n } = useTranslation();
   const navigate=useNavigate();
@@ -16,12 +19,14 @@ export default function GuestLayout() {
   const isRegister = location.pathname === "/home/register";
   const isHome = location.pathname === "/home";
 
+  //if localstorage user and token exists we remove it
   if(localStorage.getItem("token")) localStorage.removeItem("token");
   if(JSON.parse(localStorage.getItem("user"))) localStorage.removeItem("user");
 
   return (
     <>
     <div className="layout">
+      {/*HEADER */}
       <header className="headerLayout header flex items-center justify-between">
           <button onClick={() => navigate(-1)} className="bg-white">
                       <IoChevronBack />
@@ -33,8 +38,11 @@ export default function GuestLayout() {
           <Link to="/home/register" className="text-lg text-color">{t("sing up")}</Link>
         </nav>
       </header>
+      {/*SideBar */}
         {isLogin || isRegister || !isHome ? <header></header> : <Aside className="sidebar"/>}
+        {/* Main */}
         <Outlet className="main" element={ <Main/>}/>
+        {/* Footer */}
       <Footer className="footer"/>
       </div>
     </>

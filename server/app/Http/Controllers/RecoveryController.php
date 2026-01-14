@@ -7,7 +7,13 @@ use Illuminate\Http\Request;
 
 class RecoveryController extends Controller
 {
-     public function verifyEmail(Request $request){
+/**
+ * Function to mark user as verified
+ * Summary of verifyEmail
+ * @param Request $request
+ * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+ */
+public function verifyEmail(Request $request){
         $id = $request->route('id');
         $hash = $request->route('hash');
         $user = User::findOrFail($id);

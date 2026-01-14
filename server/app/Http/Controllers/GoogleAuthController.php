@@ -23,6 +23,11 @@ class GoogleAuthController extends Controller
             ->redirect();
     }
 
+    /**
+     * Function to return the user from google
+     * Summary of callback
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function callback()
     {
         try {

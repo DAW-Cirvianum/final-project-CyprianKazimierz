@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { showError, formatDateDMY, isAdult, isFutureDate, formatDateForInput } from "../general";
 
 export default function Profile() {
+  //Variables
   const { profile } = useContext(AuthContext);
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
@@ -21,9 +22,13 @@ export default function Profile() {
   const [avatar, setAvatar] = useState(null);
   const { t, i18n } = useTranslation();
 
+  /**
+   * Function to validate and send the new data of the user and change it
+   * @param {event} e Event of the form with inputs 
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //
+    
     if (isFutureDate(born_date)) {
       showError("The date cannot be in the future");
       return;
@@ -31,7 +36,7 @@ export default function Profile() {
       showError("You must be at least 18 years old");
       return;
     }
-    //create user
+    
     let newUser = {
       name: name,
       surname: surname,

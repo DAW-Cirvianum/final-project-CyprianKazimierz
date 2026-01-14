@@ -4,13 +4,19 @@ import { showError } from "../general";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+
 export default function AddPost() {
   const [doors, setDoors] = useState(2);
   const [images, setImages] = useState([]);
- const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { cities, createPost, cars, setPage } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  /**
+   * Function to manage File upload
+   * @param {event} e  Event of images of post
+   * @returns 
+   */
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
 
@@ -23,6 +29,11 @@ export default function AddPost() {
     setImages(files);
   };
 
+  /**
+   * Function to manage the form and send the data to store
+   * @param {event} e Event of form 
+   * @returns No returns is only to go back if fails
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,17 +42,16 @@ export default function AddPost() {
     let response = await createPost(formData);
 
     if (!response.ok) {
-      if(response.status == 401){
+      if (response.status == 401) {
         showError("Token expires");
-        setTimeout(()=>{navigate("/home");},2000);
-
+        setTimeout(() => { navigate("/home"); }, 2000);
         return;
       }
-      if(response.status == 422){
+      if (response.status == 422) {
         const errors = Object.values(response.error.errors);
-        errors.forEach((messages,index) => {
+        errors.forEach((messages, index) => {
           messages.forEach((msg) => {
-            showError(msg,index);
+            showError(msg, index);
           });
         });
         return;
@@ -57,10 +67,10 @@ export default function AddPost() {
       closeOnClick: true,
       draggable: true,
     });
-
+    // one time is added we get all first 5 posts, because the new will stored at the begining
     await cars(1);
     setPage(1);
-
+    
     navigate("/");
   };
 
@@ -198,7 +208,7 @@ export default function AddPost() {
 
           <div className="flex flex-col">
             <label htmlFor="fuel" className="mb-1 font-medium">
-             {t("fuel")}
+              {t("fuel")}
             </label>
             <select
               name="fuel"
@@ -282,7 +292,7 @@ export default function AddPost() {
 
           <div className="flex flex-col">
             <label htmlFor="doors" className="mb-1 font-medium">
-             {t("numDoors")}
+              {t("numDoors")}
             </label>
             <input
               type="number"

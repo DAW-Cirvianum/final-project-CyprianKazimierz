@@ -12,8 +12,9 @@ import { useTranslation } from "react-i18next";
 import Carousel from "../components/Carousel";
 
 export default function Details() {
+  //Variables
   const { id } = useParams();
-   const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { postDetails } = useContext(AuthContext);
   const {
@@ -33,19 +34,19 @@ export default function Details() {
   const [comments, setComment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [inputTxt, setInputTxt] = useState(null);
-let user = JSON.parse(localStorage.getItem("user"));
+  let user = JSON.parse(localStorage.getItem("user"));
 
-  //post
+  //In load get the post and save it
   useEffect(() => {
     const fetchDetails = async () => {
       const result = await postDetails(id);
 
       if (!result.ok) {
-        if(response.status == 401){
-        showError("Token expires");
-        setTimeout(()=>{navigate("/home");},2000);
-        return;
-      }
+        if (response.status == 401) {
+          showError("Token expires");
+          setTimeout(() => { navigate("/home"); }, 2000);
+          return;
+        }
         if (result.status === 404) {
           showError("No exists post");
           return;
@@ -62,17 +63,17 @@ let user = JSON.parse(localStorage.getItem("user"));
   }, [id]);
 
   //comments
-
+  //In load get and save all coments of the post
   useEffect(() => {
     const fetchDetails = async () => {
       const result = await getComments(id);
 
       if (!result.ok) {
-        if(response.status == 401){
-        showError("Token expires");
-        setTimeout(()=>{navigate("/home");},2000);
-        return;
-      }
+        if (response.status == 401) {
+          showError("Token expires");
+          setTimeout(() => { navigate("/home"); }, 2000);
+          return;
+        }
         showError(result.status);
         return;
       }
@@ -80,7 +81,7 @@ let user = JSON.parse(localStorage.getItem("user"));
       setComment(result.comment);
     };
     fetchDetails();
-  },[]);
+  }, []);
 
   if (loading)
     return <p className="flex justify-center items-center">Loading...</p>;
@@ -89,6 +90,10 @@ let user = JSON.parse(localStorage.getItem("user"));
       <p className="flex justify-center items-center">Do not exists this post</p>
     );
 
+    /**
+     * Function to save Comments
+     * @param {event} e Event of the form white the inputs
+     */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -100,14 +105,14 @@ let user = JSON.parse(localStorage.getItem("user"));
     let response = await saveComment(obj, id);
 
     if (!response.ok) {
-      if(response.status == 401){
+      if (response.status == 401) {
         showError("Token expires");
         return;
       }
       showError(response.status + "crear commentari");
       return;
     }
-    setComment( com => [...com,response.data.comment]);
+    setComment(com => [...com, response.data.comment]);
 
     setInputTxt("");
 
@@ -120,16 +125,20 @@ let user = JSON.parse(localStorage.getItem("user"));
     });
   };
 
+  /**
+   * Function to delete a comment
+   * @param {number} idComment Number id of the comment
+   */
   const handleDelete = async (idComment) => {
-  const result = await deleteComment(idComment);
+    const result = await deleteComment(idComment);
 
-  if (!result.ok) {
-    showError("Error trying to delte the comment");
-    return;
-  }
+    if (!result.ok) {
+      showError("Error trying to delte the comment");
+      return;
+    }
 
-  setComment(prev => prev.filter(c => c.id !== idComment));
-};
+    setComment(prev => prev.filter(c => c.id !== idComment));
+  };
 
   return (
     <div className="container mx-auto my-auto flex justify-center flex-col items-center">
@@ -168,9 +177,9 @@ let user = JSON.parse(localStorage.getItem("user"));
               </div>
             )}
           </div>
-          
+
           <div className="detailsIMG">
-          <Carousel images={details.images}/>
+            <Carousel images={details.images} />
           </div>
 
           <div className="bg-white text-black p-4 mt-5 details">
@@ -186,9 +195,9 @@ let user = JSON.parse(localStorage.getItem("user"));
             <p className="text-red-500 text-xl">{details.price} €</p>
 
             <div className="flex items-center gap-2 p-4">
-                <img src={"http://localhost/storage/"+details.user.avatar} alt="Avatar of the user that comment" width={45} height={45}  className="rounded-full"/>
-                <p>{details.user.name}</p>
-              </div>
+              <img src={"http://localhost/storage/" + details.user.avatar} alt="Avatar of the user that comment" width={45} height={45} className="rounded-full" />
+              <p>{details.user.name}</p>
+            </div>
           </div>
 
           <div className="bg-white text-black p-4 mt-5 details">
@@ -251,7 +260,7 @@ let user = JSON.parse(localStorage.getItem("user"));
                   rows="4"
                   wrap="hard"
                   pattern="^[a-zA-Z,.!?' ]+$"
-                   value={inputTxt || ""}
+                  value={inputTxt || ""}
                   onChange={(e) => setInputTxt(e.target.value)}
                   className="bg-gray-300 border rounded-md border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body"
                 ></textarea>
@@ -267,10 +276,10 @@ let user = JSON.parse(localStorage.getItem("user"));
           <hr className="bg-black border-3 mt-2 mb-4" />
           {comments.map((comment) => (
             <div className="mb-3 border rounded text-black" key={comment.id}>
-              {isLogged() && comment.user.id ==  user.id &&  (<p  className="flex justify-end mt-3 me-3"><FaRegTrashCan onClick={()=>handleDelete(comment.id)}/></p>)}
+              {isLogged() && comment.user.id == user.id && (<p className="flex justify-end mt-3 me-3"><FaRegTrashCan onClick={() => handleDelete(comment.id)} /></p>)}
               <p className="mt-3 ms-4">{comment.txt}</p>
               <div className="flex items-center gap-2 justify-between p-4">
-               { comment.user.avatar.includes("avatars") ? (<img src={"http://localhost/storage/"+comment.user.avatar} alt="Avatar of the user that comment" width={45} height={45}  className="rounded-full"/>):(<img src={comment.user.avatar} alt="Avatar of the user that comment" width={45} height={45}  className="rounded-full"/>)} 
+                {comment.user.avatar.includes("avatars") ? (<img src={"http://localhost/storage/" + comment.user.avatar} alt="Avatar of the user that comment" width={45} height={45} className="rounded-full" />) : (<img src={comment.user.avatar} alt="Avatar of the user that comment" width={45} height={45} className="rounded-full" />)}
                 <p>{comment.user.name}</p>
                 <p>{formatDateDMY(comment.created_at)}</p>
               </div>

@@ -10,7 +10,12 @@ use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
-    public function index()
+/**
+ * Function to get posts and paginate it
+ * Summary of index
+ * @return \Illuminate\Http\JsonResponse
+ */
+public function index()
     {
          $posts = Post::with([
             'user:id,name,avatar',
@@ -22,6 +27,12 @@ class PostController extends Controller
         return response()->json($posts);
     }
 
+    /**
+     * Function to get the post by the id
+     * Summary of details
+     * @param Post $post
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function details(Post $post)
     {
          return response()->json(
@@ -32,6 +43,13 @@ class PostController extends Controller
         );
     }
 
+    /**
+     * Function to delete a post
+     * Summary of delete
+     * @param Request $request
+     * @param Post $post
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete(Request $request,Post $post){
           if ($post->user_id !== $request->user()->id) {
             return response()->json([
@@ -46,8 +64,16 @@ class PostController extends Controller
         ]);
     }
 
+    /**
+     * Function to change data of the post
+     * Summary of editPost
+     * @param Request $request
+     * @param Post $post
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function editPost(Request $request, Post $post)
 {
+    //valdiate data
     $request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string|max:255',
@@ -67,13 +93,12 @@ class PostController extends Controller
         'existing_images' => 'nullable|string',
     ]);
 
-    // actualizar campos
+    // Update post
     $post->update($request->except(['new_images', 'existing_images']));
 
-    // IDs de imágenes que el usuario mantiene
     $existingIds = collect(json_decode($request->existing_images ?? '[]'));
 
-    // borrar imágenes eliminadas (excepto noImage)
+    // delete images that delet in frontend
  foreach ($post->images as $image) {
 
     if ($image->path === 'posts_images/noImage.png') {
@@ -93,7 +118,7 @@ class PostController extends Controller
         $image->delete();
     }
 }
-
+    //if there uploaded we save them
     if ($request->hasFile('new_images')) {
         $order = $post->images()->count();
 
@@ -108,6 +133,7 @@ class PostController extends Controller
         }
     }
 
+    //In other case if there are not images we save default img
     if ($post->images()->count() === 0) {
         $post->images()->create([
             'path' => 'posts_images/noImage.png',
@@ -115,7 +141,7 @@ class PostController extends Controller
             'order' => 0,
         ]);
     }
-
+    
     $post->images()->update(['is_main' => false]);
     $post->images()->orderBy('order')->first()?->update(['is_main' => true]);
 
@@ -125,6 +151,12 @@ class PostController extends Controller
     ]);
 }
 
+/**
+ * Function to get specified posts
+ * Summary of filterPost
+ * @param Request $request
+ * @return \Illuminate\Http\JsonResponse
+ */
 public function filterPost(Request $request){
      $query = Post::query();
 
@@ -192,8 +224,8 @@ public function filterPost(Request $request){
     );
 
 }
-//laravel
 
+//laravel
 public function getPosts(){
       $posts = Post::with([
             'user:id,name,avatar',

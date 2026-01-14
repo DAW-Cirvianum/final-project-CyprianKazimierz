@@ -3,25 +3,29 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useContext, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { showError,formatDateDMY,isAdult,isFutureDate } from "../general";
+import { showError, formatDateDMY, isAdult, isFutureDate } from "../general";
 import { useTranslation } from "react-i18next";
-export default function CompleteProfile() {
 
-let user = JSON.parse(localStorage.getItem("user"));
+
+export default function CompleteProfile() {
+  //Variables
+  let user = JSON.parse(localStorage.getItem("user"));
   const { t, i18n } = useTranslation();
-   const [name, setName] = useState("");
+  const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [username, setUsername] = useState("");
   const [born_date, setBornDate] = useState("");
   const [avatar, setAvatar] = useState(null);
-
-
   const navigate = useNavigate();
   const { completProfile } = useContext(AuthContext);
 
+  /**
+   * Function to manage the form
+   * @param {event} e All inputs from the form
+   * @returns No return something, is used to turn back
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //
 
     if (isFutureDate(born_date)) {
       showError("The date cannot be in the future");
@@ -30,7 +34,8 @@ let user = JSON.parse(localStorage.getItem("user"));
       showError("You must be at least 18 years old");
       return;
     }
-    //create user
+
+    //create obj user
     let newUser = {
       name: name,
       surname: surname,
@@ -44,9 +49,9 @@ let user = JSON.parse(localStorage.getItem("user"));
     if (!response.ok) {
       if (response.status == 422) {
         const errors = Object.values(response.error.error);
-        errors.forEach((messages,index) => {
+        errors.forEach((messages, index) => {
           messages.forEach((msg) => {
-            showError(msg,index);
+            showError(msg, index);
           });
         });
         return;
@@ -88,7 +93,7 @@ let user = JSON.parse(localStorage.getItem("user"));
             />
           </div>
         )}
-       { (!user?.surname)&&(<div className="mb-4 flex flex-col">
+        {(!user?.surname) && (<div className="mb-4 flex flex-col">
           <label htmlFor="surname">{t("surname")}:</label>
           <input
             type="text"
@@ -103,7 +108,7 @@ let user = JSON.parse(localStorage.getItem("user"));
             required
           />
         </div>)}
-       {(!user?.username) && (<div className="mb-4 flex flex-col">
+        {(!user?.username) && (<div className="mb-4 flex flex-col">
           <label htmlFor="username">{t("username")}:</label>
           <input
             type="text"
@@ -117,7 +122,7 @@ let user = JSON.parse(localStorage.getItem("user"));
             required
           />
         </div>)}
-        {(!user?.born_date)&&(<div className="mb-4 flex flex-col">
+        {(!user?.born_date) && (<div className="mb-4 flex flex-col">
           <label htmlFor="born_date">{t("borndate")}:</label>
           <input
             type="date"
@@ -130,7 +135,7 @@ let user = JSON.parse(localStorage.getItem("user"));
             required
           />
         </div>)}
-       {(!user?.avatar)&& (<div className="mb-4 flex flex-col">
+        {(!user?.avatar) && (<div className="mb-4 flex flex-col">
           <label htmlFor="avatar">{t("avatar")}:</label>
           <input
             type="file"

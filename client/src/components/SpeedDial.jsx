@@ -10,7 +10,8 @@ export default function SpeedDial() {
   return (
     <>
     {isLogged() && (<div className="fixed right-6 bottom-6 flex flex-col items-center z-50">
-      {open && (
+      {/* Second button to add post */}
+     {open && (
         <div className="mb-4 space-y-2">
           <button className="flex items-center justify-center w-[52px] h-[52px] bg-blue-200 rounded-full shadow-lg" onClick={()=>navigate("/addPost")}>
             <svg
@@ -31,7 +32,7 @@ export default function SpeedDial() {
           </button>
         </div>
       )}
-
+      {/* Button to Show all options */}
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center justify-center text-white bg-blue-600 rounded-full w-14 h-14 shadow-lg hover:bg-blue-700 focus:outline-none"

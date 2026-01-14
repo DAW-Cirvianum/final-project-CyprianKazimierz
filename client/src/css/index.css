@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* =========================
-   VARIABLES DE TEMA
+  Variables THEME
 ========================= */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -32,7 +32,7 @@
 }
 
 /* =========================
-   MODO OSCURO
+   DARK MODE 
 ========================= */
 .dark {
   --bg-color: #020617;
@@ -105,7 +105,7 @@ body {
 }
 
 /* =========================
-   LINKS & BUTTONS
+   LINKS I BUTTONS
 ========================= */
 a {
   font-weight: 500;

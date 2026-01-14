@@ -14,11 +14,17 @@ import { useTranslation } from "react-i18next";
 
 import "../css/index.css";
 export default function Main() {
+  //variables
   const { posts, setPosts, page, lastPage, setPage, isLogged, favorites, toggleFavorite, isFavorite, isLikes, toggleLikes, likes, deletePost } = useContext(AuthContext);
   let user = JSON.parse(localStorage.getItem("user"));
   let navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
+  /**
+   * Function to delete post
+   * @param {number} postID Number id of a post
+   * @returns No returns nothing only to go back
+   */
   const handleDelete = async (postID)=>{
     let confirmation = confirm("Are you sure?");
     if(!confirmation) return;
@@ -32,11 +38,16 @@ export default function Main() {
 
     setPosts(post => post.filter(n=> n.id !== postID));
   }
-  if(posts.length == 0) return (<div className="flex justify-center mt-20">{t("notFoundPost")}</div>);
+
+// if there arent posts shows a message
+  if(posts.length == 0 || posts === null) return (<div className="flex justify-center mt-20">{t("notFoundPost")}</div>);
+ 
   return (
     <div className="container mx-auto my-10">
+      {/*button that shos options, now only add post */}
      <SpeedDial/>
 
+      {/*Card of Posts */}
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6">
         {posts.map((post) => (
           <div

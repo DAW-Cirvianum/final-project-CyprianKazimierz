@@ -18,6 +18,7 @@ export default function Carousel({ images }) {
 
   return (
     <div className="relative w-full overflow-hidden rounded-lg">
+      {/*Slider */}
       <Slider ref={sliderRef} {...settings} className="absolute top-0 left-0 w-full h-full">
         {images.map((img, index) => (
           <div key={index} className="w-full h-full">
@@ -30,7 +31,7 @@ export default function Carousel({ images }) {
         ))}
       </Slider>
 
-      {/* Botones */}
+      {/* Buttons */}
     {(images.length>1) && (
       <>
       <button

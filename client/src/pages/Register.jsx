@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { showError, formatDateDMY, isAdult, isFutureDate } from "../general";
 
 export default function Register() {
+  //Variables
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [username, setUsername] = useState("");
@@ -17,10 +18,13 @@ export default function Register() {
   const [avatar, setAvatar] = useState(null);
   const [error, setError] = useState("");
   const { t } = useTranslation();
-
   const navigate = useNavigate();
   const { register } = useContext(AuthContext);
 
+  /**
+   * Function to validate data and show errors and register new user
+   * @param {event} e Event of the form with inputs 
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 

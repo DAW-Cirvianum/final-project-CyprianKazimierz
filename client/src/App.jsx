@@ -15,53 +15,51 @@ import GoogleCallback from "./pages/GoogleCallback";
 import CompleteProfile from "./pages/CompleteProfile";
 import Details from "./pages/Details";
 import AddPost from "./pages/AddPost";
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NotFound from "./pages/NotFound";
 import EditPost from "./pages/EditPost";
 
 function App() {
-  
+
   return (
     <>
-    
-    <Routes>
-     {/*Google Sign in */}
-     <Route path="google-callback" element={<GoogleCallback/>}/>
-     <Route path="complete-profile" element={<CompleteProfile/>}/>
+      <Routes>
 
-      {/* */}
-      
+        {/*Google Sign in */}
+        <Route path="google-callback" element={<GoogleCallback />} />
+        <Route path="complete-profile" element={<CompleteProfile />} />
 
-      {/* Rutas públicas */}
-      <Route element={<PublicRoute />}>
-  <Route path="/home" element={<GuestLayout />}>
-   <Route index element={<Main />} />
-    <Route path="login" element={<Login />} />
-    <Route path="register" element={<Register />} />
-    <Route path="verify" element={<Verify/>}/>
-    <Route path="details/:id" element={<Details/>}/>
-   
-  </Route>
-</Route>
+        {/* Public routes */}
+        <Route element={<PublicRoute />}>
+          <Route path="/home" element={<GuestLayout />}>
+            <Route index element={<Main />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="verify" element={<Verify />} />
+            <Route path="details/:id" element={<Details />} />
 
-
-      {/* Rutas privadas */}
-      <Route element={<PrivateRoute />}>
-        <Route element={<UserLayout />}>
-         <Route index element={<Main />} />
-          <Route path="/" element={<Main />} />
-          <Route path="logout"/>
-          <Route path="profile" element={<Profile/>}/>
-          <Route path="/details/:id" element={<Details/>}/>
-          <Route path="addPost" element={<AddPost/>} />
-          <Route path="editPost/:id" element={<EditPost/>}/>
+          </Route>
         </Route>
-      </Route>
-    {/*Others paths that does not exists */}
-     <Route path="*" element={<NotFound />} />
-    </Routes>
-     <ToastContainer/>
+
+        {/* Private Route */}
+        <Route element={<PrivateRoute />}>
+          <Route element={<UserLayout />}>
+            <Route index element={<Main />} />
+            <Route path="/" element={<Main />} />
+            <Route path="logout" />
+            <Route path="profile" element={<Profile />} />
+            <Route path="/details/:id" element={<Details />} />
+            <Route path="addPost" element={<AddPost />} />
+            <Route path="editPost/:id" element={<EditPost />} />
+          </Route>
+        </Route>
+
+        {/*Others paths that does not exists */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {/*Component to show toasts */}
+      <ToastContainer />
     </>
   );
 }

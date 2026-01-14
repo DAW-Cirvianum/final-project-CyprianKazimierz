@@ -7,6 +7,7 @@ import { showError } from "../general";
 import { useTranslation } from "react-i18next";
 
 export default function Aside() {
+  //variables
   const { cities, filterPosts } = useContext(AuthContext);
   const { t } = useTranslation();
 
@@ -29,6 +30,11 @@ export default function Aside() {
 
   const [openMobile, setOpenMobile] = useState(false);
 
+  /**
+   * 
+   * @param {object} filters 
+   * @returns filters data
+   */
   const buildParams = (filters) =>
     Object.fromEntries(
       Object.entries(filters).filter(
@@ -36,6 +42,10 @@ export default function Aside() {
       )
     );
 
+    /**
+     * Function to get the information of form and fetch to get the information
+     * @param {event} e Event of Form 
+     */
   const handleSubmit = async (e) => {
     e.preventDefault();
     let params = new URLSearchParams(buildParams(filters));
@@ -58,7 +68,7 @@ export default function Aside() {
         </button>
       </div>
 
-      {/* Modal móvil */}
+      {/* Mobile part */}
       <Transition appear show={openMobile} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={() => setOpenMobile(false)}>
           <Transition.Child

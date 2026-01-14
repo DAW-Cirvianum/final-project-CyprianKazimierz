@@ -9,7 +9,10 @@ import LanguageSelect from "../components/LanguageSelect";
 import ThemeToggle from "../components/ThemeToggle";
 import { IoChevronBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+
+
 export default function UserLayout() {
+  //Variables
   const { logout } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
     const location = useLocation();
@@ -17,8 +20,11 @@ export default function UserLayout() {
   const user = JSON.parse(localStorage.getItem("user")) ?? {};
      const isHome = location.pathname === "/";
   const navigate = useNavigate();
+
+
   return (
     <div className="layout">
+      {/*Header */}
       <header className="headerLayout header flex justify-between items-center gap-4">
         <button onClick={() => navigate(-1)} className="bg-white">
                       <IoChevronBack />
@@ -67,8 +73,12 @@ export default function UserLayout() {
 
         </nav>
       </header>
+
+      {/*Aside */}
       {isHome ? (<Aside className="sidebar"/>): (<header className="sidebar"></header>)}
+        {/*Main */}
       <Outlet className="main" />
+     {/*Footer */}
       <Footer className="footer"/>
     </div>
   );

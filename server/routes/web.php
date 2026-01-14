@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+//default route
 Route::get('/', function () {
    return redirect("http://localhost:5175");
 });
 
-
-
+//From frontend login if it is admin
 Route::get('/admin/login-bridge', function (Request $request) {
     $user = \Laravel\Sanctum\PersonalAccessToken::findToken($request->token)?->tokenable;
 
@@ -24,7 +24,7 @@ Route::get('/admin/login-bridge', function (Request $request) {
     return redirect('/admin/dashboard');
 });
 
-
+//Routes to show blade
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function (Request $request) {
          $user = $request->user();
