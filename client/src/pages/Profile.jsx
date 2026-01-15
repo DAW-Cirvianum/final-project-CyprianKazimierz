@@ -84,6 +84,7 @@ export default function Profile() {
 
   return (
     <div className="container mx-auto my-10 flex justify-center">
+      <title>Edit Profile</title>
       <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}>
         <h2>{t("profile")}</h2>
 
@@ -98,6 +99,7 @@ export default function Profile() {
             maxLength="25"
             title="Only maj and min letters, min 3 chars"
             onChange={(e) => setName(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>
@@ -111,6 +113,7 @@ export default function Profile() {
             pattern="^[a-zA-Z]{3,25}$"
             maxLength="25"
             title="Only maj and min letters, min 3 chars"
+            className="dark:text-black"
             onChange={(e) => setSurname(e.target.value)}
             required
           />
@@ -125,6 +128,7 @@ export default function Profile() {
             pattern="^[a-zA-Z0-9._]{3,20}$"
             title="Please introduce the username(Maj Min and Numbers, min 3 chars)"
             onChange={(e) => setUsername(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>
@@ -138,6 +142,7 @@ export default function Profile() {
             pattern="^[a-zA-Z0-9._%+]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}$"
             maxLength="50"
             onChange={(e) => setEmail(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>
@@ -150,6 +155,7 @@ export default function Profile() {
             pattern="^[a-zA-Z0-9]{6,20}$"
             title="Please introduce a valid password, the password must contain (Maj Min Numbers and min og 6 chars and a max of 20)"
             maxLength="20"
+            className="dark:text-black"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -162,6 +168,7 @@ export default function Profile() {
             pattern="^[a-zA-Z0-9]{6,20}$"
             title="Please introduce a valid password, the password must contain (Maj Min Numbers and min og 6 chars and a max of 20)"
             maxLength="20"
+            className="dark:text-black"
             onChange={(e) => setPas(e.target.value)}
             
           />
@@ -177,6 +184,7 @@ export default function Profile() {
             onChange={(e) => {
               setBornDate(e.target.value);
             }}
+            className="dark:text-black"
             required
           />
         </div>

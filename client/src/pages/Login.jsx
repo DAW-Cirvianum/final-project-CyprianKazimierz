@@ -66,6 +66,7 @@ export default function Login() {
 
   return (
     <div className="container mx-auto my-auto flex justify-center ">
+      <title>Sing In</title>
       <form className="userForm w-96 h-auto p-14 " onSubmit={handleSubmit}>
         <h2 className="text-color">{t("sing in")}</h2>
         <div className="mb-4 flex flex-col">
@@ -78,6 +79,7 @@ export default function Login() {
             name="login"
             title="Please introduce the username or mail, username(Maj Min and Numbers) or a valid email"
             value={username}
+            className="dark:text-black"
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
@@ -93,6 +95,7 @@ export default function Login() {
             title="Please introduce a valid password, the password must contain (Maj Min Numbers and min og 6 chars and a max of 20)"
             maxLength="20"
             value={password}
+            className="dark:text-black"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>

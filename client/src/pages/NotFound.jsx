@@ -10,6 +10,7 @@ export default function NotFound() {
 
   return (
     <div className='container mx-auto my-auto text-center' style={{ width: "50rem", height: "auto" }}>
+      <title>Not Found</title>
       <h1>404 - {t("pageNotFound")}</h1>
       <p>{t("textNotFound")}.</p>
       {isLogged() ? (<Link to="/">{t("goBack")}</Link>) : (<Link to="/home">{t("goBack")}</Link>)}

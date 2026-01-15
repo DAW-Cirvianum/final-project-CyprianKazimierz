@@ -79,5 +79,7 @@
     "optional": "Opcional",
     "repeatPassword": "Repetir contraseña",
     "verifyEmail": "Por favor, revisa tu correo y verifica tu cuenta",
-    "email": "Email"
+    "email": "Email",
+    "favoritePosts": "Favoritos",
+    "noFavoritePosts":"No tienes ningun post favorito"
 }

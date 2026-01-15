@@ -9,10 +9,7 @@ import LanguageSelect from "../components/LanguageSelect";
 import ThemeToggle from "../components/ThemeToggle";
 import { IoChevronBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-
-
 export default function UserLayout() {
-  //Variables
   const { logout } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
     const location = useLocation();
@@ -20,16 +17,15 @@ export default function UserLayout() {
   const user = JSON.parse(localStorage.getItem("user")) ?? {};
      const isHome = location.pathname === "/";
   const navigate = useNavigate();
-
-
   return (
     <div className="layout">
-      {/*Header */}
-      <header className="headerLayout header flex justify-between items-center gap-4">
-        <button onClick={() => navigate(-1)} className="bg-white">
+      <title>User Layout</title>
+      <header className="headerLayout header w-full flex flex-wrap justify-between items-center gap-4 px-4">
+        <button onClick={() => navigate(-1)} className="bg-white text-black">
                       <IoChevronBack />
         </button>
-        <nav className="relative flex items-center gap-10 ">
+        <nav className="relative flex items-center gap-20 w-auto">
+          <Link className="hidden md:block" to="/favoritePosts">{t("favoritePosts")}</Link>
           <ThemeToggle/>
           <LanguageSelect/>
           <img src={user.avatar} alt="Avatar of user" className="avatar" />
@@ -73,12 +69,8 @@ export default function UserLayout() {
 
         </nav>
       </header>
-
-      {/*Aside */}
-      {isHome ? (<Aside className="sidebar"/>): (<header className="sidebar"></header>)}
-        {/*Main */}
+      {isHome ? (<Aside className="sidebar hidden md:block"/>): (<header className="sidebar hidden md:block"></header>)}
       <Outlet className="main" />
-     {/*Footer */}
       <Footer className="footer"/>
     </div>
   );

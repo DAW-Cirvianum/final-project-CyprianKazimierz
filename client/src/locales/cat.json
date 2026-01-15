@@ -79,5 +79,7 @@
     "optional": "Opcional",
     "repeatPassword": "Repetir contrasenya",
     "verifyEmail": "Si us plau, revisa el teu correu i verifica el teu compte",
-    "email": "Email"
+    "email": "Email",
+    "favoritePosts": "Favorits",
+    "noFavoritePosts":"No tens cap post favorit"
 }

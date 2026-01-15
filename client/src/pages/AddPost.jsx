@@ -76,6 +76,7 @@ export default function AddPost() {
 
   return (
     <div className="container mx-auto my-10 flex justify-center px-4">
+      <title>Add Post</title>
       <form
         className="bg-white text-black w-full max-w-4xl p-8 rounded-xl shadow-md space-y-6"
         onSubmit={handleSubmit}

@@ -44,7 +44,23 @@ public function toggle(Request $request, Post $post)
         }
 
         return response()->json([
-            'liked' => $liked
+            'liked' => $liked,
+            'likes_count' => $post->liked()->count()
         ]);
     }
+
+    /**
+     * Function to get all likes of a post
+     * Summary of getNumLikes
+     * @param Request $request
+     * @param Post $post
+     * @return \Illuminate\Http\JsonResponse
+     */
+    // public function getNumLikes(Request $request,Post $post) {
+
+    //     $postsLikes = $post->liked()->count();
+    //     return response()->json([
+    //         'likes'=>$postsLikes
+    //     ]);
+    // }
 }

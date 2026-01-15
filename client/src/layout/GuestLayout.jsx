@@ -25,10 +25,11 @@ export default function GuestLayout() {
 
   return (
     <>
+    <title>Guest Layout</title>
     <div className="layout">
       {/*HEADER */}
-      <header className="headerLayout header flex items-center justify-between">
-          <button onClick={() => navigate(-1)} className="bg-white">
+      <header className="headerLayout header flex items-center justify-between ">
+          <button onClick={() => navigate(-1)} className="bg-white text-black">
                       <IoChevronBack />
                     </button>
         <nav className="w-full">
@@ -39,11 +40,11 @@ export default function GuestLayout() {
         </nav>
       </header>
       {/*SideBar */}
-        {isLogin || isRegister || !isHome ? <header></header> : <Aside className="sidebar"/>}
+        {isLogin || isRegister || !isHome ? <header className="sidebar hidden md:block"></header> : <Aside className="sidebar hidden md:block"/>}
         {/* Main */}
         <Outlet className="main" element={ <Main/>}/>
         {/* Footer */}
-      <Footer className="footer"/>
+      <Footer className="footer hidden md:block"/>
       </div>
     </>
   );

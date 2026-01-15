@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
@@ -38,6 +38,26 @@ export default function Main() {
 
     setPosts(post => post.filter(n=> n.id !== postID));
   }
+  /**
+   * Function to change the icon, add like and see it in frontend
+   * @param {number} postId Number id of a post
+   */
+  const handleToggleLike = async (postId) => {
+  const result = await toggleLikes(postId);
+  if (!result.ok) {
+      if (result.status == 401) {
+        showError("Token expired");
+        return;
+      }
+    }
+  setPosts(prev =>
+    prev.map(post =>
+      post.id === postId
+        ? { ...post, liked_count: result.likes_count }
+        : post
+    )
+  );
+};
 
 // if there arent posts shows a message
   if(posts.length == 0 || posts === null) return (<div className="flex justify-center mt-20">{t("notFoundPost")}</div>);
@@ -70,7 +90,7 @@ export default function Main() {
            
               <div className="mt-4 text-lg text-gray-500 flex flex-row justify-between items-center" onClick={(e) => e.stopPropagation()}>
                 <span>{`${post.location} - ${post.year} - ${post.km}km - ${post.fuel}`}</span>
-                { (isLogged()) && (<div className="gap-2 flex flex-row">
+                { (isLogged()) ? (<div className="gap-2 flex flex-row">
                   <div>
                       <button onClick={() => toggleFavorite(post.id)} className="bg-white border-0 outline-none focus:outline-none">
                         {isFavorite(post.id) ? (
@@ -78,16 +98,20 @@ export default function Main() {
                         ) : (
                           <FaRegHeart className="text-gray-400 text-2xl" />
                         )}
+                         
                       </button>
                   </div>
-                  <div><button onClick={() => toggleLikes(post.id)} className="bg-white border-0 outline-none focus:outline-none">
+                  <div className="flex items-center"><button onClick={() => handleToggleLike(post.id)} className="bg-white border-0 outline-none focus:outline-none">
                         {isLikes(post.id) ? (
                           <BiLike className="text-blue-500 text-2xl" />
+                          
                         ) : (
                           <BiSolidLike className="text-gray-400 text-2xl" />
+                         
                         )}
-                      </button></div>
-                </div>)}
+                        
+                      </button> <p>{post.liked_count}</p></div>
+                </div>): (<p>Num likes: {post.liked_count}</p>)}
                
               </div>
               {isLogged() && post.user_id == user.id &&(<div className="flex justify-end" onClick={(e) => e.stopPropagation()}>

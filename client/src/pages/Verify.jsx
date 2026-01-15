@@ -4,6 +4,9 @@ export default function Verify() {
     const { t, i18n } = useTranslation();
     
     return (
+        <>
+        <title>Verify Mail</title>
         <p className="text-center my-4">{t("verifyEmail")}</p>
+        </>
     );
 }

@@ -153,6 +153,7 @@ export default function EditPost() {
   }
   return (
     <div className="container mx-auto my-10 flex justify-center px-4">
+      <title>Edit Post</title>
       <form
         className="bg-white text-black w-full max-w-4xl p-8 rounded-xl shadow-md space-y-6"
         onSubmit={handleSubmit}

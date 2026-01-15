@@ -21,6 +21,7 @@ public function index()
             'user:id,name,avatar',
             'images:id,post_id,path,is_main'
         ])
+        ->withCount('liked')
         ->latest()
         ->paginate(5);
 
@@ -225,14 +226,28 @@ public function filterPost(Request $request){
 
 }
 
-//laravel
+//Admin
+/**
+ * Summary of getPosts
+ * @return \Illuminate\Contracts\View\View
+ */
 public function getPosts(){
       $posts = Post::with([
             'user:id,name,avatar',
             'images:id,post_id,path,is_main'
         ])
-        ->latest()
-        ->paginate(5);
+        ->latest()->get();
         return view('admin.posts', compact('posts'));
 }
+
+/**
+ * Summary of deleteAdmin
+ * @param Post $post
+ * @return \Illuminate\Http\RedirectResponse
+ */
+public function deleteAdmin(Post $post){
+    $post->delete();
+    return redirect()->back()->with('success', 'Post deleted successfully!');
+}
+
 }

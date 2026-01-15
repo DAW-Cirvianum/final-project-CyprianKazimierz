@@ -1,6 +1,7 @@
 import { useState,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 export default function SpeedDial() {
   const [open, setOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function SpeedDial() {
     {isLogged() && (<div className="fixed right-6 bottom-6 flex flex-col items-center z-50">
       {/* Second button to add post */}
      {open && (
+      <>
         <div className="mb-4 space-y-2">
           <button className="flex items-center justify-center w-[52px] h-[52px] bg-blue-200 rounded-full shadow-lg" onClick={()=>navigate("/addPost")}>
             <svg
@@ -31,6 +33,12 @@ export default function SpeedDial() {
             </svg>
           </button>
         </div>
+         <div className="mb-4 space-y-2 md:hidden">
+          <button className="flex items-center justify-center w-[52px] h-[52px] bg-blue-200 rounded-full shadow-lg" onClick={()=>navigate("/favoritePosts")}>
+           <FaHeart className="text-red-500"/>
+          </button>
+        </div>
+        </>
       )}
       {/* Button to Show all options */}
       <button

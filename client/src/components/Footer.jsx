@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
+import "../css/index.css"
 export default function Footer(){
      const { t, i18n } = useTranslation();
     return (
-        <footer className="text-center"><small><p> &copy; {t("footer")}</p></small></footer>
+        <footer className="text-center footer hidden md:block"><small><p className="!text-black dark:!text-white"> &copy; {t("footer")}</p></small></footer>
     )
 }

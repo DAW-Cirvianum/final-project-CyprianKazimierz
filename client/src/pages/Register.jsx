@@ -76,6 +76,7 @@ export default function Register() {
 
   return (
     <div className="container mx-auto my-10 flex justify-center">
+      <title>Sing Up</title>
       <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}>
         <h2 className="text-color">{t("sing up")}</h2>
         {error && <div style={{ color: "red" }}>{error}</div>}
@@ -91,6 +92,7 @@ export default function Register() {
             maxLength="25"
             title="Only maj and min letters, min 3 chars"
             onChange={(e) => setName(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>
@@ -106,6 +108,7 @@ export default function Register() {
             maxLength="25"
             title="Only maj and min letters, min 3 chars"
             onChange={(e) => setSurname(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>
@@ -120,6 +123,7 @@ export default function Register() {
             pattern="^[a-zA-Z0-9._]{3,20}$"
             title="Please introduce the username(Maj Min and Numbers, min 3 chars)"
             onChange={(e) => setUsername(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>
@@ -134,6 +138,7 @@ export default function Register() {
             pattern="^[a-zA-Z0-9._%+]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}$"
             maxLength="50"
             onChange={(e) => setEmail(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>
@@ -149,6 +154,7 @@ export default function Register() {
             maxLength="20"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>
@@ -164,6 +170,7 @@ export default function Register() {
             maxLength="20"
             value={confirmation_password}
             onChange={(e) => setPas(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>
@@ -176,6 +183,7 @@ export default function Register() {
             name="born_date"
             title="Introduce your born date"
             onChange={(e) => setBornDate(e.target.value)}
+            className="dark:text-black"
             required
           />
         </div>

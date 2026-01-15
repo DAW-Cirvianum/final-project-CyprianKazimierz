@@ -408,6 +408,33 @@ export function AuthProvider({ children }) {
   };
   /**
    * 
+   * @returns Returns all posts that are favorite of the user logged
+   */
+  const favoritePosts = async () =>{
+    try{
+      let response = await fetch(`${url}/favorites/posts`,{
+        method:"GET",
+        headers:{
+          Authorization: `Bearer ${getToken()}`
+        }
+      });
+
+      if(!response.ok){
+        return {
+          ok:false,
+          status: response.status
+        }
+      }
+
+      let data = await response.json();
+
+      return{ok:true,favoritePosts: data.favoritePosts}
+    }catch(error){
+
+    }
+  }
+  /**
+   * 
    * @param {number} postId Number id of a post  
    * @returns true is id post is there, false if not
    */
@@ -463,6 +490,8 @@ export function AuthProvider({ children }) {
       data.liked ? copy.add(postId) : copy.delete(postId);
       return copy;
     });
+
+    return data;
   };
 /**
  * 
@@ -845,7 +874,8 @@ export function AuthProvider({ children }) {
         createPost,
         cars,
         editPost,
-        filterPosts
+        filterPosts,
+        favoritePosts
       }}
     >
       {children}

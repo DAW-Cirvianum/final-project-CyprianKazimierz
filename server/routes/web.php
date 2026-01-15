@@ -25,11 +25,14 @@ Route::get('/admin/login-bridge', function (Request $request) {
 });
 
 //Routes to show blade
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->
+group(function () {
     Route::get('/dashboard', function (Request $request) {
          $user = $request->user();
         return view('admin.dashboard', compact('user'));
-    });
-    Route::get('/posts',[PostController::class,'getPosts']);
-    Route::get('/users',[AuthController::class,'getUsers']);
+    })->name('dashboard');
+    Route::get('/posts',[PostController::class,'getPosts'])->name('posts');
+    Route::get('/users',[AuthController::class,'getUsers'])->name("users");
+    Route::get('/admin/posts/delete/{post}', [PostController::class, 'deleteAdmin'])->name('posts.delete');
+
 });

@@ -142,10 +142,11 @@ export default function Details() {
 
   return (
     <div className="container mx-auto my-auto flex justify-center flex-col items-center">
+      <title>Details</title>
       <div className="flex flex-row gap-10">
         <div>
           <div className="bg-white text-black flex items-center justify-center gap-20 details p-3 mb-2">
-            <button onClick={() => navigate(-1)} className="bg-transparent">
+            <button onClick={() => navigate(-1)} className="bg-transparent text-black">
               <IoChevronBack />
             </button>
             <div className="flex gap-4">

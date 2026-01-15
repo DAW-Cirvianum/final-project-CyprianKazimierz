@@ -29,7 +29,6 @@ Route::get("/posts",[PostController::class,'index']);
 Route::get("/details/{post}", [PostController::class,'details']);
 Route::get('/filterPosts',[PostController::class,'filterPost']);
 
-
 //get all comments
 Route::get("/posts/{post}/comments",[CommentController::class,'index']);
 
@@ -56,8 +55,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete("/posts/delete/{post}",[PostController::class,'delete']);
     Route::post("/posts",[PostController::class,'add']);
     Route::patch('/editPost/{post}',[PostController::class,'editPost']);
+    Route::get('/favorites/posts',[FavoriteController::class,'favoritePosts']);
     
-
     //comments
     Route::post("/posts/{post}/comments",[CommentController::class,'saveComment']);
     Route::delete("/comments/{comment}",[CommentController::class,'deleteComment']);

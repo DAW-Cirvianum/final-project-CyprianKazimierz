@@ -19,6 +19,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NotFound from "./pages/NotFound";
 import EditPost from "./pages/EditPost";
+import FavoritePosts from "./pages/FavoritePosts";
 
 function App() {
 
@@ -52,6 +53,7 @@ function App() {
             <Route path="/details/:id" element={<Details />} />
             <Route path="addPost" element={<AddPost />} />
             <Route path="editPost/:id" element={<EditPost />} />
+            <Route path="favoritePosts" element={<FavoritePosts/>}/>
           </Route>
         </Route>
 

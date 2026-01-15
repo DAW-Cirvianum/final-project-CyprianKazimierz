@@ -47,4 +47,21 @@ class FavoriteController extends Controller
             'favorited' => $favorited
         ]);
     }
+
+    public function favoritePosts(Request $request){
+         $user = $request->user();
+
+    $favPosts = $user->favorites()
+        ->with([
+            'user:id,name,avatar',
+            'images:id,post_id,path,is_main',
+        ])
+        ->withCount('liked')
+        ->latest()
+        ->get();
+
+    return response()->json([
+        'favoritePosts' => $favPosts
+    ]);
+    }
 }

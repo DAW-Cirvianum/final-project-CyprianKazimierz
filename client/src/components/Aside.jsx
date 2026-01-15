@@ -58,7 +58,7 @@ export default function Aside() {
   return (
     <>
       
-      <div className="md:hidden fixed top-20 mt-2 right-4 z-50">
+      <div className="md:hidden fixed top-48 mt-2 right-4 z-50">
         <button
           onClick={() => setOpenMobile(true)}
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 rounded-full shadow-lg"
@@ -105,7 +105,7 @@ export default function Aside() {
                         type="number"
                         value={filters.minPrice}
                         onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
-                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-black"
                         placeholder={t("minPrice")}
                       />
                       <label className="text-color text-sm mt-1"> {t("maxPrice")} </label>
@@ -113,7 +113,7 @@ export default function Aside() {
                         type="number"
                         value={filters.maxPrice}
                         onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
-                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-black"
                         placeholder={t("maxPrice")}
                       />
                     </div>
@@ -125,7 +125,7 @@ export default function Aside() {
                         type="number"
                         value={filters.minKM}
                         onChange={(e) => setFilters({ ...filters, minKM: e.target.value })}
-                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-black"
                         placeholder={t("minKM")}
                       />
                       <label className="text-color text-sm mt-1">{t("maxKM")}</label>
@@ -133,7 +133,7 @@ export default function Aside() {
                         type="number"
                         value={filters.maxKM}
                         onChange={(e) => setFilters({ ...filters, maxKM: e.target.value })}
-                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-black"
                         placeholder={t("maxKM")}
                       />
                     </div>
@@ -145,7 +145,7 @@ export default function Aside() {
                         type="text"
                         value={filters.mark}
                         onChange={(e) => setFilters({ ...filters, mark: e.target.value })}
-                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-black"
                         placeholder={t("mark")}
                       />
                       <label className="text-color text-sm">{t("model")}</label>
@@ -153,9 +153,18 @@ export default function Aside() {
                         type="text"
                         value={filters.model}
                         onChange={(e) => setFilters({ ...filters, model: e.target.value })}
-                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-white"
+                        className="border border-gray-300 dark:border-gray-500 rounded-md p-2 w-full text-black dark:text-black"
                         placeholder={t("model")}
                       />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="">{t("city")}</label>
+                       <select className="text-black"
+                  value={filters.location}
+                  onChange={(e)=>setFilters({...filters,location:e.target.value})}>
+                  <option value="">{t("city")}</option>
+                  {cities.map((c,i)=><option key={i}>{c.city}</option>)}
+                </select>
                     </div>
 
                     {/* Botón enviar */}
@@ -168,6 +177,7 @@ export default function Aside() {
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
+              
             </div>
           </div>
         </Dialog>
@@ -211,7 +221,7 @@ export default function Aside() {
                       onChange={(e) =>
                         setFilters({ ...filters, minPrice: e.target.value })
                       }
-                      className="border border-gray-300 w-3/4 rounded-md p-2 text-white"
+                      className="border border-gray-300 w-3/4 rounded-md p-2 text-black"
                     />
                   </div>
                   <div className="flex flex-col items-center ">
@@ -229,7 +239,7 @@ export default function Aside() {
                       onChange={(e) =>
                         setFilters({ ...filters, maxPrice: e.target.value })
                       }
-                      className="border border-gray-300 w-3/4 rounded-md p-2 text-white"
+                      className="border border-gray-300 w-3/4 rounded-md p-2 text-black"
                     />
                   </div>
                 </div>
@@ -267,7 +277,7 @@ export default function Aside() {
                       onChange={(e) =>
                         setFilters({ ...filters, minKM: e.target.value })
                       }
-                      className="border border-gray-300 w-3/4 rounded-md p-2 text-white"
+                      className="border border-gray-300 w-3/4 rounded-md p-2 text-black"
                     />
                   </div>
                   <div className="flex flex-col items-center text-center">
@@ -284,7 +294,7 @@ export default function Aside() {
                       onChange={(e) =>
                         setFilters({ ...filters, maxKM: e.target.value })
                       }
-                      className="border border-gray-300 w-3/4 rounded-md p-2 text-white"
+                      className="border border-gray-300 w-3/4 rounded-md p-2 text-black"
                     />
                   </div>
                 </div>
@@ -320,7 +330,7 @@ export default function Aside() {
                     onChange={(e) =>
                       setFilters({ ...filters, mark: e.target.value })
                     }
-                    className="border w-3/4 border-gray-300 rounded-md p-2 text-white"
+                    className="border w-3/4 border-gray-300 rounded-md p-2 text-black"
                   />
                 </div>
               </Disclosure.Panel>
@@ -355,7 +365,7 @@ export default function Aside() {
                     onChange={(e) =>
                       setFilters({ ...filters, model: e.target.value })
                     }
-                    className="border w-3/4 border-gray-300 rounded-md p-2 text-white"
+                    className="border w-3/4 border-gray-300 rounded-md p-2 text-black"
                   />
                 </div>
               </Disclosure.Panel>
@@ -390,7 +400,7 @@ export default function Aside() {
                       onChange={(e) =>
                         setFilters({ ...filters, since: e.target.value })
                       }
-                      className="border w-3/4 border-gray-300 rounded-md p-2 text-white"
+                      className="border w-3/4 border-gray-300 rounded-md p-2 text-black"
                     />
                   </div>
                   <div className="flex flex-col items-center">
@@ -406,7 +416,7 @@ export default function Aside() {
                       onChange={(e) =>
                         setFilters({ ...filters, to: e.target.value })
                       }
-                      className="border w-3/4 border-gray-300 rounded-md p-2 text-white"
+                      className="border w-3/4 border-gray-300 rounded-md p-2 text-black"
                     />
                   </div>
                 </div>
@@ -441,7 +451,7 @@ export default function Aside() {
                     onChange={(e) =>
                       setFilters({ ...filters, doors: e.target.value })
                     }
-                    className="border w-3/4 border-gray-300 rounded-md p-2 text-white"
+                    className="border w-3/4 border-gray-300 rounded-md p-2 text-black"
                   />
                 </div>
               </Disclosure.Panel>
@@ -471,7 +481,7 @@ export default function Aside() {
                     onChange={(e) =>
                       setFilters({ ...filters, motor: e.target.value })
                     }
-                    className="border w-3/4 border-gray-300 rounded-md p-2 text-white"
+                    className="border w-3/4 border-gray-300 rounded-md p-2 text-black"
                   >
                     <option value="">{t("select")}</option>
                     <option value="manual">{t("manual")}</option>
@@ -505,7 +515,7 @@ export default function Aside() {
                     onChange={(e) =>
                       setFilters({ ...filters, location: e.target.value })
                     }
-                    className="border w-3/4 border-gray-300 rounded-md p-2 text-white"
+                    className="border w-3/4 border-gray-300 rounded-md p-2 text-black"
                   >
                     <option value="">{t("select")}</option>
                     {cities.map((city, index) => (
@@ -543,7 +553,7 @@ export default function Aside() {
                     onChange={(e) =>
                       setFilters({ ...filters, color: e.target.value })
                     }
-                    className="border w-3/4 border-gray-300 rounded-md p-2 text-white"
+                    className="border w-3/4 border-gray-300 rounded-md p-2 text-black"
                   >
                     <option value="">{t("select")}</option>
                     <option value="Red">{t("red")}</option>
@@ -586,7 +596,7 @@ export default function Aside() {
                     onChange={(e) =>
                       setFilters({ ...filters, bodywork: e.target.value })
                     }
-                    className="border w-3/4 border-gray-300 rounded-md p-2 text-white"
+                    className="border w-3/4 border-gray-300 rounded-md p-2 text-black"
                   >
                     <option value="">{t("select")}</option>
                     <option value="Berlina">Berlina</option>
