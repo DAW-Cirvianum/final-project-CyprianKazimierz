@@ -51,7 +51,7 @@ This project is about a second-hand vehicle sales platform. It is divided into t
 1. Clone the repository.
 2. Open the terminal in the main folder or move to the cloned folder.
 3. Open or run Docker.
-4. In the repository you will modify the file .env.example to .env and change the content of:
+4. In the "/server" folder, you will modify the file .env.example to .env and change the content of:
     ```sh
     DB_CONNECTION=bbdd that you use  example mysql
     DB_HOST=127.0.0.1 or the service of yhe bbdd that you will use example mysql
@@ -70,7 +70,7 @@ This project is about a second-hand vehicle sales platform. It is divided into t
     MAIL_FROM_ADDRESS="your email or email of the sender"
     MAIL_FROM_NAME="${APP_NAME}"
     ```
-5. To start the project you will run:
+5. To start the project you will run (in the main folder):
     ```sh
     npm run appUp
     ```
@@ -86,7 +86,7 @@ This project is about a second-hand vehicle sales platform. It is divided into t
 
 ## Data Base
 My data base schema is like this (only table chat and menssages are not done):
-![Image of schema of Database](server/storage/app/public/Cyprian_diagrama_Projecte_final.jpeg)
+![Image of schema of Database](https://drive.google.com/file/d/12OkNClj6Uh-QHhXXxQScoHMs0jN57KH_/view?usp=drive_link)
 
 ## Video 
 [Link to see the project](https://drive.google.com/drive/folders/1liz3iEzPUEjets-swRE8FS90K6aOViVi?usp=drive_link)
