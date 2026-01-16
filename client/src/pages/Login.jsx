@@ -67,7 +67,7 @@ export default function Login() {
   return (
     <div className="container mx-auto my-auto flex justify-center ">
       <title>Sing In</title>
-      <form className="userForm w-96 h-auto p-14 " onSubmit={handleSubmit}>
+      <form className="userForm w-96 h-auto p-14 " onSubmit={handleSubmit}  aria-labelledby="Login">
         <h2 className="text-color">{t("sing in")}</h2>
         <div className="mb-4 flex flex-col">
           <label htmlFor="login" className="text-color">{t("userEmail")}:</label>

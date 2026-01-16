@@ -9,7 +9,7 @@ export default function NotFound() {
   const { t, i18n } = useTranslation();
 
   return (
-    <div className='container mx-auto my-auto text-center' style={{ width: "50rem", height: "auto" }}>
+    <div className='container mx-auto my-auto text-center' style={{ width: "50rem", height: "auto" }}   aria-labelledby="Not Found Page">
       <title>Not Found</title>
       <h1>404 - {t("pageNotFound")}</h1>
       <p>{t("textNotFound")}.</p>

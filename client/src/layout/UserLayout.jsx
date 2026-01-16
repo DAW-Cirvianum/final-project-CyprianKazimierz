@@ -20,11 +20,11 @@ export default function UserLayout() {
   return (
     <div className="layout">
       <title>User Layout</title>
-      <header className="headerLayout header w-full flex flex-wrap justify-between items-center gap-4 px-4">
-        <button onClick={() => navigate(-1)} className="bg-white text-black">
-                      <IoChevronBack />
+      <header className="headerLayout header w-full flex flex-wrap justify-between items-center gap-4 px-4" role="banner">
+        <button onClick={() => navigate(-1)} className="bg-white text-black"  aria-label="goBack">
+                      <IoChevronBack  aria-hidden="true"/>
         </button>
-        <nav className="relative flex items-center gap-20 w-auto">
+        <nav className="relative flex items-center gap-20 w-auto" aria-label="userNavigation">
           <Link className="hidden md:block" to="/favoritePosts">{t("favoritePosts")}</Link>
           <ThemeToggle/>
           <LanguageSelect/>
@@ -34,7 +34,9 @@ export default function UserLayout() {
           {/* Dropdown button */}
           <button
             onClick={() => setOpen(!open)}
-            className="inline-flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 rounded px-4 py-2"
+            className="inline-flex items-center justify-center text-white bg-blue-600 hover:bg-blue-700 rounded px-4 py-2" aria-expanded={open}
+          aria-haspopup="true"
+          aria-controls="user-dropdown"
           >
             {t("menu")}
             <svg
@@ -49,16 +51,17 @@ export default function UserLayout() {
 
           {open && (
             <div className="absolute right-0 top-12 z-10 w-44 bg-white border rounded shadow">
-              <ul className="text-sm">
-                <li>
-                  <Link className="block px-4 py-2 hover:bg-gray-100" to="/profile">
+              <ul className="text-sm"  role="menu">
+                <li role="none">
+                  <Link className="block px-4 py-2 hover:bg-gray-100" to="/profile"  role="menuitem">
                    {t("profile")}
                   </Link>
                 </li>
-                <li>
+                <li role="none">
                   <button
                     onClick={logout}
                     className="w-full text-left px-4 py-2 hover:bg-gray-400 text-color"
+                     role="menuitem"
                   >
                     {t("sing out")}
                   </button>
@@ -69,7 +72,7 @@ export default function UserLayout() {
 
         </nav>
       </header>
-      {isHome ? (<Aside className="sidebar hidden md:block"/>): (<header className="sidebar hidden md:block"></header>)}
+      {isHome ? (<Aside className="sidebar hidden md:block" role="complementary" />): (<header className="sidebar hidden md:block"></header>)}
       <Outlet className="main" />
       <Footer className="footer"/>
     </div>

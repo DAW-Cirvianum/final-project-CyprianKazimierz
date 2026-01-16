@@ -10,7 +10,7 @@ export default function LanguageSelect(){
         i18n.changeLanguage(e.target.value);
     }
     return(
-        <select name="lang" id="lang" value={i18n.language} onChange={handleChange} className="rounded-xl w-20 text-center text-black">
+        <select name="lang" id="lang" value={i18n.language} onChange={handleChange} className="rounded-xl w-20 text-center text-black"  aria-label={t("changeLanguage")}>
             <option value="en">en</option>
             <option value="ca">ca</option>
             <option value="es">es</option>

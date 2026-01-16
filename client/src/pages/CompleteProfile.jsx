@@ -74,7 +74,7 @@ export default function CompleteProfile() {
   return (
     <div className="container mx-auto my-10 flex justify-center">
       <title>Complete Profile</title>
-      <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}>
+      <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}   aria-labelledby="Complete Profile">
         <h2>{t("completeProfile")}</h2>
 
         {(!user?.name || user.name.trim() === "") && (

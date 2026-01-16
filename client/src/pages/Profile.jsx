@@ -85,7 +85,7 @@ export default function Profile() {
   return (
     <div className="container mx-auto my-10 flex justify-center">
       <title>Edit Profile</title>
-      <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}>
+      <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}   aria-labelledby="Edit Profile">
         <h2>{t("profile")}</h2>
 
         <div className="mb-4 flex flex-col">

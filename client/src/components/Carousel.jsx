@@ -24,7 +24,7 @@ export default function Carousel({ images }) {
           <div key={index} className="w-full h-full">
             <img
               src={"http://localhost/storage/" + img.path}
-              alt={`Slide ${index + 1}`}
+              alt={`Slide  image ${index + 1}`}
               className="w-full h-full object-cover rounded-lg"
             />
           </div>

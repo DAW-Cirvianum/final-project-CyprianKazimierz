@@ -6,7 +6,7 @@ export default function Verify() {
     return (
         <>
         <title>Verify Mail</title>
-        <p className="text-center my-4">{t("verifyEmail")}</p>
+        <p className="text-center my-4" aria-labelledby="Verification Mail message">{t("verifyEmail")}</p>
         </>
     );
 }

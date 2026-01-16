@@ -80,6 +80,7 @@ export default function AddPost() {
       <form
         className="bg-white text-black w-full max-w-4xl p-8 rounded-xl shadow-md space-y-6"
         onSubmit={handleSubmit}
+          aria-labelledby="Add post"
       >
         <h2 className="text-2xl font-bold text-center mb-6">{t("createPostTitle")}</h2>
 

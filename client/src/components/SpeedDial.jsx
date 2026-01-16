@@ -10,12 +10,12 @@ export default function SpeedDial() {
 
   return (
     <>
-    {isLogged() && (<div className="fixed right-6 bottom-6 flex flex-col items-center z-50">
+    {isLogged() && (<div className="fixed right-6 bottom-6 flex flex-col items-center z-50" >
       {/* Second button to add post */}
      {open && (
       <>
-        <div className="mb-4 space-y-2">
-          <button className="flex items-center justify-center w-[52px] h-[52px] bg-blue-200 rounded-full shadow-lg" onClick={()=>navigate("/addPost")}>
+        <div className="mb-4 space-y-2"  role="menu" aria-hidden={!open}>
+          <button className="flex items-center justify-center w-[52px] h-[52px] bg-blue-200 rounded-full shadow-lg" onClick={()=>navigate("/addPost")}  role="menuitem">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -34,7 +34,7 @@ export default function SpeedDial() {
           </button>
         </div>
          <div className="mb-4 space-y-2 md:hidden">
-          <button className="flex items-center justify-center w-[52px] h-[52px] bg-blue-200 rounded-full shadow-lg" onClick={()=>navigate("/favoritePosts")}>
+          <button className="flex items-center justify-center w-[52px] h-[52px] bg-blue-200 rounded-full shadow-lg" onClick={()=>navigate("/favoritePosts")}  role="menuitem">
            <FaHeart className="text-red-500"/>
           </button>
         </div>
@@ -43,6 +43,9 @@ export default function SpeedDial() {
       {/* Button to Show all options */}
       <button
         onClick={() => setOpen(!open)}
+          aria-expanded={open}
+    aria-haspopup="true"
+    aria-label={open ? t("closeMenu") : t("openMenu")}
         className="flex items-center justify-center text-white bg-blue-600 rounded-full w-14 h-14 shadow-lg hover:bg-blue-700 focus:outline-none"
       >
         +

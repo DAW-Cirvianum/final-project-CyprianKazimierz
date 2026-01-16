@@ -77,7 +77,7 @@ export default function Register() {
   return (
     <div className="container mx-auto my-10 flex justify-center">
       <title>Sing Up</title>
-      <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}>
+      <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}   aria-labelledby="Register">
         <h2 className="text-color">{t("sing up")}</h2>
         {error && <div style={{ color: "red" }}>{error}</div>}
 

@@ -68,7 +68,7 @@ export default function Main() {
      <SpeedDial/>
 
       {/*Card of Posts */}
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6" role="feed" aria-busy="false">
         {posts.map((post) => (
           <div
             key={post.id}
@@ -92,7 +92,7 @@ export default function Main() {
                 <span>{`${post.location} - ${post.year} - ${post.km}km - ${post.fuel}`}</span>
                 { (isLogged()) ? (<div className="gap-2 flex flex-row">
                   <div>
-                      <button onClick={() => toggleFavorite(post.id)} className="bg-white border-0 outline-none focus:outline-none">
+                      <button onClick={() => toggleFavorite(post.id)} className="bg-white border-0 outline-none focus:outline-none" aria-label={isFavorite(post.id) ? t("removeFav") : t("addFav")}>
                         {isFavorite(post.id) ? (
                           <FaHeart className="text-red-500 text-2xl" />
                         ) : (
@@ -101,7 +101,7 @@ export default function Main() {
                          
                       </button>
                   </div>
-                  <div className="flex items-center"><button onClick={() => handleToggleLike(post.id)} className="bg-white border-0 outline-none focus:outline-none">
+                  <div className="flex items-center"><button onClick={() => handleToggleLike(post.id)} className="bg-white border-0 outline-none focus:outline-none" aria-label={t("like")}>
                         {isLikes(post.id) ? (
                           <BiLike className="text-blue-500 text-2xl" />
                           
@@ -115,10 +115,10 @@ export default function Main() {
                
               </div>
               {isLogged() && post.user_id == user.id &&(<div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
-              <button className="bg-transparent text-black" onClick={()=> navigate(`editPost/${post.id}`)} >
+              <button className="bg-transparent text-black" onClick={()=> navigate(`editPost/${post.id}`)} aria-label={t("edit")}>
                <MdModeEditOutline/>
                </button>
-               <button className="bg-transparent text-black" onClick={()=>handleDelete(post.id)}><FaRegTrashCan/></button>
+               <button className="bg-transparent text-black" onClick={()=>handleDelete(post.id)} aria-label={t("delete")}><FaRegTrashCan/></button>
                </div>)}
             </div>
           </div>
