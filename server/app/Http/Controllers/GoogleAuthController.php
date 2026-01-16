@@ -11,11 +11,22 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Throwable;
 
+/**
+ * @OA\Tag(
+ *     name="Auth",
+ *     description="Endpoints de autenticación"
+ * )
+ */
 class GoogleAuthController extends Controller
 {
     /**
-     * Redirect the user to Google’s OAuth page.
-     */
+ * @OA\Get(
+ *     path="/api/auth/google/redirect",
+ *     summary="Redirect user to Google OAuth",
+ *     tags={"Auth"},
+ *     description="Redirects the user to Google login. No JSON response."
+ * )
+ */
      public function redirect()
     {
         return Socialite::driver('google')
@@ -24,10 +35,13 @@ class GoogleAuthController extends Controller
     }
 
     /**
-     * Function to return the user from google
-     * Summary of callback
-     * @return \Illuminate\Http\RedirectResponse
-     */
+ * @OA\Get(
+ *     path="/api/auth/google/callback",
+ *     summary="Google OAuth callback",
+ *     tags={"Auth"},
+ *     description="Callback endpoint for Google OAuth login"
+ * )
+ */
     public function callback()
     {
         try {

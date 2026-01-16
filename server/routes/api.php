@@ -10,6 +10,7 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RecoveryController;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 
 //Sing in and sing up
@@ -39,8 +40,17 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post("/logout",[AuthController::class,'logout']);
     Route::put("/profile",[AuthController::class,'profile']);
     Route::get("/user",function(Request $request){
+        $user = $request->user();
+
+        $token = $user->createToken('api-token',['*']);
+        $token->accessToken->expires_at = Carbon::now()->addMinutes(10);
+        $token->accessToken->save();
+
+        $plainTextToken = $token->plainTextToken;
+
         return response()->json([
-        'user' => $request->user()
+        'user' => $user,
+        'token' => $plainTextToken
     ]);
     });
     Route::patch("/completProfile",[AuthController::class,'completeProfile']);

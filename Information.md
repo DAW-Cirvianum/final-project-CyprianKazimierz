@@ -44,6 +44,7 @@ This project is about a second-hand vehicle sales platform. It is divided into t
         ```text
         /mnt/c/Program Files/nodejs/npm.cmd or /mnt/c/Program Files/nodejs//npm
         ```
+3. Have Node JS installed if not use this guide [guide](https://nodejs.org/en/download), linux users will use "nvm whit "npm".
             
 
 ## Instructions for start up
@@ -89,6 +90,9 @@ My data base schema is like this (only table chat and menssages are not done):
 
 ## Video 
 [Link to see the project](https://drive.google.com/drive/folders/1liz3iEzPUEjets-swRE8FS90K6aOViVi?usp=drive_link)
+
+## Api Documentation Swagger
+To see the api documentation you will have to search in the browser "http://localhost/api/documentation"
 
 
 ## Libraries

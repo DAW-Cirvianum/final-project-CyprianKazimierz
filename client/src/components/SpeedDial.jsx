@@ -45,7 +45,7 @@ export default function SpeedDial() {
         onClick={() => setOpen(!open)}
           aria-expanded={open}
     aria-haspopup="true"
-    aria-label={open ? t("closeMenu") : t("openMenu")}
+    aria-label={open ? "closeMenu" : "openMenu"}
         className="flex items-center justify-center text-white bg-blue-600 rounded-full w-14 h-14 shadow-lg hover:bg-blue-700 focus:outline-none"
       >
         +

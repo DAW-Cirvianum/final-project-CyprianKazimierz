@@ -56,7 +56,7 @@ export default function AddPost() {
         });
         return;
       }
-      showError("You will have intruduce something wrong, pleas check and try again");
+      showError("Token expires");
       return;
     }
 
@@ -67,7 +67,7 @@ export default function AddPost() {
       closeOnClick: true,
       draggable: true,
     });
-    // one time is added we get all first 5 posts, because the new will stored at the begining
+    
     await cars(1);
     setPage(1);
     

@@ -20,7 +20,7 @@
         <aside class="bg-gray-800 text-white w-64 p-4">
             <ul class="space-y-2">
                 <li><a href="{{ route("admin.posts") }}" class="hover:text-gray-300">Posts</a></li>
-                <li><a href="{{ url("/users") }}" class="hover:text-gray-300">Users</a></li>
+                <li><a href="{{ route("admin.users") }}" class="hover:text-gray-300">Users</a></li>
             </ul>
         </aside>
 

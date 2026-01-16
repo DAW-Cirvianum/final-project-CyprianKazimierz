@@ -6,14 +6,34 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *     name="Likes",
+ *     description="Endpoints de autenticación"
+ * )
+ */
 class LikeController extends Controller
 {
-/**
- * Function to get All likes of users of the posts
- * Summary of index
- * @param Request $request
- * @return \Illuminate\Http\JsonResponse
- */
+ /**
+     * @OA\Get(
+     *     path="/api/likes",
+     *     summary="Get all liked post IDs of authenticated user",
+     *     tags={"Likes"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of liked post IDs",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     )
+     * )
+     */
 public function index(Request $request)
 {
     return response()->json(
@@ -23,13 +43,33 @@ public function index(Request $request)
     );
 }
 
-/**
- * Function to toggle the likes of user
- * Summary of toggle
- * @param Request $request
- * @param Post $post
- * @return \Illuminate\Http\JsonResponse
- */
+ /**
+     * @OA\Post(
+     *     path="/api/toggleLikes/{post}",
+     *     summary="Toggle like status of a post for authenticated user",
+     *     tags={"Likes"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="postId",
+     *         in="path",
+     *         description="ID of the post to toggle like",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Like status toggled",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="liked", type="boolean", example=true),
+     *             @OA\Property(property="likes_count", type="integer", example=5)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     )
+     * )
+     */
 public function toggle(Request $request, Post $post)
     {
         //get the user
@@ -48,19 +88,4 @@ public function toggle(Request $request, Post $post)
             'likes_count' => $post->liked()->count()
         ]);
     }
-
-    /**
-     * Function to get all likes of a post
-     * Summary of getNumLikes
-     * @param Request $request
-     * @param Post $post
-     * @return \Illuminate\Http\JsonResponse
-     */
-    // public function getNumLikes(Request $request,Post $post) {
-
-    //     $postsLikes = $post->liked()->count();
-    //     return response()->json([
-    //         'likes'=>$postsLikes
-    //     ]);
-    // }
 }

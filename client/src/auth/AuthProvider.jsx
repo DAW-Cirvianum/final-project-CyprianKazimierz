@@ -180,7 +180,7 @@ export function AuthProvider({ children }) {
    * @returns if all good return the user if not {ok:false}
    */
   const setTokenFromGoogle = async (token) => {
-    localStorage.setItem("token", token);
+   
 
     const res = await fetch("http://localhost/api/user", {
       headers: {
@@ -196,12 +196,13 @@ export function AuthProvider({ children }) {
 
     const data = await res.json();
     localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("token",data.token);
     log(
       {
         status: res.status,
         message: data.error ?? "User has update profile (google sing in)",
       },
-      token
+      getToken()
     );
     setUser(data.user);
     await loadFavorites();
@@ -233,6 +234,7 @@ export function AuthProvider({ children }) {
           getToken()
         );
         let errorReturn = await response.json();
+        localStorage.setItem("token",errorReturn.token);
         return {
           ok: false,
           status: response.status,
@@ -279,7 +281,6 @@ export function AuthProvider({ children }) {
         return { ok: false, status: response.status };
       }
     } catch (error) {
-      console.log(error);
     }
   };
 

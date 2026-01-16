@@ -8,13 +8,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @OA\Tag(
+ *     name="Posts",
+ *     description="Endpoints relacionados con posts"
+ * )
+ */
 class PostController extends Controller
 {
 /**
- * Function to get posts and paginate it
- * Summary of index
- * @return \Illuminate\Http\JsonResponse
- */
+     * List posts paginated
+     * 
+     * @OA\Get(
+     *     path="/api/posts",
+     *     summary="Get all posts paginated",
+     *     tags={"Posts"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of posts",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Post"))
+     *     )
+     * )
+     */
 public function index()
     {
          $posts = Post::with([
@@ -29,10 +44,24 @@ public function index()
     }
 
     /**
-     * Function to get the post by the id
-     * Summary of details
-     * @param Post $post
-     * @return \Illuminate\Http\JsonResponse
+     * Get post details
+     * 
+     * @OA\Get(
+     *     path="/api/details/{post}",
+     *     summary="Get a post by ID",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="post",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post details",
+     *         @OA\JsonContent(ref="#/components/schemas/Post")
+     *     )
+     * )
      */
     public function details(Post $post)
     {
@@ -45,11 +74,23 @@ public function index()
     }
 
     /**
-     * Function to delete a post
-     * Summary of delete
-     * @param Request $request
-     * @param Post $post
-     * @return \Illuminate\Http\JsonResponse
+     * Delete post
+     * 
+     * @OA\Delete(
+     *     path="/api/posts/delete/{post}",
+     *     summary="Delete a post",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="post",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post deleted"
+     *     )
+     * )
      */
     public function delete(Request $request,Post $post){
           if ($post->user_id !== $request->user()->id) {
@@ -65,12 +106,24 @@ public function index()
         ]);
     }
 
-    /**
-     * Function to change data of the post
-     * Summary of editPost
-     * @param Request $request
-     * @param Post $post
-     * @return \Illuminate\Http\JsonResponse
+       /**
+     * Edit post
+     * 
+     * @OA\Put(
+     *     path="/api/editPost/{post}",
+     *     summary="Edit a post",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="post",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post updated"
+     *     )
+     * )
      */
     public function editPost(Request $request, Post $post)
 {
@@ -152,12 +205,22 @@ public function index()
     ]);
 }
 
-/**
- * Function to get specified posts
- * Summary of filterPost
- * @param Request $request
- * @return \Illuminate\Http\JsonResponse
- */
+  /**
+     * Filter posts
+     * 
+     * @OA\Get(
+     *     path="/api/filterPosts",
+     *     summary="Filter posts by various criteria",
+     *     tags={"Posts"},
+     *     @OA\Parameter(name="minPrice", in="query", required=false, @OA\Schema(type="number")),
+     *     @OA\Parameter(name="maxPrice", in="query", required=false, @OA\Schema(type="number")),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Filtered posts",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Post"))
+     *     )
+     * )
+     */
 public function filterPost(Request $request){
      $query = Post::query();
 
@@ -220,10 +283,99 @@ public function filterPost(Request $request){
     return response()->json(
         $query
             ->with('images')
+            ->withCount('liked')
             ->orderBy('created_at', 'desc')
             ->paginate(5)
     );
 
+}
+
+/**
+ * Create new post
+ * 
+ * @OA\Post(
+ *     path="/api/posts",
+ *     summary="Create a new post",
+ *     tags={"Posts"},
+ *     security={{"sanctum":{}}},
+ *     @OA\Response(
+ *         response=201,
+ *         description="Post created successfully"
+ *     )
+ * )
+ */
+public function add(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'title' => 'required|string|max:255',
+        'description' => 'required|string|max:255',
+        'km' => 'required|integer|min:0|max:999999',
+        'mark' => 'required|string|max:100',
+        'model' => 'required|string|max:100',
+        'motor' => 'required|in:manual,automatic',
+        'year' => 'required|integer|min:1980|max:' . date('Y'),
+        'location' => 'required|string|max:100',
+        'color' => 'required|string|max:50',
+        'price' => 'required|numeric|min:0|max:999999.99',
+        'bodywork' => 'required|string|max:50',
+        'fuel' => 'required|string|max:50',
+        'doors' => 'required|integer|min:1|max:5',
+        'images' => 'nullable|array|max:4',
+        'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    $post = Post::create([
+        'user_id' => $request->user()->id,
+        'title' => $request->title,
+        'description' => $request->description,
+        'km' => $request->km,
+        'mark' => $request->mark,
+        'model' => $request->model,
+        'motor' => $request->motor,
+        'year' => $request->year,
+        'location' => $request->location,
+        'color' => $request->color,
+        'price' => $request->price,
+        'bodywork' => $request->bodywork,
+        'fuel' => $request->fuel,
+        'doors' => $request->doors,
+    ]);
+
+    if ($request->hasFile('images')) {
+        $order = 0;
+
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('posts_images', 'public');
+
+            $post->images()->create([
+                'path' => $path,
+                'is_main' => $order === 0,
+                'order' => $order++,
+            ]);
+        }
+    }
+
+    if ($post->images()->count() === 0) {
+        $post->images()->create([
+            'path' => 'posts_images/noImage.png',
+            'is_main' => true,
+            'order' => 0,
+        ]);
+    }
+
+    return response()->json([
+        'message' => 'Post created successfully',
+        'post' => $post->load([
+            'images:id,post_id,path,is_main',
+            'user:id,name,avatar'
+        ])
+    ], 201);
 }
 
 //Admin

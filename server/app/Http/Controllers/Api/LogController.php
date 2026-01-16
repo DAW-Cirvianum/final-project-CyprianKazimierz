@@ -7,13 +7,50 @@ use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @OA\Tag(
+ *     name="Logs",
+ *     description="Endpoints de autenticación"
+ * )
+ */
 class LogController extends Controller
 {
     /**
-     * Function to store log in db
-     * Summary of add
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/api/log",
+     *     summary="Store a new log in the database",
+     *     tags={"Logs"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"status","message"},
+     *             @OA\Property(property="status", type="integer", description="Status code of the log", minimum=0, maximum=255, example=200),
+     *             @OA\Property(property="message", type="string", description="Log message", example="User created a new post")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Log created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Log has been created")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation error"),
+     *             @OA\Property(property="error", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     )
+     * )
      */
     public function add(Request $request)
     {   

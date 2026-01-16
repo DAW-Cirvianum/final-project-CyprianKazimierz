@@ -14,6 +14,8 @@ export default function GoogleCallback() {
   useEffect(() => {
     const token = params.get("token");
 
+    localStorage.setItem("token",token);
+
     if (!token) {
       navigate("/home/login");
       return;
@@ -23,7 +25,7 @@ export default function GoogleCallback() {
     setTokenFromGoogle(token)
       .then((user) => {
 
-        if (!user.born_date) {
+        if (!user.born_date || !user.surname) {
           navigate("/complete-profile");
         } else {
           navigate("/");

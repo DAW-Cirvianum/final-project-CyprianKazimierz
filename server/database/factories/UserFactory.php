@@ -30,7 +30,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('112233'),
-            'born_date'=>fake()->date('d/m/Y'),
+            'born_date'=>fake()->date('Y-m-d'),
             'avatar'=>"avatars/default.png",
             'role'=>fake()->randomElement(['user'])
         ];

@@ -25,11 +25,11 @@ export default function UserLayout() {
                       <IoChevronBack  aria-hidden="true"/>
         </button>
         <nav className="relative flex items-center gap-20 w-auto" aria-label="userNavigation">
-          <Link className="hidden md:block" to="/favoritePosts">{t("favoritePosts")}</Link>
+          <Link className="hidden md:block text-blue-200" to="/favoritePosts">{t("favoritePosts")}</Link>
           <ThemeToggle/>
           <LanguageSelect/>
           <img src={user.avatar} alt="Avatar of user" className="avatar" />
-          <p className="text-color">{user.username}</p>
+          <p className="text-white">{user.username}</p>
 
           {/* Dropdown button */}
           <button

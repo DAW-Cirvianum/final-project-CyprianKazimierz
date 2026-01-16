@@ -73,13 +73,13 @@ export default function CompleteProfile() {
 
   return (
     <div className="container mx-auto my-10 flex justify-center">
-      <title>Complete Profile</title>
+      <title className="dark:text-white">Complete Profile</title>
       <form className="userForm w-96 h-auto p-14" onSubmit={handleSubmit}   aria-labelledby="Complete Profile">
-        <h2>{t("completeProfile")}</h2>
+        <h2 className="text-black dark:text-white">{t("completeProfile")}</h2>
 
         {(!user?.name || user.name.trim() === "") && (
           <div className="mb-4 flex flex-col">
-            <label htmlFor="name">{t("name")}:</label>
+            <label htmlFor="name" className="text-white">{t("name")}:</label>
             <input
               type="text"
               name="name"
@@ -95,7 +95,7 @@ export default function CompleteProfile() {
           </div>
         )}
         {(!user?.surname) && (<div className="mb-4 flex flex-col">
-          <label htmlFor="surname">{t("surname")}:</label>
+          <label htmlFor="surname" className="text-white">{t("surname")}:</label>
           <input
             type="text"
             name="surname"
@@ -110,7 +110,7 @@ export default function CompleteProfile() {
           />
         </div>)}
         {(!user?.username) && (<div className="mb-4 flex flex-col">
-          <label htmlFor="username">{t("username")}:</label>
+          <label htmlFor="username" className="text-white">{t("username")}:</label>
           <input
             type="text"
             placeholder={t("username")}
@@ -124,7 +124,7 @@ export default function CompleteProfile() {
           />
         </div>)}
         {(!user?.born_date) && (<div className="mb-4 flex flex-col">
-          <label htmlFor="born_date">{t("borndate")}:</label>
+          <label htmlFor="born_date" className="text-white">{t("borndate")}:</label>
           <input
             type="date"
             id="born_date"
@@ -137,7 +137,7 @@ export default function CompleteProfile() {
           />
         </div>)}
         {(!user?.avatar) && (<div className="mb-4 flex flex-col">
-          <label htmlFor="avatar">{t("avatar")}:</label>
+          <label htmlFor="avatar" className="text-white">{t("avatar")}:</label>
           <input
             type="file"
             id="avatar"

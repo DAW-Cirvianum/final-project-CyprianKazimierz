@@ -63,10 +63,10 @@ export default function Aside() {
           onClick={() => setOpenMobile(true)}
           aria-expanded={openMobile}
           aria-controls="mobile-filter-dialog"
-          aria-label={t("openFilters")}
+          aria-label="openFilters"
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold p-3 rounded-full shadow-lg"
         >
-          <FunnelIcon className="w-5 h-5" aria-hidden="true" aria-label={t("close")}/>
+          <FunnelIcon className="w-5 h-5" aria-hidden="true" aria-label="close"/>
           {t("filtres")}
         </button>
       </div>
@@ -189,7 +189,7 @@ export default function Aside() {
 
       {/* Sidebar desktop */}
       <div className="hidden md:block w-64">
-        <form onSubmit={handleSubmit} role="search" aria-labelledby="filter-title">
+        <form onSubmit={handleSubmit} role="search">
           {/* PRICE */}
           <Disclosure as="div" className="w-full border border-gray-800 p-0">
             <Disclosure.Button className="flex w-full justify-center items-center font-medium focus:outline-none  hover:border-gray-800 cursor-default rounded-none" aria-expanded={open}>

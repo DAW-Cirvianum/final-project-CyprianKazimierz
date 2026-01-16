@@ -29,18 +29,18 @@ export default function GuestLayout() {
     <div className="layout">
       {/*HEADER */}
       <header className="headerLayout header flex items-center justify-between " role="banner">
-          <button onClick={() => navigate(-1)} className="bg-white text-black"  aria-label={t("back")}>
+          <button onClick={() => navigate(-1)} className="bg-white text-black"  aria-label="back">
                       <IoChevronBack />
                     </button>
-        <nav className="w-full" aria-label={t("mainNavigation")}>
+        <nav className="w-full" aria-label="mainNavigation">
           <ThemeToggle/>
           <LanguageSelect/>
-          <Link to="/home/login" className="text-lg text-color"   >{t("sing in")}</Link>
-          <Link to="/home/register" className="text-lg text-color">{t("sing up")}</Link>
+          <Link to="/home/login" className="text-xl text-blue-200"   >{t("sing in")}</Link>
+          <Link to="/home/register" className="text-xl text-blue-200">{t("sing up")}</Link>
         </nav>
       </header>
       {/*SideBar */}
-        {isLogin || isRegister || !isHome ? <header className="sidebar hidden md:block" aria-hidden="true"></header> : <Aside className="sidebar hidden md:block" role="complementary" aria-label={t("filters")} />}
+        {isLogin || isRegister || !isHome ? <header className="sidebar hidden md:block" aria-hidden="true"></header> : <Aside className="sidebar hidden md:block" role="complementary" aria-label="filters" />}
         {/* Main */}
         <Outlet className="main" element={ <Main/>}/>
         {/* Footer */}

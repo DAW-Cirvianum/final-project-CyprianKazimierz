@@ -10,15 +10,26 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use OpenApi\Annotations as OA;
 
+/**
+* @OA\Info(title="API users", version="1.0")
+*
+* @OA\Server(url="http://localhost")
+*/
 class AuthController extends Controller
 {
-/**
- * Function to Create user
- * Summary of register
- * @param Request $request
- * @return \Illuminate\Http\JsonResponse
- */
+  /**
+     * Register a new user (mínimo Swagger)
+     * 
+     * @OA\Post(
+     *     path="/api/register",
+     *     tags={"Auth"},
+     *     summary="Crea un usuario",
+     *     @OA\Response(response=201, description="Usuario creado"),
+     *     @OA\Response(response=422, description="Error de validación")
+     * )
+     */
 public function register(Request $request)
     {
         //Validate data
@@ -73,11 +84,16 @@ public function register(Request $request)
         ], 201);
     }
 
-    /**
-     * Function to Sing in to app 
-     * Summary of login
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+   /**
+     * Login user (mínimo Swagger)
+     * 
+     * @OA\Post(
+     *     path="/api/login",
+     *     tags={"Auth"},
+     *     summary="Inicia sesión",
+     *     @OA\Response(response=200, description="Login correcto"),
+     *     @OA\Response(response=401, description="Usuario no encontrado")
+     * )
      */
     public function login(Request $request)
     {
@@ -152,10 +168,15 @@ public function register(Request $request)
     }
    
     /**
-     * Function to Sing out
-     * Summary of logout
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * Logout user (mínimo Swagger)
+     * 
+     * @OA\Post(
+     *     path="/api/logout",
+     *     tags={"Auth"},
+     *     summary="Cierra sesión",
+     *     @OA\Response(response=200, description="Logout correcto"),
+     *     @OA\Response(response=401, description="No autenticado")
+     * )
      */
     public function logout(Request $request)
     {
@@ -180,10 +201,29 @@ public function register(Request $request)
     }
 
     /**
-     * Function to Change the data of the user
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+ * Update authenticated user's profile
+ *
+ * @OA\Put(
+ *     path="/api/profile",
+ *     summary="Update user's profile",
+ *     tags={"Auth"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             @OA\Property(property="name", type="string"),
+ *             @OA\Property(property="surname", type="string"),
+ *             @OA\Property(property="username", type="string"),
+ *             @OA\Property(property="email", type="string", format="email"),
+ *             @OA\Property(property="password", type="string", format="password"),
+ *             @OA\Property(property="password_confirmation", type="string", format="password"),
+ *             @OA\Property(property="born_date", type="string", format="date"),
+ *             @OA\Property(property="avatar", type="string", format="binary")
+ *         )
+ *     ),
+ *     @OA\Response(response=200, description="Profile updated"),
+ *     @OA\Response(response=422, description="Validation error")
+ * )
+ */
     public function profile(Request $request)
     {
         //get user
@@ -250,11 +290,25 @@ public function register(Request $request)
     }
 
     /**
-     * Function to complete the user
-     * Summary of completeProfile
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+ * Complete user's profile with optional fields
+ *
+ * @OA\Put(
+ *     path="/api/complete-profile",
+ *     summary="Complete user's profile",
+ *     tags={"Auth"},
+ *     @OA\RequestBody(
+ *         required=false,
+ *         @OA\JsonContent(
+ *             @OA\Property(property="name", type="string"),
+ *             @OA\Property(property="surname", type="string"),
+ *             @OA\Property(property="born_date", type="string", format="date"),
+ *             @OA\Property(property="avatar", type="string", format="binary")
+ *         )
+ *     ),
+ *     @OA\Response(response=200, description="Profile completed"),
+ *     @OA\Response(response=422, description="Validation error")
+ * )
+ */
     public function completeProfile(Request $request)
     {
         //get the user
@@ -288,8 +342,16 @@ public function register(Request $request)
         //update the user in bbdd
         $user->update($validated);
 
+        $token = $user->createToken('api-token',['*']);
+        $token->accessToken->expires_at = Carbon::now()->addMinutes(10);
+        $token->accessToken->save();
+
+        $plainTextToken = $token->plainTextToken;
+
+
         return response()->json([
             'status' => true,
+            'token' => $plainTextToken,
             'user' => [
                 'name' => $user->name,
                 'surname' => $user->surname,
@@ -303,9 +365,5 @@ public function register(Request $request)
         ], 200);
     }
 
-
-    //api
-    public function getUsers(){
-        
-    }
+   
 }
