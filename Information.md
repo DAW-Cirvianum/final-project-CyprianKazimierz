@@ -83,6 +83,14 @@ This project is about a second-hand vehicle sales platform. It is divided into t
 ```
 8. If the problem still please contact with me "cyprian.bartosik@cirvianum.cat".
 
+## Data Base
+My data base schema is like this (only table chat and menssages are not done):
+![Image of schema of Database](server/storage/app/public/Cyprian_diagrama_Projecte_final.jpeg)
+
+## Video 
+[Link to see the project](https://drive.google.com/drive/folders/1liz3iEzPUEjets-swRE8FS90K6aOViVi?usp=drive_link)
+
+
 ## Libraries
 
 ### FrontEnd (React)
@@ -138,6 +146,22 @@ Library for multilanguage manager.
 - **React-Icons**
   https://www.npmjs.com/package/react-icons
   Icons for react
+
+- **Headless UI** 
+  https://headlessui.com 
+  Unstyled, fully accessible UI components.
+
+- **React Slick & Slick Carousel** 
+  https://react-slick.neostack.com
+  Carousel/slider component for React.
+
+- **Heroicons** 
+  https://heroicons.com
+      
+- **React Icons** 
+  https://react-icons.github.io
+  Comprehensive icon sets for UI design.
+
 ---
 
 #### Linting and code quality
@@ -177,4 +201,47 @@ Library for multilanguage manager.
 ---
 
 ### BackEnd (Laravel + PHP)
-- sosialite
+- **Laravel Framework** 
+  https://laravel.com  
+  The PHP Framework for Web Artisans.
+
+- **Laravel Sanctum** 
+  https://laravel.com
+  Lightweight authentication system for APIs and SPAs.
+
+- **Laravel Socialite** 
+  https://laravel.com 
+  OAuth authentication with social providers (Google, Facebook, etc.).
+
+- **L5 Swagger**  
+  https://://github.com
+  OpenApi Swagger documentation generator for Laravel.
+
+- **Laravel Tinker** 
+  https://://github.com
+  Powerful REPL for the Laravel framework.
+
+#### Testing & Tools
+- **PHPUnit** 
+  https://phpunit.de
+  Programmer-oriented testing framework for PHP.
+
+- **Laravel Pint** 
+  https://laravel.com 
+  Opinionated PHP code style fixer.
+
+- **Laravel Sail** 
+  https://laravel.com 
+  Docker-based development environment.
+
+- **Faker** 
+  https://fakerphp.org 
+  PHP library that generates fake data for seeds and testing.
+
+- **Concurrently** 
+  https://www.://npmjs.com
+  Run multiple commands (Vite + Artisan) simultaneously.
+
+- **Axios** 
+https://axios-http.com
+Promise based HTTP client for the browser and node.js.

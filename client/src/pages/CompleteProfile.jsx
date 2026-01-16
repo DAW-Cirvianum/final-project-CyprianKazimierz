@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showError, formatDateDMY, isAdult, isFutureDate } from "../general";
 import { useTranslation } from "react-i18next";
-
+import "../css/index.css"
 
 export default function CompleteProfile() {
   //Variables
